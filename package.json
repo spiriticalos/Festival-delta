@@ -1,0 +1,17 @@
+{
+  "name": "bohemians-festival",
+  "version": "1.0.0",
+  "description": "The Bohemians Festival 2026 — Delta Dunării",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.8.0",
+    "dotenv": "^17.4.1",
+    "express": "^4.22.1",
+    "express-session": "^1.19.0",
+    "multer": "^2.1.1"
+  }
+}
