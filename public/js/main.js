@@ -64,7 +64,7 @@ function tick() {
   const diff = TARGET - now;
 
   if (diff <= 0) {
-    cdWrap.innerHTML = '<p class="countdown-done">See you there 🌿</p>';
+    cdWrap.innerHTML = '<p class="countdown-done">See you there.</p>';
     return;
   }
 
@@ -197,7 +197,7 @@ async function loadSettings() {
     const tickets = parseInt(s.tickets_remaining, 10);
     const ticketsEl = document.getElementById('hero-tickets');
     if (ticketsEl && !isNaN(tickets) && tickets > 0) {
-      ticketsEl.textContent = `⚡ Mai sunt doar ${tickets} bilete disponibile`;
+      ticketsEl.textContent = `Mai sunt doar ${tickets} bilete disponibile`;
       ticketsEl.style.display = 'block';
     }
 
