@@ -356,9 +356,9 @@ body {
   height: 100vh;
   min-height: 600px;
   background-color: #1a1208;
-  background-image: url('/images/baza.jpg');
+  background-image: url('/images/hero-bg.jpg');
   background-size: cover;
-  background-position: center top;
+  background-position: center center;
   display: flex;
   align-items: center;
   justify-content: center;
