@@ -1231,6 +1231,20 @@ body {
   width: 100%;
 }
 
+.cazare-maps-link {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+}
+
+.cazare-maps-link:hover {
+  color: var(--orange);
+}
+
 @media (max-width: 900px) {
   .cazare-grid {
     grid-template-columns: 1fr;
