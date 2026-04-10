@@ -383,8 +383,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 24px 48px;
-  padding-top: 80px;
+  padding: 48px 24px 48px;
+  padding-top: 48px;
   width: 100%;
   max-width: 760px;
 }
@@ -466,7 +466,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: 0;
+  margin-top: 4px;
 }
 
 .cd-card {
@@ -1982,7 +1982,7 @@ body {
   /* Date + Countdown */
   .hero-date {
     margin-top: 24px;
-    margin-bottom: -32px;
+    margin-bottom: 12px;
     font-size: 12px;
   }
 
@@ -2255,31 +2255,27 @@ body {
     background-position: center center;
     min-height: 100svh;
     padding-bottom: 60px;
+    align-items: flex-start;
   }
 
   .hero-content {
-    padding: 0 20px;
+    padding: 52px 20px 40px;
     width: 100%;
+    max-width: 100%;
   }
 
   .hero-logo-overlay {
-    width: clamp(200px, 80vw, 340px);
-    top: 22%;
+    width: clamp(220px, 86vw, 360px);
   }
 
   .hero-sub {
-    font-size: 12px;
-    letter-spacing: 4px;
+    font-size: 11px;
+    letter-spacing: 3px;
   }
 
   .hero-tagline {
     font-size: 13px;
-  }
-
-  .hero-cta {
-    padding: 13px 28px;
-    font-size: 12px;
-    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   .hero-note {
