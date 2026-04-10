@@ -969,20 +969,27 @@ body {
 
 .video-lightbox-close {
   position: absolute;
-  top: 20px;
-  right: 24px;
-  background: none;
-  border: none;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   color: #fff;
-  font-size: 28px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  padding: 14px 40px;
+  border-radius: 2px;
   cursor: pointer;
-  opacity: 0.8;
-  line-height: 1;
+  white-space: nowrap;
   z-index: 10000;
+  transition: background 0.2s ease;
 }
 
 .video-lightbox-close:hover {
-  opacity: 1;
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .video-lightbox-inner {
