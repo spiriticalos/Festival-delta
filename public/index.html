@@ -347,14 +347,34 @@
         <h2 class="section-heading">How It Was</h2>
         <p class="editia-sub">If you weren't there, here's what you missed. If you were, you know why you're coming back.</p>
 
-        <div class="editia-video-wrap">
-          <iframe
-            src="https://www.youtube.com/embed/OXS-HgG6jJE?list=PLBzsYswLFswEgyqvpNV27nzHWl5EgZuM-"
-            title="The Bohemians Festival 2025 — Aftermovie"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            loading="lazy">
-          </iframe>
+        <!-- Video lightbox trigger -->
+        <div class="video-thumb" id="videoThumb">
+          <img
+            src="https://img.youtube.com/vi/BAnWvS4GAW8/maxresdefault.jpg"
+            alt="The Bohemians Festival 2025"
+            loading="lazy"
+            class="video-thumb-img" />
+          <button class="video-play-btn" aria-label="Play video">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="31" stroke="#fff" stroke-width="2" opacity="0.85"/>
+              <polygon points="26,20 48,32 26,44" fill="#fff"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Video lightbox overlay -->
+        <div class="video-lightbox" id="videoLightbox" style="display:none;">
+          <button class="video-lightbox-close" id="videoClose" aria-label="Închide">✕</button>
+          <div class="video-lightbox-inner">
+            <iframe
+              id="videoIframe"
+              src=""
+              data-src="https://www.youtube.com/embed/BAnWvS4GAW8?autoplay=1&rel=0&modestbranding=1&playsinline=1"
+              title="The Bohemians Festival 2025"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowfullscreen>
+            </iframe>
+          </div>
         </div>
       </div>
     </section>

@@ -178,6 +178,34 @@ document.querySelectorAll('.faq-q').forEach(btn => {
   });
 });
 
+// ── Video lightbox ─────────────────────────────────────────
+const videoThumb   = document.getElementById('videoThumb');
+const videoLightbox = document.getElementById('videoLightbox');
+const videoClose   = document.getElementById('videoClose');
+const videoIframe  = document.getElementById('videoIframe');
+
+if (videoThumb) {
+  videoThumb.addEventListener('click', () => {
+    videoIframe.src = videoIframe.dataset.src;
+    videoLightbox.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+
+  const closeVideo = () => {
+    videoLightbox.style.display = 'none';
+    videoIframe.src = '';
+    document.body.style.overflow = '';
+  };
+
+  videoClose.addEventListener('click', closeVideo);
+  videoLightbox.addEventListener('click', e => {
+    if (e.target === videoLightbox) closeVideo();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && videoLightbox.style.display === 'flex') closeVideo();
+  });
+}
+
 // ══════════════════════════════════════════════════════════
 // API INTEGRATIONS
 // ══════════════════════════════════════════════════════════

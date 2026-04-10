@@ -52,10 +52,10 @@
 :root {
   --bg:          #A08878;
   --bg-card:     #8A7468;
-  --orange:      #B08463;
-  --gold:        #B9937B;
-  --text:        #2a1810;
-  --text-muted:  #6e5648;
+  --orange:      #D4845A;
+  --gold:        #E0A878;
+  --text:        #1e1008;
+  --text-muted:  #4a3428;
   --max-width:   1200px;
 }
 
@@ -178,23 +178,22 @@ body {
 
 .btn-outline {
   display: inline-block;
-  background: transparent;
-  color: var(--orange);
+  background: var(--orange);
+  color: #fff;
   padding: 14px 32px;
   font-family: 'Nunito', sans-serif;
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  border: 1px solid var(--orange);
+  border: 1px solid #fff;
   border-radius: 2px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, opacity 0.2s ease;
 }
 
 .btn-outline:hover {
-  background: var(--orange);
-  color: #fff;
+  opacity: 0.85;
 }
 
 /* ── Section Heading ── */
@@ -895,6 +894,100 @@ body {
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(42, 24, 16, 0.25);
+}
+
+/* YouTube Shorts — portrait 9:16 */
+.editia-video-wrap--short {
+  max-width: 360px;
+  padding-bottom: 177.78%; /* 9:16 */
+}
+
+/* ── Video thumbnail ── */
+.video-thumb {
+  position: relative;
+  max-width: 360px;
+  margin: 0 auto;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 20px 60px rgba(42, 24, 16, 0.3);
+}
+
+.video-thumb-img {
+  width: 100%;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.video-thumb:hover .video-thumb-img {
+  transform: scale(1.03);
+}
+
+.video-play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 10, 7, 0.25);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.video-play-btn:hover {
+  background: rgba(13, 10, 7, 0.45);
+}
+
+.video-play-btn svg {
+  width: 72px;
+  height: 72px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+}
+
+/* ── Video lightbox ── */
+.video-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  opacity: 0.8;
+  line-height: 1;
+  z-index: 10000;
+}
+
+.video-lightbox-close:hover {
+  opacity: 1;
+}
+
+.video-lightbox-inner {
+  position: relative;
+  width: min(360px, 90vw);
+  padding-bottom: min(640px, 160vw);
+  height: 0;
+}
+
+.video-lightbox-inner iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 4px;
 }
 
 .editia-video-wrap iframe {
