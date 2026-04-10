@@ -2,4 +2,3 @@ node_modules/
 .env
 festival.db
 emails.txt
-public/images/uploads/

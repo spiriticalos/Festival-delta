@@ -2094,3 +2094,121 @@ body {
 .footer .footer-social-label {
   color: #B9937B;
 }
+
+/* ============================================================
+   MOBILE OPTIMIZATIONS — comprehensive
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+  /* Hero */
+  .hero-title {
+    font-size: clamp(3.5rem, 18vw, 6rem);
+  }
+  .hero-sub {
+    font-size: 13px;
+  }
+  .hero-tagline {
+    font-size: 13px;
+  }
+  .hero-cta {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+
+  /* Section headings */
+  .section-heading {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  /* Gallery marquee — smaller images on mobile */
+  .gallery-item {
+    width: 260px;
+    height: 360px;
+  }
+  .gallery-overlay-text {
+    padding: 24px 0 0 5%;
+  }
+  .gallery-overlay-text p {
+    font-size: clamp(1.4rem, 7vw, 2.2rem);
+  }
+
+  /* Artists grid — 2 columns filling width */
+  .lineup-grid {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+  .lineup-card {
+    width: 100%;
+    height: 160px;
+  }
+  .lineup-card-title {
+    font-size: 1.5rem;
+  }
+
+  /* Split sections */
+  .split {
+    flex-direction: column;
+  }
+  .split-reverse {
+    flex-direction: column;
+  }
+  .split-img,
+  .split-text {
+    width: 100%;
+  }
+  .split-img {
+    height: 260px;
+  }
+
+  /* Venue cards */
+  .venue-cards {
+    flex-direction: column;
+  }
+
+  /* Cazare grid */
+  .cazare-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Activitati grid */
+  .activitati-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+  .footer-col--center nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 16px;
+  }
+  .footer-col--right {
+    align-items: center;
+  }
+
+  /* Email capture */
+  .email-form {
+    flex-direction: column;
+  }
+  .email-input,
+  .email-btn {
+    width: 100%;
+  }
+
+  /* Sponsors */
+  .sponsors-row {
+    gap: 16px;
+  }
+  .sponsor-item--text {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+  }
+}
