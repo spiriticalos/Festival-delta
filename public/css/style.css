@@ -1882,20 +1882,28 @@ body {
     font-size: 12px;
   }
 
-  /* Countdown 2x2 */
+  /* Countdown — 3 pe un rând */
   .countdown {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
     margin-top: 40px;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .cd-card {
-    padding: 16px 20px;
+    padding: 10px 8px;
     min-width: 0;
   }
 
   .cd-num {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
+  }
+
+  .cd-label {
+    font-size: 10px;
   }
 
   /* Cazare */
@@ -2126,24 +2134,46 @@ body {
 }
 
 /* ============================================================
-   MOBILE OPTIMIZATIONS — comprehensive
+   MOBILE OPTIMIZATIONS — comprehensive (≤480px)
    ============================================================ */
 
 @media (max-width: 480px) {
 
-  /* Hero */
+  /* Hero — imagine portrait */
+  .hero {
+    background-image: url('/images/hero-bg-mobile.jpg');
+    background-position: center center;
+    min-height: 100svh;
+    padding-bottom: 60px;
+  }
+
+  .hero-content {
+    padding: 0 20px;
+    width: 100%;
+  }
+
   .hero-title {
-    font-size: clamp(3.5rem, 18vw, 6rem);
+    font-size: clamp(3.2rem, 17vw, 5.5rem);
   }
+
   .hero-sub {
-    font-size: 13px;
+    font-size: 12px;
+    letter-spacing: 4px;
   }
+
   .hero-tagline {
     font-size: 13px;
   }
+
   .hero-cta {
-    padding: 12px 24px;
+    padding: 13px 28px;
     font-size: 12px;
+    margin-top: 20px;
+  }
+
+  .hero-note {
+    font-size: 12px;
+    margin-top: 8px;
   }
 
   /* Section headings */
@@ -2151,67 +2181,104 @@ body {
     font-size: clamp(2rem, 10vw, 3rem);
   }
 
-  /* Gallery marquee — smaller images on mobile */
-  .gallery-item {
-    width: 260px;
-    height: 360px;
-  }
-  .gallery-overlay-text {
-    padding: 24px 0 0 5%;
-  }
-  .gallery-overlay-text p {
-    font-size: clamp(1.4rem, 7vw, 2.2rem);
+  /* Container padding */
+  .container {
+    padding: 0 16px;
   }
 
-  /* Artists grid — 2 columns filling width */
+  /* Strip */
+  .strip {
+    padding: 28px 0;
+  }
+
+  /* Gallery marquee */
+  .gallery-item {
+    width: 240px;
+    height: 320px;
+  }
+  .gallery-overlay-text {
+    padding: 20px 0 0 5%;
+  }
+  .gallery-overlay-text p {
+    font-size: clamp(1.3rem, 7vw, 2rem);
+  }
+
+  /* Artists grid — 2 coloane */
   .lineup-grid {
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
-    padding: 0 16px;
+    padding: 0;
     box-sizing: border-box;
+    gap: 8px;
   }
   .lineup-card {
     width: 100%;
-    height: 160px;
+    height: 155px;
   }
   .lineup-card-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+  .lineup-sub {
+    font-size: 12px;
   }
 
   /* Split sections */
-  .split {
-    flex-direction: column;
-  }
+  .split,
   .split-reverse {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    direction: ltr;
+    min-height: auto;
   }
-  .split-img,
-  .split-text {
-    width: 100%;
-  }
-  .split-img {
-    height: 260px;
-  }
+  .split-reverse > * { direction: ltr; }
+  .split .split-img,
+  .split-reverse .split-img { order: -1; }
+  .split-img { height: 240px; }
+  .split-img img { min-height: 240px; }
+  .split-text { padding: 32px 20px; }
+  .split-body { max-width: 100%; font-size: 14px; }
 
-  /* Venue cards */
-  .venue-cards {
-    flex-direction: column;
-  }
+  /* About */
+  .about-inner { padding: 40px 20px; }
 
-  /* Cazare grid */
+  /* Venue */
+  .venue-cards { grid-template-columns: 1fr; }
+  .venue-map { height: 220px; }
+
+  /* Cazare */
   .cazare-grid {
     grid-template-columns: 1fr;
+    max-width: 100%;
   }
+  .cazare-card { max-width: 100%; }
 
-  /* Activitati grid */
+  /* Activitati */
   .activitati-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
+  .activitati { padding: 50px 0; }
+
+  /* FAQ */
+  .faq { padding: 50px 0; }
+  .faq-q { font-size: 14px; padding: 16px 0; }
+
+  /* Sponsors */
+  .sponsors-row { gap: 12px; }
+  .sponsor-item--text {
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+  .become-sponsor-btn { font-size: 12px; padding: 10px 20px; }
+
+  /* Email capture */
+  .email-form { flex-direction: column; }
+  .email-input,
+  .email-btn { width: 100%; box-sizing: border-box; }
 
   /* Footer */
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 28px;
     text-align: center;
   }
   .footer-col--center nav {
@@ -2220,25 +2287,6 @@ body {
     justify-content: center;
     gap: 8px 16px;
   }
-  .footer-col--right {
-    align-items: center;
-  }
-
-  /* Email capture */
-  .email-form {
-    flex-direction: column;
-  }
-  .email-input,
-  .email-btn {
-    width: 100%;
-  }
-
-  /* Sponsors */
-  .sponsors-row {
-    gap: 16px;
-  }
-  .sponsor-item--text {
-    font-size: 0.85rem;
-    padding: 6px 14px;
-  }
+  .footer-col--right { align-items: center; }
+  .footer-logo { font-size: 1.2rem; }
 }

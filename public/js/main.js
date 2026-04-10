@@ -71,11 +71,10 @@ function tick() {
   animateDigit(elDays,  pad(Math.floor(diff / 864e5)));
   animateDigit(elHours, pad(Math.floor((diff / 36e5) % 24)));
   animateDigit(elMins,  pad(Math.floor((diff / 6e4) % 60)));
-  animateDigit(elSecs,  pad(Math.floor((diff / 1e3) % 60)));
 }
 
 // Style the digit elements for transition
-[elDays, elHours, elMins, elSecs].forEach(el => {
+[elDays, elHours, elMins].forEach(el => {
   el.style.display    = 'inline-block';
   el.style.transition = 'transform 0.15s ease, opacity 0.15s ease';
 });
