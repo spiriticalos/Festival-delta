@@ -224,10 +224,10 @@ async function loadArtists() {
       <div class="lineup-card lineup-card--artist">
         ${a.image_path
           ? `<img src="${a.image_path}" alt="${a.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
-          : `<div style="text-align:center;padding:20px;">
-               <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--text);">${a.name}</p>
-               <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">${a.genre || ''}</p>
-             </div>`}
+          : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
+        <div class="lineup-card-name">
+          <span class="lineup-card-title">${a.name}</span>
+        </div>
       </div>
     `).join('');
   } catch (e) {
@@ -273,7 +273,7 @@ async function loadGallery() {
       return;
     }
 
-    grid.innerHTML = items.map(item => `
+    const itemHTML = items.map(item => `
       <div class="gallery-item" data-src="${item.image_path}" data-caption="${item.caption || ''}">
         <img src="${item.image_path}"
              alt="${item.caption || 'The Bohemians Festival'}"
@@ -281,6 +281,9 @@ async function loadGallery() {
         ${item.caption ? `<div class="gallery-caption">${item.caption}</div>` : ''}
       </div>
     `).join('');
+
+    // Duplicate for seamless infinite loop
+    grid.innerHTML = itemHTML + itemHTML;
 
     // Lightbox
     grid.querySelectorAll('.gallery-item').forEach(el => {
