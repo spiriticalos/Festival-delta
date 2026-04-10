@@ -398,7 +398,7 @@ body {
 
 /* ── Hero Elements ── */
 .hero-edition {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--gold);
@@ -440,6 +440,16 @@ body {
   margin-top: 12px;
 }
 
+.hero-date {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(245, 237, 227, 0.65);
+  margin-top: 32px;
+  margin-bottom: -44px;
+}
+
 /* ── Countdown ── */
 .countdown {
   display: flex;
@@ -468,7 +478,7 @@ body {
 }
 
 .cd-label {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -519,6 +529,15 @@ body {
   height: auto;
   display: block;
   margin: 0 auto;
+}
+
+/* Inline usage (inside text paragraphs) */
+.hero-note .sun-icon,
+.hero-early-bird .sun-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 22px;
+  margin: 0 6px 3px 0;
 }
 
 .strip-title {
@@ -624,7 +643,7 @@ body {
 
 .lineup-card-genre {
   font-family: 'Nunito', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.65);
@@ -703,7 +722,7 @@ body {
 }
 
 .split-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -786,7 +805,7 @@ body {
 }
 
 .about-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -844,7 +863,7 @@ body {
 }
 
 .editia-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -903,7 +922,7 @@ body {
 }
 
 .venue-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -1008,7 +1027,7 @@ body {
 }
 
 .cazare-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -1072,7 +1091,7 @@ body {
 }
 
 .cazare-tag {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--orange);
@@ -1118,7 +1137,7 @@ body {
 }
 
 .activitati-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -1186,7 +1205,7 @@ body {
 }
 
 .gallery-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text);
@@ -1430,7 +1449,7 @@ body {
 
 .sponsors-label {
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -1749,7 +1768,7 @@ body {
 }
 
 .footer-social-label {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text);
@@ -1844,7 +1863,7 @@ body {
   }
 
   .hero-edition {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 3px;
   }
 
@@ -1854,6 +1873,13 @@ body {
 
   .hero-tagline {
     font-size: 1rem;
+  }
+
+  /* Date + Countdown */
+  .hero-date {
+    margin-top: 24px;
+    margin-bottom: -32px;
+    font-size: 12px;
   }
 
   /* Countdown 2x2 */
@@ -1914,7 +1940,7 @@ body {
 
   /* Sections padding */
   .strip-grid    { grid-template-columns: 1fr; }
-  .strip-col     { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 36px 24px; }
+  .strip-col     { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 24px 20px; }
   .strip-col:last-child { border-bottom: none; }
 
   .venue-cards   { grid-template-columns: 1fr; }
@@ -1926,7 +1952,7 @@ body {
    ============================================================ */
 
 .hero-early-bird {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
   background: var(--orange);
