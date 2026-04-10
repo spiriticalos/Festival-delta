@@ -370,9 +370,10 @@ body {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(13, 10, 7, 0.3) 0%,
-    rgba(13, 10, 7, 0.7) 60%,
-    rgba(13, 10, 7, 1)   100%
+    rgba(5, 3, 1, 0.55) 0%,
+    rgba(5, 3, 1, 0.45) 40%,
+    rgba(5, 3, 1, 0.65) 70%,
+    rgba(5, 3, 1, 0.95) 100%
   );
 }
 
@@ -382,8 +383,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 24px;
-  padding-top: 68px; /* navbar height */
+  padding: 0 24px 48px;
+  padding-top: 80px;
+  width: 100%;
+  max-width: 760px;
 }
 
 /* Staggered animations */
@@ -405,32 +408,41 @@ body {
 }
 
 .hero-title {
-  font-family: 'Italianno', cursive;
-  font-size: clamp(5rem, 13vw, 12rem);
-  color: var(--text);
   line-height: 1;
   text-align: center;
-  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.hero-logo-overlay {
+  width: clamp(260px, 55vw, 580px);
+  height: auto;
+  display: block;
+  margin: 0 auto 4px;
+  pointer-events: none;
+  animation: fadeUp 0.9s ease both;
+  animation-delay: 0.2s;
 }
 
 .hero-sub {
-  font-size: clamp(1rem, 3vw, 1.8rem);
-  letter-spacing: 8px;
+  font-size: clamp(0.75rem, 1.8vw, 1rem);
+  letter-spacing: 5px;
   text-transform: uppercase;
   color: var(--orange);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .hero-tagline {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  color: var(--text-muted);
-  margin-bottom: 40px;
+  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+  color: rgba(245, 237, 227, 0.75);
+  margin-bottom: 32px;
 }
 
 .hero-cta {
   font-size: 13px;
+  padding: 16px 56px;
+  letter-spacing: 3px;
 }
 
 .hero-note {
@@ -444,35 +456,34 @@ body {
   font-size: 13px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(245, 237, 227, 0.65);
-  margin-top: 32px;
-  margin-bottom: -44px;
+  color: rgba(245, 237, 227, 0.7);
+  margin-top: 28px;
+  margin-bottom: 14px;
 }
 
 /* ── Countdown ── */
 .countdown {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
-  margin-top: 60px;
+  gap: 16px;
+  margin-top: 0;
 }
 
 .cd-card {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 20px 28px;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 18px 28px;
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 96px;
+  min-width: 100px;
 }
 
 .cd-num {
   font-family: 'Playfair Display', serif;
   font-size: 3rem;
-  color: var(--orange);
+  color: #f5ede3;
   line-height: 1;
 }
 
@@ -480,7 +491,7 @@ body {
   font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: rgba(245, 237, 227, 0.6);
   margin-top: 6px;
 }
 
@@ -1977,26 +1988,33 @@ body {
 
   /* Countdown — 3 pe un rând */
   .countdown {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    margin-top: 40px;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
   }
 
   .cd-card {
-    padding: 10px 8px;
+    padding: 12px 10px;
     min-width: 0;
+    flex: 1;
   }
 
   .cd-num {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .cd-label {
     font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .hero-logo-overlay {
+    width: clamp(220px, 85vw, 360px);
+  }
+
+  .hero-cta {
+    padding: 14px 36px;
+    width: 100%;
+    max-width: 300px;
   }
 
   /* Cazare */
@@ -2198,12 +2216,11 @@ body {
 
 /* Hero are overlay întunecat — text rămâne deschis */
 .hero .hero-edition   { color: #D0B9A7; }
-.hero .hero-title     { color: #f5ede3; }
-.hero .hero-sub       { color: #e8c8aa; }
-.hero .hero-tagline   { color: rgba(245, 237, 227, 0.7); }
+.hero .hero-sub       { color: var(--orange); }
+.hero .hero-tagline   { color: rgba(245, 237, 227, 0.75); }
 .hero .hero-note      { color: rgba(245, 237, 227, 0.6); }
-.hero .cd-num         { color: #e8c8aa; }
-.hero .cd-label       { color: rgba(245, 237, 227, 0.65); }
+.hero .cd-num         { color: #f5ede3; }
+.hero .cd-label       { color: rgba(245, 237, 227, 0.6); }
 .hero .countdown-done { color: #D0B9A7; }
 
 /* Footer are fundal întunecat (#2a1810) — text deschis */
@@ -2245,8 +2262,9 @@ body {
     width: 100%;
   }
 
-  .hero-title {
-    font-size: clamp(3.2rem, 17vw, 5.5rem);
+  .hero-logo-overlay {
+    width: clamp(200px, 80vw, 340px);
+    top: 22%;
   }
 
   .hero-sub {
