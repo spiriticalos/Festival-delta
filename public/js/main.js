@@ -327,7 +327,8 @@ async function loadGallery() {
     // JS-driven marquee (replaces CSS animation — works on iOS Safari)
     let offset    = 0;
     let paused    = false;
-    const speed   = 0.5; // px per frame ~30px/s at 60fps
+    const isIOS   = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const speed   = isIOS ? 1.0 : 0.5;
     const wrap    = grid.parentElement;
 
     function marqueeStep() {
