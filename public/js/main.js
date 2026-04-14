@@ -302,7 +302,7 @@ async function loadGallery() {
     if (!grid) return;
 
     if (!items.length) {
-      grid.innerHTML = '<p class="gallery-empty">Fotografiile vin în curând.</p>';
+      grid.innerHTML = '<p class="gallery-empty">Photos coming soon.</p>';
       return;
     }
 
@@ -315,7 +315,7 @@ async function loadGallery() {
       <div class="gallery-item" data-index="${i}">
         <img src="${item.image_path}"
              alt="${item.caption || 'The Bohemians Festival'}"
-             loading="eager"
+             loading="${i < 4 ? 'eager' : 'lazy'}"
              decoding="async" />
         ${item.caption ? `<div class="gallery-caption">${item.caption}</div>` : ''}
       </div>
