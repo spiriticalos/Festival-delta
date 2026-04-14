@@ -300,8 +300,8 @@ async function loadGallery() {
       return;
     }
 
-    const itemHTML = items.map(item => `
-      <div class="gallery-item" data-src="${item.image_path}" data-caption="${item.caption || ''}">
+    const itemHTML = items.map((item, i) => `
+      <div class="gallery-item" data-index="${i}">
         <img src="${item.image_path}"
              alt="${item.caption || 'The Bohemians Festival'}"
              loading="lazy" />
@@ -312,34 +312,70 @@ async function loadGallery() {
     // Duplicate for seamless infinite loop
     grid.innerHTML = itemHTML + itemHTML;
 
-    // Lightbox
-    grid.querySelectorAll('.gallery-item').forEach(el => {
-      el.addEventListener('click', () => {
-        const src     = el.dataset.src;
-        const caption = el.dataset.caption;
-        const box     = document.createElement('div');
-        box.className = 'gallery-lightbox';
-        box.innerHTML = `
-          <button class="gallery-lightbox-close" aria-label="Închide">✕</button>
-          <img src="${src}" alt="${caption}" />
-        `;
-        document.body.appendChild(box);
-        document.body.style.overflow = 'hidden';
+    // Lightbox state
+    let lightbox  = null;
+    let current   = 0;
 
-        const close = () => {
-          box.remove();
-          document.body.style.overflow = '';
-        };
-        box.addEventListener('click', close);
-        box.querySelector('.gallery-lightbox-close').addEventListener('click', e => {
-          e.stopPropagation();
-          close();
-        });
-        document.addEventListener('keydown', e => {
-          if (e.key === 'Escape') close();
-        }, { once: true });
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.classList.remove('open');
+      setTimeout(() => {
+        if (lightbox) { lightbox.remove(); lightbox = null; }
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    function renderLightbox(index) {
+      current = ((index % items.length) + items.length) % items.length;
+      const item = items[current];
+      const multi = items.length > 1;
+
+      if (!lightbox) {
+        lightbox = document.createElement('div');
+        lightbox.className = 'gallery-lightbox';
+        document.body.appendChild(lightbox);
+        requestAnimationFrame(() => lightbox.classList.add('open'));
+        document.body.style.overflow = 'hidden';
+      }
+
+      lightbox.innerHTML = `
+        <button class="gallery-lightbox-close" aria-label="Închide">✕</button>
+        ${multi ? `<button class="gallery-lightbox-prev" aria-label="Anterior">&#8249;</button>` : ''}
+        <div class="gallery-lightbox-img-wrap">
+          <img src="${item.image_path}" alt="${item.caption || 'The Bohemians Festival'}" />
+          ${item.caption ? `<p class="gallery-lightbox-caption">${item.caption}</p>` : ''}
+        </div>
+        ${multi ? `<button class="gallery-lightbox-next" aria-label="Următor">&#8250;</button>` : ''}
+        ${multi ? `<span class="gallery-lightbox-counter">${current + 1} / ${items.length}</span>` : ''}
+      `;
+
+      lightbox.querySelector('.gallery-lightbox-close').addEventListener('click', e => {
+        e.stopPropagation(); closeLightbox();
       });
+      lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      const prevBtn = lightbox.querySelector('.gallery-lightbox-prev');
+      const nextBtn = lightbox.querySelector('.gallery-lightbox-next');
+      if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); renderLightbox(current - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); renderLightbox(current + 1); });
+    }
+
+    // Click on any gallery item (both original + duplicate sets)
+    grid.addEventListener('click', e => {
+      const item = e.target.closest('.gallery-item[data-index]');
+      if (item) renderLightbox(parseInt(item.dataset.index, 10));
     });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (!lightbox) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft')   renderLightbox(current - 1);
+      if (e.key === 'ArrowRight')  renderLightbox(current + 1);
+    });
+
   } catch (e) {
     // gallery unavailable
   }
