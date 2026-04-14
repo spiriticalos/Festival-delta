@@ -33,6 +33,8 @@ ADMIN_PASS=changeme123
 
 Schimbă parola înainte de deploy în producție.
 
+> **Important pentru producție:** setează `NODE_ENV=production` în `.env` pentru a activa cookie-urile securizate (HTTPS only).
+
 ---
 
 ## Structura folderelor

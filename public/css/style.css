@@ -1878,10 +1878,21 @@ body {
 .cookie-text {
   font-size: 13px;
   color: #c8b09a;
-  line-height: 1.5;
+  line-height: 1.6;
   flex: 1;
   min-width: 200px;
 }
+
+.cookie-link {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-left: 6px;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.cookie-link:hover { opacity: 0.75; }
 
 .cookie-actions {
   display: flex;
