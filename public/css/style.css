@@ -1354,6 +1354,7 @@ body {
   margin-top: 48px;
   cursor: grab;
   position: relative;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .gallery-marquee-wrap:active {
@@ -1396,7 +1397,7 @@ body {
   gap: 6px;
   width: max-content;
   animation: marquee-scroll 41s linear infinite;
-  will-change: transform;
+  -webkit-animation: marquee-scroll 41s linear infinite;
 }
 
 .gallery-marquee-wrap:hover .gallery-marquee {
