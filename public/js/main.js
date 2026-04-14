@@ -324,6 +324,28 @@ async function loadGallery() {
     // Duplicate for seamless infinite loop
     grid.innerHTML = itemHTML + itemHTML;
 
+    // JS-driven marquee (replaces CSS animation — works on iOS Safari)
+    let offset    = 0;
+    let paused    = false;
+    const speed   = 0.5; // px per frame ~30px/s at 60fps
+    const wrap    = grid.parentElement;
+
+    function marqueeStep() {
+      if (!paused) {
+        const half = grid.scrollWidth / 2;
+        offset += speed;
+        if (offset >= half) offset = 0;
+        grid.style.transform = `translateX(-${offset}px)`;
+      }
+      requestAnimationFrame(marqueeStep);
+    }
+    requestAnimationFrame(marqueeStep);
+
+    wrap.addEventListener('mouseenter', () => { paused = true; });
+    wrap.addEventListener('mouseleave', () => { paused = false; });
+    wrap.addEventListener('touchstart', () => { paused = true; },  { passive: true });
+    wrap.addEventListener('touchend',   () => { paused = false; }, { passive: true });
+
     // Lightbox state
     let lightbox  = null;
     let current   = 0;

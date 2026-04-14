@@ -1362,8 +1362,7 @@ body {
 /* ── Marquee wrap ── */
 .gallery-marquee-wrap {
   width: 100%;
-  -webkit-clip-path: inset(0);
-  clip-path: inset(0);
+  overflow: hidden;
   margin-top: 48px;
   cursor: grab;
   position: relative;
@@ -1399,21 +1398,10 @@ body {
   letter-spacing: 0.02em;
 }
 
-@keyframes marquee-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
 .gallery-marquee {
   display: flex;
   gap: 6px;
   width: max-content;
-  animation: marquee-scroll 41s linear infinite;
-  -webkit-animation: marquee-scroll 41s linear infinite;
-}
-
-.gallery-marquee-wrap:hover .gallery-marquee {
-  animation-play-state: paused;
 }
 
 .gallery-item {
