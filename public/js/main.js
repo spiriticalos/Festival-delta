@@ -315,7 +315,8 @@ async function loadGallery() {
       <div class="gallery-item" data-index="${i}">
         <img src="${item.image_path}"
              alt="${item.caption || 'The Bohemians Festival'}"
-             loading="lazy" />
+             loading="eager"
+             decoding="async" />
         ${item.caption ? `<div class="gallery-caption">${item.caption}</div>` : ''}
       </div>
     `).join('');

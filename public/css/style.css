@@ -1354,6 +1354,9 @@ body {
   margin-top: 48px;
   cursor: grab;
   position: relative;
+  contain: layout style;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .gallery-marquee-wrap:active {
@@ -1396,6 +1399,10 @@ body {
   gap: 6px;
   width: max-content;
   animation: marquee-scroll 41s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .gallery-marquee-wrap:hover .gallery-marquee {
