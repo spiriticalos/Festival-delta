@@ -413,42 +413,6 @@ async function loadGallery() {
       visible = entries[0].isIntersecting;
     }, { threshold: 0 }).observe(wrap);
 
-    // Gallery filter tabs
-    const filterGrid = document.getElementById('gallery-filter-grid');
-    document.querySelectorAll('.gallery-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const filter = tab.dataset.filter;
-
-        if (filter === 'all') {
-          filterGrid.style.display = 'none';
-          wrap.style.display = '';
-          paused = false;
-        } else {
-          paused = true;
-          wrap.style.display = 'none';
-          const filtered = items.filter(item => item.section === filter);
-          filterGrid.innerHTML = filtered.map(item => `
-            <div class="gallery-item" data-index="${items.indexOf(item)}">
-              <img src="${item.image_path}"
-                   alt="${item.caption || 'The Bohemians Festival'}"
-                   loading="lazy"
-                   decoding="async" />
-              ${item.caption ? `<div class="gallery-caption">${item.caption}</div>` : ''}
-            </div>
-          `).join('');
-          filterGrid.style.display = 'grid';
-        }
-      });
-    });
-
-    // Lightbox for filtered grid items
-    filterGrid.addEventListener('click', e => {
-      const item = e.target.closest('.gallery-item[data-index]');
-      if (item) renderLightbox(parseInt(item.dataset.index, 10));
-    });
-
   } catch (e) {
     // gallery unavailable
   }
