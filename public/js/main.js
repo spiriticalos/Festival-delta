@@ -230,7 +230,7 @@ async function loadSettings() {
     const tickets = parseInt(s.tickets_remaining, 10);
     const ticketsEl = document.getElementById('hero-tickets');
     if (ticketsEl && !isNaN(tickets) && tickets > 0) {
-      ticketsEl.textContent = `Mai sunt doar ${tickets} bilete disponibile`;
+      ticketsEl.textContent = `Only ${tickets} tickets left`;
       ticketsEl.style.display = 'block';
     }
 

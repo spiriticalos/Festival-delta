@@ -453,7 +453,7 @@ body {
 
 .hero-bottom {
   position: absolute;
-  bottom: 36px;
+  bottom: 20vh;
   left: 0;
   right: 0;
   display: flex;
@@ -1362,7 +1362,8 @@ body {
 /* ── Marquee wrap ── */
 .gallery-marquee-wrap {
   width: 100%;
-  overflow: hidden;
+  -webkit-clip-path: inset(0);
+  clip-path: inset(0);
   margin-top: 48px;
   cursor: grab;
   position: relative;
