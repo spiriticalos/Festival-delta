@@ -5,6 +5,7 @@ const fs       = require('fs');
 const session  = require('express-session');
 const bcrypt   = require('bcryptjs');
 const multer   = require('multer');
+const sharp    = require('sharp');
 const db       = require('./db');
 
 const app         = express();
@@ -33,6 +34,21 @@ const upload = multer({
     cb(null, ['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype));
   },
 });
+
+// ── Convert upload to WebP ──────────────────────────────────
+async function processUpload(file) {
+  const ext = path.extname(file.filename).toLowerCase();
+  if (ext === '.webp') return `/images/uploads/${file.filename}`;
+  const webpName = file.filename.replace(/\.[^.]+$/, '.webp');
+  const webpPath = path.join(UPLOADS_DIR, webpName);
+  try {
+    await sharp(file.path).webp({ quality: 82 }).toFile(webpPath);
+    try { fs.unlinkSync(file.path); } catch (_) {}
+    return `/images/uploads/${webpName}`;
+  } catch (_) {
+    return `/images/uploads/${file.filename}`;
+  }
+}
 
 // ── Rate limit (login) ──────────────────────────────────────
 const loginAttempts = new Map();
@@ -143,10 +159,10 @@ app.post('/api/subscribe', (req, res) => {
 // ══════════════════════════════════════════════════════════
 
 // Artists
-app.post('/api/artists', isAdmin, upload.single('image'), (req, res) => {
+app.post('/api/artists', isAdmin, upload.single('image'), async (req, res) => {
   const { name, genre } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required.' });
-  const image_path = req.file ? `/images/uploads/${req.file.filename}` : null;
+  const image_path = req.file ? await processUpload(req.file) : null;
   try {
     const r = db.prepare('INSERT INTO artists (name, genre, image_path) VALUES (?, ?, ?)').run(name.trim(), genre || null, image_path);
     res.json({ id: r.lastInsertRowid });
@@ -166,10 +182,10 @@ app.delete('/api/artists/:id', isAdmin, (req, res) => {
 });
 
 // Gallery
-app.post('/api/gallery', isAdmin, upload.single('image'), (req, res) => {
+app.post('/api/gallery', isAdmin, upload.single('image'), async (req, res) => {
   const { section, caption } = req.body;
   if (!section || !section.trim()) return res.status(400).json({ error: 'Section is required.' });
-  const image_path = req.file ? `/images/uploads/${req.file.filename}` : null;
+  const image_path = req.file ? await processUpload(req.file) : null;
   try {
     const r = db.prepare('INSERT INTO gallery (section, image_path, caption) VALUES (?, ?, ?)').run(section.trim(), image_path, caption || null);
     res.json({ id: r.lastInsertRowid });

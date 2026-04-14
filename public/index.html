@@ -64,6 +64,13 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/images/sun-icon.svg" type="image/svg+xml" />
+
+  <!-- Preload critical assets -->
+  <link rel="preload" as="image" href="/images/hero-bg.webp" media="(min-width: 481px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="/images/hero-bg-mobile.webp" media="(max-width: 480px)" fetchpriority="high" />
 </head>
 <body>
 
@@ -225,6 +232,12 @@
       <div class="container">
         <p class="gallery-label">Moments</p>
         <h2 class="section-heading">Gallery</h2>
+        <div class="gallery-tabs">
+          <button class="gallery-tab active" data-filter="all">All</button>
+          <button class="gallery-tab" data-filter="escape">Escape</button>
+          <button class="gallery-tab" data-filter="nature">Nature</button>
+          <button class="gallery-tab" data-filter="community">Community</button>
+        </div>
       </div>
       <div class="gallery-marquee-wrap">
         <div class="gallery-skeleton" aria-hidden="true">
@@ -239,6 +252,7 @@
           <p>Festival in Danube Delta</p>
         </div>
       </div>
+      <div class="gallery-filter-grid" id="gallery-filter-grid" style="display:none;"></div>
     </section>
 
     <!-- ═══════════════════════════════════════════
@@ -614,6 +628,93 @@
     </section>
 
     <!-- ═══════════════════════════════════════════
+         CE SĂ ADUCI
+    ════════════════════════════════════════════ -->
+    <section class="packing" id="packing">
+      <div class="container">
+
+        <p class="packing-label">Practical Info</p>
+        <h2 class="section-heading">What to Pack</h2>
+
+        <div class="packing-grid">
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Sunscreen &amp; lip balm</p>
+              <p class="packing-item-text">The Delta sun is intense. Bring SPF 50 and reapply often.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Warm layers</p>
+              <p class="packing-item-text">Nights by the water get cold, even in June. A light jacket is essential.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Cash</p>
+              <p class="packing-item-text">Card terminals are limited in the village. There are no ATMs in Sf. Gheorghe.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Comfortable shoes</p>
+              <p class="packing-item-text">You'll walk on sand, grass, and cobblestones. Pack both shoes and sandals.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Swimwear</p>
+              <p class="packing-item-text">Wild beach five minutes from the venue. Don't miss the sunset swim.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Torch or headlamp</p>
+              <p class="packing-item-text">Village streets have no lighting at night.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Insect repellent</p>
+              <p class="packing-item-text">You're in the Danube Delta. Mosquitoes are part of the experience.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Reusable bottle</p>
+              <p class="packing-item-text">Refill points available on-site. Less plastic, better Delta.</p>
+            </div>
+          </div>
+
+          <div class="packing-item">
+            <div class="packing-item-dot"></div>
+            <div>
+              <p class="packing-item-name">Personal medication</p>
+              <p class="packing-item-text">Nearest pharmacy is in Tulcea, 90 minutes away by boat.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
          FAQ
     ════════════════════════════════════════════ -->
     <section class="faq" id="faq">
@@ -758,6 +859,7 @@
             <a href="#venue">Venue</a>
             <a href="#cazare">Accommodation</a>
             <a href="#activitati">Activities</a>
+            <a href="#packing">What to Pack</a>
             <a href="#gallery">Gallery</a>
             <a href="#editia-trecuta">Edition 2025</a>
             <a href="#faq">FAQ</a>
