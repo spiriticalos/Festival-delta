@@ -2,12 +2,18 @@
 // THE BOHEMIANS FESTIVAL 2026 — main.js
 // ══════════════════════════════════════════════════════════
 
-// ── Navbar scroll ──────────────────────────────────────────
-const navbar = document.getElementById('navbar');
+// ── Navbar scroll + Back to top ────────────────────────────
+const navbar    = document.getElementById('navbar');
+const backToTop = document.getElementById('backToTop');
 
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 50);
+  backToTop.classList.toggle('visible', window.scrollY > 500);
 }, { passive: true });
+
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
 // ── Hamburger menu ─────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
@@ -299,6 +305,11 @@ async function loadGallery() {
       grid.innerHTML = '<p class="gallery-empty">Fotografiile vin în curând.</p>';
       return;
     }
+
+    // Remove skeleton, show marquee
+    const skeleton = document.querySelector('.gallery-skeleton');
+    if (skeleton) skeleton.remove();
+    grid.style.display = 'flex';
 
     const itemHTML = items.map((item, i) => `
       <div class="gallery-item" data-index="${i}">

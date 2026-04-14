@@ -48,6 +48,7 @@
         "longitude": 29.5978
       }
     },
+    "image": "https://thebohemiansociety.ro/images/baza.jpg",
     "organizer": {
       "@type": "Organization",
       "name": "Cyclic Agency",
@@ -223,9 +224,13 @@
         <h2 class="section-heading">Gallery</h2>
       </div>
       <div class="gallery-marquee-wrap">
-        <div class="gallery-marquee" id="gallery-grid">
-          <p class="gallery-empty">Photos coming soon.</p>
+        <div class="gallery-skeleton" aria-hidden="true">
+          <div class="gallery-skeleton-item"></div>
+          <div class="gallery-skeleton-item"></div>
+          <div class="gallery-skeleton-item"></div>
+          <div class="gallery-skeleton-item"></div>
         </div>
+        <div class="gallery-marquee" id="gallery-grid"></div>
         <div class="gallery-overlay-text" aria-hidden="true">
           <p>Lose yourself.</p>
           <p>Find your people.</p>
@@ -249,6 +254,22 @@
           <div class="lineup-card"><span class="lineup-q">?</span></div>
           <div class="lineup-card"><span class="lineup-q">?</span></div>
         </div>
+
+        <noscript>
+          <div class="noscript-lineup">
+            <p class="noscript-label">Artists 2026</p>
+            <ul>
+              <li>Hraach</li>
+              <li>Sabo</li>
+              <li>Efi</li>
+              <li>Eleez</li>
+              <li>Emotional Tourist</li>
+              <li>Oscar</li>
+              <li>Pascal Junior</li>
+            </ul>
+            <p class="noscript-more">More artists to be announced.</p>
+          </div>
+        </noscript>
 
         <div class="lineup-social">
           <a href="https://www.instagram.com/the_bohemian_society/"
@@ -431,6 +452,12 @@
         <p class="venue-boat-note">
           "The boat ride isn't an inconvenience — it's the first part of the experience."
         </p>
+
+        <div class="venue-transfer">
+          <p class="venue-transfer-title">Book Your Boat Transfer</p>
+          <p class="venue-transfer-text">Regular boat service Tulcea → Sfântu Gheorghe operated by Navrom Delta.</p>
+          <a href="https://navromdelta.ro" target="_blank" rel="noopener noreferrer" class="btn-outline venue-transfer-btn">Navrom Delta — Timetable & Booking</a>
+        </div>
 
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1000!2d29.60394420835243!3d44.89276438363456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sro!2sro!4v1"
@@ -733,6 +760,8 @@
   <!-- ═══════════════════════════════════════════
        MOBILE STICKY BAR
   ════════════════════════════════════════════ -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
   <div class="sticky-bar">
     <a href="https://www.kompostor.ro/evenimente/13591-the-bohemias-music-travel-festival-2026"
        target="_blank" rel="noopener noreferrer"

@@ -2538,3 +2538,183 @@ body {
 .wave-dark-to-bg {
   background: var(--bg-card);
 }
+
+/* ============================================================
+   SHIMMER — lineup placeholder cards (9)
+   ============================================================ */
+
+@keyframes card-shimmer {
+  0%   { background-position: -400% 0; }
+  100% { background-position: 400% 0; }
+}
+
+.lineup-card:not(.lineup-card--artist) {
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 0%,
+    rgba(176, 132, 99, 0.1) 40%,
+    rgba(208, 185, 167, 0.2) 50%,
+    rgba(176, 132, 99, 0.1) 60%,
+    var(--bg-card) 100%
+  );
+  background-size: 400% 100%;
+  animation: card-shimmer 3s ease-in-out infinite;
+}
+
+/* ============================================================
+   SKELETON — gallery loading (6)
+   ============================================================ */
+
+.gallery-skeleton {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.gallery-skeleton-item {
+  flex: 0 0 auto;
+  width: 380px;
+  height: 520px;
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 0%,
+    rgba(176, 132, 99, 0.1) 40%,
+    rgba(208, 185, 167, 0.15) 50%,
+    rgba(176, 132, 99, 0.1) 60%,
+    var(--bg-card) 100%
+  );
+  background-size: 400% 100%;
+  animation: card-shimmer 2s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   BACK TO TOP (8)
+   ============================================================ */
+
+.back-to-top {
+  position: fixed;
+  bottom: 76px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  z-index: 90;
+  box-shadow: 0 4px 16px rgba(212, 132, 90, 0.45);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 68px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+/* ============================================================
+   VENUE TRANSFER (12)
+   ============================================================ */
+
+.venue-transfer {
+  margin-top: 40px;
+  padding: 28px 32px;
+  background: var(--bg-card);
+  border-left: 3px solid var(--orange);
+  border-radius: 0 4px 4px 0;
+  max-width: 560px;
+}
+
+.venue-transfer-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.venue-transfer-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.venue-transfer-btn {
+  font-size: 12px !important;
+  padding: 10px 24px !important;
+  letter-spacing: 1.5px !important;
+}
+
+/* ============================================================
+   NOSCRIPT FALLBACK (5)
+   ============================================================ */
+
+.noscript-lineup {
+  margin-top: 32px;
+  padding: 28px 32px;
+  background: var(--bg-card);
+  border-radius: 4px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.noscript-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.noscript-lineup ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.noscript-lineup li {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--text);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(42, 24, 16, 0.1);
+}
+
+.noscript-lineup li:last-child {
+  border-bottom: none;
+}
+
+.noscript-more {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  font-style: italic;
+}

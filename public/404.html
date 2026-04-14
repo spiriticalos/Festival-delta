@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — The Bohemians Festival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italianno&family=Nunito:wght@400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" />
+  <style>
+    :root {
+      --bg:     #A08878;
+      --orange: #D4845A;
+      --text:   #1e1008;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .num {
+      font-family: 'Italianno', cursive;
+      font-size: clamp(6rem, 20vw, 12rem);
+      line-height: 1;
+      color: rgba(30, 16, 8, 0.18);
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 400;
+      margin-top: 8px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 15px;
+      color: rgba(30, 16, 8, 0.65);
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+    a {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      padding: 14px 36px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: opacity 0.2s ease;
+    }
+    a:hover { opacity: 0.88; }
+  </style>
+</head>
+<body>
+  <p class="num">404</p>
+  <h1>Lost in the Delta</h1>
+  <p>This page doesn't exist — but the festival does.<br>Head back and find your way.</p>
+  <a href="/">Back to the Festival</a>
+</body>
+</html>

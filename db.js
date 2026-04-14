@@ -79,6 +79,7 @@ const insertGallery = db.prepare(
   [17, 'community','/images/uploads/bohemians-festival-girls-dancing-black-white.jpg',     'Moving together'],
   [18, 'community','/images/uploads/bohemians-festival-crowd-hands-up-red-lights.jpg',     'Hands up'],
   [19, 'community','/images/uploads/bohemians-festival-woman-dancing-hat-smoke.jpg',       'Free spirit'],
+  [24, 'community','/images/uploads/bohemians-festival-aperol-spritz-good-vibes-night.jpg','Good Vibes — Aperol Spritz'],
 ].forEach(([id, section, image_path, caption]) => insertGallery.run(id, section, image_path, caption));
 
 module.exports = db;

@@ -59,7 +59,11 @@ app.use(session({
   secret:            process.env.SESSION_SECRET || 'dev_secret',
   resave:            false,
   saveUninitialized: false,
-  cookie:            { maxAge: 4 * 60 * 60 * 1000 },
+  cookie: {
+    maxAge:   4 * 60 * 60 * 1000,
+    httpOnly: true,
+    secure:   process.env.NODE_ENV === 'production',
+  },
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -215,6 +219,17 @@ app.patch('/api/settings/:key', isAdmin, (req, res) => {
   const { value } = req.body;
   db.prepare('UPDATE settings SET value = ? WHERE key = ?').run(value, req.params.key);
   res.json({ success: true });
+});
+
+// ── Email export ────────────────────────────────────────────
+app.get('/api/emails/export', isAdmin, (req, res) => {
+  if (!fs.existsSync(EMAILS_FILE)) return res.status(404).json({ error: 'No emails yet.' });
+  res.download(EMAILS_FILE, 'emails-bohemians.txt');
+});
+
+// ── 404 ─────────────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'public/404.html'));
 });
 
 // ══════════════════════════════════════════════════════════
