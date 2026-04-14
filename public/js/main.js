@@ -41,7 +41,6 @@ let TARGET = new Date('2026-06-18T12:00:00');
 const elDays  = document.getElementById('cd-days');
 const elHours = document.getElementById('cd-hours');
 const elMins  = document.getElementById('cd-mins');
-const elSecs  = document.getElementById('cd-secs');
 const cdWrap  = document.getElementById('countdown');
 
 // Digit flip animation
@@ -65,6 +64,7 @@ function tick() {
 
   if (diff <= 0) {
     cdWrap.innerHTML = '<p class="countdown-done">See you there.</p>';
+    clearInterval(cdInterval);
     return;
   }
 
@@ -80,7 +80,7 @@ function tick() {
 });
 
 tick();
-setInterval(tick, 1000);
+const cdInterval = setInterval(tick, 1000);
 
 // ── Scroll animations — IntersectionObserver ───────────────
 const observerCfg = { threshold: 0.15 };
@@ -336,6 +336,14 @@ async function loadGallery() {
         document.body.appendChild(lightbox);
         requestAnimationFrame(() => lightbox.classList.add('open'));
         document.body.style.overflow = 'hidden';
+
+        // Single delegated listener — attached once, handles all clicks
+        lightbox.addEventListener('click', e => {
+          if (e.target === lightbox)                                  closeLightbox();
+          else if (e.target.closest('.gallery-lightbox-close'))     { e.stopPropagation(); closeLightbox(); }
+          else if (e.target.closest('.gallery-lightbox-prev'))      { e.stopPropagation(); renderLightbox(current - 1); }
+          else if (e.target.closest('.gallery-lightbox-next'))      { e.stopPropagation(); renderLightbox(current + 1); }
+        });
       }
 
       lightbox.innerHTML = `
@@ -348,18 +356,6 @@ async function loadGallery() {
         ${multi ? `<button class="gallery-lightbox-next" aria-label="Următor">&#8250;</button>` : ''}
         ${multi ? `<span class="gallery-lightbox-counter">${current + 1} / ${items.length}</span>` : ''}
       `;
-
-      lightbox.querySelector('.gallery-lightbox-close').addEventListener('click', e => {
-        e.stopPropagation(); closeLightbox();
-      });
-      lightbox.addEventListener('click', e => {
-        if (e.target === lightbox) closeLightbox();
-      });
-
-      const prevBtn = lightbox.querySelector('.gallery-lightbox-prev');
-      const nextBtn = lightbox.querySelector('.gallery-lightbox-next');
-      if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); renderLightbox(current - 1); });
-      if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); renderLightbox(current + 1); });
     }
 
     // Click on any gallery item (both original + duplicate sets)

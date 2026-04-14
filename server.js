@@ -141,17 +141,21 @@ app.post('/api/subscribe', (req, res) => {
 // Artists
 app.post('/api/artists', isAdmin, upload.single('image'), (req, res) => {
   const { name, genre } = req.body;
+  if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required.' });
   const image_path = req.file ? `/images/uploads/${req.file.filename}` : null;
-  const r = db.prepare('INSERT INTO artists (name, genre, image_path) VALUES (?, ?, ?)').run(name, genre, image_path);
-  res.json({ id: r.lastInsertRowid });
+  try {
+    const r = db.prepare('INSERT INTO artists (name, genre, image_path) VALUES (?, ?, ?)').run(name.trim(), genre || null, image_path);
+    res.json({ id: r.lastInsertRowid });
+  } catch (e) {
+    res.status(500).json({ error: 'Database error.' });
+  }
 });
 
 app.delete('/api/artists/:id', isAdmin, (req, res) => {
   const artist = db.prepare('SELECT * FROM artists WHERE id = ?').get(req.params.id);
   if (!artist) return res.status(404).json({ error: 'Not found' });
   if (artist.image_path) {
-    const f = path.join(__dirname, 'public', artist.image_path);
-    if (fs.existsSync(f)) fs.unlinkSync(f);
+    try { fs.unlinkSync(path.join(__dirname, 'public', artist.image_path)); } catch (_) {}
   }
   db.prepare('DELETE FROM artists WHERE id = ?').run(req.params.id);
   res.json({ success: true });
@@ -160,17 +164,21 @@ app.delete('/api/artists/:id', isAdmin, (req, res) => {
 // Gallery
 app.post('/api/gallery', isAdmin, upload.single('image'), (req, res) => {
   const { section, caption } = req.body;
+  if (!section || !section.trim()) return res.status(400).json({ error: 'Section is required.' });
   const image_path = req.file ? `/images/uploads/${req.file.filename}` : null;
-  const r = db.prepare('INSERT INTO gallery (section, image_path, caption) VALUES (?, ?, ?)').run(section, image_path, caption);
-  res.json({ id: r.lastInsertRowid });
+  try {
+    const r = db.prepare('INSERT INTO gallery (section, image_path, caption) VALUES (?, ?, ?)').run(section.trim(), image_path, caption || null);
+    res.json({ id: r.lastInsertRowid });
+  } catch (e) {
+    res.status(500).json({ error: 'Database error.' });
+  }
 });
 
 app.delete('/api/gallery/:id', isAdmin, (req, res) => {
   const item = db.prepare('SELECT * FROM gallery WHERE id = ?').get(req.params.id);
   if (!item) return res.status(404).json({ error: 'Not found' });
   if (item.image_path) {
-    const f = path.join(__dirname, 'public', item.image_path);
-    if (fs.existsSync(f)) fs.unlinkSync(f);
+    try { fs.unlinkSync(path.join(__dirname, 'public', item.image_path)); } catch (_) {}
   }
   db.prepare('DELETE FROM gallery WHERE id = ?').run(req.params.id);
   res.json({ success: true });
@@ -183,8 +191,13 @@ app.get('/api/announcements', isAdmin, (req, res) => {
 
 app.post('/api/announcements', isAdmin, (req, res) => {
   const { title, body } = req.body;
-  const r = db.prepare('INSERT INTO announcements (title, body, active) VALUES (?, ?, 1)').run(title, body);
-  res.json({ id: r.lastInsertRowid });
+  if (!title || !title.trim()) return res.status(400).json({ error: 'Title is required.' });
+  try {
+    const r = db.prepare('INSERT INTO announcements (title, body, active) VALUES (?, ?, 1)').run(title.trim(), body || null);
+    res.json({ id: r.lastInsertRowid });
+  } catch (e) {
+    res.status(500).json({ error: 'Database error.' });
+  }
 });
 
 app.delete('/api/announcements/:id', isAdmin, (req, res) => {
