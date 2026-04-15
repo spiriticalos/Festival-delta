@@ -428,8 +428,26 @@ async function loadGallery() {
   }
 }
 
+// ── Cookie banner ───────────────────────────────────────────
+function initCookieBanner() {
+  const consent = localStorage.getItem('cookie-consent');
+  if (consent === 'all' || consent === 'necessary') return;
+  const banner = document.getElementById('cookie-banner');
+  if (!banner) return;
+  banner.style.display = 'block';
+  document.getElementById('cookie-accept-all').addEventListener('click', () => {
+    localStorage.setItem('cookie-consent', 'all');
+    banner.style.display = 'none';
+  });
+  document.getElementById('cookie-necessary').addEventListener('click', () => {
+    localStorage.setItem('cookie-consent', 'necessary');
+    banner.style.display = 'none';
+  });
+}
+
 // ── Init ───────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  initCookieBanner();
   initScrollAnimations();
   loadSettings();
   loadArtists();

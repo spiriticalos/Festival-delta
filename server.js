@@ -2,6 +2,7 @@ require('dotenv').config();
 const express  = require('express');
 const path     = require('path');
 const fs       = require('fs');
+const crypto   = require('crypto');
 const session  = require('express-session');
 const bcrypt   = require('bcryptjs');
 const multer   = require('multer');
@@ -91,6 +92,22 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+  // CSP only on public pages — admin has inline scripts and is already auth-protected
+  if (!req.path.startsWith('/admin')) {
+    res.setHeader('Content-Security-Policy', [
+      "default-src 'self'",
+      "script-src 'self'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: https://img.youtube.com",
+      "frame-src https://www.youtube.com https://www.google.com",
+      "connect-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join('; '));
+  }
   next();
 });
 
@@ -105,6 +122,7 @@ app.use(session({
     maxAge:   4 * 60 * 60 * 1000,
     httpOnly: true,
     secure:   process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
   },
 }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -114,6 +132,15 @@ function isAdmin(req, res, next) {
   if (req.session && req.session.admin) return next();
   if (req.originalUrl.startsWith('/api/')) return res.status(401).json({ error: 'Unauthorized' });
   return res.redirect('/admin');
+}
+
+// ── CSRF middleware ─────────────────────────────────────────
+function csrfProtect(req, res, next) {
+  const token = req.headers['x-csrf-token'];
+  if (!token || token !== req.session.csrfToken) {
+    return res.status(403).json({ error: 'Invalid CSRF token.' });
+  }
+  next();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -129,9 +156,14 @@ app.post('/admin/login', rateLimit, async (req, res) => {
   const { username, password } = req.body;
   if (username === ADMIN_USER && await bcrypt.compare(password, ADMIN_PASS_HASH)) {
     req.session.admin = true;
+    req.session.csrfToken = crypto.randomBytes(32).toString('hex');
     return res.redirect('/admin/dashboard');
   }
   res.redirect('/admin?error=1');
+});
+
+app.get('/api/csrf-token', isAdmin, (req, res) => {
+  res.json({ token: req.session.csrfToken });
 });
 
 app.get('/admin/dashboard', isAdmin, (req, res) => {
@@ -140,6 +172,11 @@ app.get('/admin/dashboard', isAdmin, (req, res) => {
 
 app.get('/admin/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/admin'));
+});
+
+// ── Health check ────────────────────────────────────────────
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: Math.floor(process.uptime()), ts: Date.now() });
 });
 
 // ══════════════════════════════════════════════════════════
@@ -185,7 +222,7 @@ app.post('/api/subscribe', subscribeLimit, (req, res) => {
 // ══════════════════════════════════════════════════════════
 
 // Artists
-app.post('/api/artists', isAdmin, upload.single('image'), async (req, res) => {
+app.post('/api/artists', isAdmin, csrfProtect, upload.single('image'), async (req, res) => {
   const { name, genre } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required.' });
   const image_path = req.file ? await processUpload(req.file) : null;
@@ -197,7 +234,7 @@ app.post('/api/artists', isAdmin, upload.single('image'), async (req, res) => {
   }
 });
 
-app.delete('/api/artists/:id', isAdmin, (req, res) => {
+app.delete('/api/artists/:id', isAdmin, csrfProtect, (req, res) => {
   const artist = db.prepare('SELECT * FROM artists WHERE id = ?').get(req.params.id);
   if (!artist) return res.status(404).json({ error: 'Not found' });
   if (artist.image_path) {
@@ -208,7 +245,7 @@ app.delete('/api/artists/:id', isAdmin, (req, res) => {
 });
 
 // Gallery
-app.post('/api/gallery', isAdmin, upload.single('image'), async (req, res) => {
+app.post('/api/gallery', isAdmin, csrfProtect, upload.single('image'), async (req, res) => {
   const { section, caption } = req.body;
   if (!section || !section.trim()) return res.status(400).json({ error: 'Section is required.' });
   const image_path = req.file ? await processUpload(req.file) : null;
@@ -220,7 +257,7 @@ app.post('/api/gallery', isAdmin, upload.single('image'), async (req, res) => {
   }
 });
 
-app.delete('/api/gallery/:id', isAdmin, (req, res) => {
+app.delete('/api/gallery/:id', isAdmin, csrfProtect, (req, res) => {
   const item = db.prepare('SELECT * FROM gallery WHERE id = ?').get(req.params.id);
   if (!item) return res.status(404).json({ error: 'Not found' });
   if (item.image_path) {
@@ -235,7 +272,7 @@ app.get('/api/announcements', isAdmin, (req, res) => {
   res.json(db.prepare('SELECT * FROM announcements ORDER BY created_at DESC').all());
 });
 
-app.post('/api/announcements', isAdmin, (req, res) => {
+app.post('/api/announcements', isAdmin, csrfProtect, (req, res) => {
   const { title, body } = req.body;
   if (!title || !title.trim()) return res.status(400).json({ error: 'Title is required.' });
   try {
@@ -246,18 +283,18 @@ app.post('/api/announcements', isAdmin, (req, res) => {
   }
 });
 
-app.delete('/api/announcements/:id', isAdmin, (req, res) => {
+app.delete('/api/announcements/:id', isAdmin, csrfProtect, (req, res) => {
   db.prepare('DELETE FROM announcements WHERE id = ?').run(req.params.id);
   res.json({ success: true });
 });
 
-app.patch('/api/announcements/:id/toggle', isAdmin, (req, res) => {
+app.patch('/api/announcements/:id/toggle', isAdmin, csrfProtect, (req, res) => {
   db.prepare('UPDATE announcements SET active = CASE WHEN active = 1 THEN 0 ELSE 1 END WHERE id = ?').run(req.params.id);
   res.json(db.prepare('SELECT * FROM announcements WHERE id = ?').get(req.params.id));
 });
 
 // Settings
-app.patch('/api/settings/:key', isAdmin, (req, res) => {
+app.patch('/api/settings/:key', isAdmin, csrfProtect, (req, res) => {
   const { value } = req.body;
   db.prepare('UPDATE settings SET value = ? WHERE key = ?').run(value, req.params.key);
   res.json({ success: true });
@@ -267,6 +304,19 @@ app.patch('/api/settings/:key', isAdmin, (req, res) => {
 app.get('/api/emails/export', isAdmin, (req, res) => {
   if (!fs.existsSync(EMAILS_FILE)) return res.status(404).json({ error: 'No emails yet.' });
   res.download(EMAILS_FILE, 'emails-bohemians.txt');
+});
+
+// ── DB backup ───────────────────────────────────────────────
+app.get('/api/db/backup', isAdmin, async (req, res) => {
+  const backupPath = path.join(__dirname, `festival-backup-${Date.now()}.db`);
+  try {
+    await db.backup(backupPath);
+    res.download(backupPath, 'festival-backup.db', err => {
+      try { fs.unlinkSync(backupPath); } catch (_) {}
+    });
+  } catch (e) {
+    res.status(500).json({ error: 'Backup failed.' });
+  }
 });
 
 // ── 404 ─────────────────────────────────────────────────────

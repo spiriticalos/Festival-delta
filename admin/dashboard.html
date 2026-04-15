@@ -494,6 +494,12 @@
           <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Descarcă lista completă de emailuri înregistrate.</p>
           <a href="/api/emails/export" class="btn" download>↓ Descarcă emails-bohemians.txt</a>
         </div>
+
+        <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
+          <p class="settings-label" style="margin-bottom:12px;">Backup bază de date</p>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Descarcă o copie a bazei de date SQLite (artiști, galerie, anunțuri, setări).</p>
+          <a href="/api/db/backup" class="btn" download>↓ Descarcă festival-backup.db</a>
+        </div>
         <p id="settings-msg" style="font-size:12px;color:var(--gold);margin-top:12px;display:none;">
           ✓ Setările au fost salvate.
         </p>
@@ -503,13 +509,34 @@
   </div><!-- /adm-body -->
 
   <script>
+    // ── CSRF token ─────────────────────────────────────────
+    let _csrf = '';
+    async function getCsrf() {
+      if (_csrf) return _csrf;
+      const data = await fetch('/api/csrf-token', { credentials: 'include' }).then(r => r.json());
+      _csrf = data.token;
+      return _csrf;
+    }
+
     // ── API helpers ────────────────────────────────────────
     const api = {
       get:   url       => fetch(url, { credentials: 'include' }).then(r => r.json()),
-      post:  (url, fd) => fetch(url, { method: 'POST', body: fd, credentials: 'include' }).then(r => r.json()),
-      postJ: (url, d)  => fetch(url, { method: 'POST',  headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d), credentials: 'include' }).then(r => r.json()),
-      del:   url       => fetch(url, { method: 'DELETE', credentials: 'include' }).then(r => r.json()),
-      patch: (url, d)  => fetch(url, { method: 'PATCH',  headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d), credentials: 'include' }).then(r => r.json()),
+      post:  async (url, fd) => {
+        const t = await getCsrf();
+        return fetch(url, { method: 'POST', headers: { 'X-CSRF-Token': t }, body: fd, credentials: 'include' }).then(r => r.json());
+      },
+      postJ: async (url, d) => {
+        const t = await getCsrf();
+        return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': t }, body: JSON.stringify(d), credentials: 'include' }).then(r => r.json());
+      },
+      del: async url => {
+        const t = await getCsrf();
+        return fetch(url, { method: 'DELETE', headers: { 'X-CSRF-Token': t }, credentials: 'include' }).then(r => r.json());
+      },
+      patch: async (url, d) => {
+        const t = await getCsrf();
+        return fetch(url, { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': t }, body: JSON.stringify(d), credentials: 'include' }).then(r => r.json());
+      },
     };
 
     function esc(str) {
