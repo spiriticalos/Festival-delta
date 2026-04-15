@@ -34,7 +34,9 @@ document.querySelectorAll('.nav-mobile-link, .nav-mobile-btn').forEach(link => {
 // ── Smooth scroll for anchor links ─────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
-    const target = document.querySelector(link.getAttribute('href'));
+    const href = link.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
     target.scrollIntoView({ behavior: 'smooth' });
@@ -123,7 +125,6 @@ function initScrollAnimations() {
 }
 
 // ── Email capture ───────────────────────────────────────────
-const emailForm  = document.getElementById('emailForm');
 const emailInput = document.getElementById('emailInput');
 const emailBtn   = document.getElementById('emailBtn');
 
