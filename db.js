@@ -56,9 +56,8 @@ const insertArtist = db.prepare(
 ].forEach(([id, name, genre, image_path]) => insertArtist.run(id, name, genre, image_path));
 
 // ── Seed gallery ───────────────────────────────────────────
-db.exec('DELETE FROM gallery WHERE id <= 24');
 const insertGallery = db.prepare(
-  'INSERT INTO gallery (id, section, image_path, caption) VALUES (?, ?, ?, ?)'
+  'INSERT OR IGNORE INTO gallery (id, section, image_path, caption) VALUES (?, ?, ?, ?)'
 );
 [
   [1,  'escape',   '/images/uploads/bohemians-festival-main-stage-floral-night.jpg',    'Main stage'],

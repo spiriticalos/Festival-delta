@@ -341,9 +341,14 @@ async function loadGallery() {
     const isIOS   = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const speed   = isIOS ? 1.0 : 0.5;
     const wrap    = grid.parentElement;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      grid.style.transform = 'none';
+    }
 
     function marqueeStep() {
-      if (!paused && visible) {
+      if (!paused && visible && !reduced) {
         const half = grid.scrollWidth / 2;
         offset += speed;
         if (offset >= half) offset = 0;
