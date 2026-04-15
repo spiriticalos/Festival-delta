@@ -154,7 +154,7 @@ if (emailBtn) {
       if (data.success) {
         const p    = document.createElement('p');
         p.className   = 'email-success';
-        p.textContent = '✓ You\'re in. Check your inbox.';
+        p.textContent = '✓ You\'re on the list.';
         document.getElementById('emailForm').replaceWith(p);
       } else {
         emailBtn.disabled    = false;
