@@ -216,6 +216,15 @@ if (videoThumb) {
 // API INTEGRATIONS
 // ══════════════════════════════════════════════════════════
 
+// ── HTML escape helper (prevents XSS in innerHTML) ─────────
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 // ── a) Settings ────────────────────────────────────────────
 async function loadSettings() {
   try {
@@ -256,10 +265,10 @@ async function loadArtists() {
     grid.innerHTML = artists.map(a => `
       <div class="lineup-card lineup-card--artist">
         ${a.image_path
-          ? `<img src="${a.image_path}" alt="${a.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
+          ? `<img src="${esc(a.image_path)}" alt="${esc(a.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
           : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
         <div class="lineup-card-name">
-          <span class="lineup-card-title">${a.name}</span>
+          <span class="lineup-card-title">${esc(a.name)}</span>
         </div>
       </div>
     `).join('');
@@ -280,7 +289,7 @@ async function loadAnnouncements() {
 
     const banner = document.getElementById('ann-banner');
     banner.innerHTML = `
-      <span>${ann.title}</span>
+      <span>${esc(ann.title)}</span>
       <button class="ann-dismiss" aria-label="Închide">✕</button>
     `;
     banner.style.display = 'block';
@@ -313,11 +322,11 @@ async function loadGallery() {
 
     const itemHTML = items.map((item, i) => `
       <div class="gallery-item" data-index="${i}">
-        <img src="${item.image_path}"
-             alt="${item.caption || 'The Bohemians Festival'}"
+        <img src="${esc(item.image_path)}"
+             alt="${esc(item.caption) || 'The Bohemians Festival'}"
              loading="${i < 4 ? 'eager' : 'lazy'}"
              decoding="async" />
-        ${item.caption ? `<div class="gallery-caption">${item.caption}</div>` : ''}
+        ${item.caption ? `<div class="gallery-caption">${esc(item.caption)}</div>` : ''}
       </div>
     `).join('');
 
@@ -386,8 +395,8 @@ async function loadGallery() {
         <button class="gallery-lightbox-close" aria-label="Închide">✕</button>
         ${multi ? `<button class="gallery-lightbox-prev" aria-label="Anterior">&#8249;</button>` : ''}
         <div class="gallery-lightbox-img-wrap">
-          <img src="${item.image_path}" alt="${item.caption || 'The Bohemians Festival'}" />
-          ${item.caption ? `<p class="gallery-lightbox-caption">${item.caption}</p>` : ''}
+          <img src="${esc(item.image_path)}" alt="${esc(item.caption) || 'The Bohemians Festival'}" />
+          ${item.caption ? `<p class="gallery-lightbox-caption">${esc(item.caption)}</p>` : ''}
         </div>
         ${multi ? `<button class="gallery-lightbox-next" aria-label="Următor">&#8250;</button>` : ''}
         ${multi ? `<span class="gallery-lightbox-counter">${current + 1} / ${items.length}</span>` : ''}

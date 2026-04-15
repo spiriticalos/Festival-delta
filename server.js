@@ -51,7 +51,24 @@ async function processUpload(file) {
 }
 
 // ── Rate limit (login) ──────────────────────────────────────
-const loginAttempts = new Map();
+const loginAttempts     = new Map();
+const subscribeAttempts = new Map();
+
+function subscribeLimit(req, res, next) {
+  const ip  = req.ip;
+  const now = Date.now();
+  const rec = subscribeAttempts.get(ip) || { count: 0, first: now };
+  if (now - rec.first > 60 * 60 * 1000) {
+    subscribeAttempts.set(ip, { count: 1, first: now });
+    return next();
+  }
+  if (rec.count >= 5) {
+    return res.status(429).json({ success: false, error: 'Too many requests.' });
+  }
+  rec.count++;
+  subscribeAttempts.set(ip, rec);
+  next();
+}
 function rateLimit(req, res, next) {
   const ip  = req.ip;
   const now = Date.now();
@@ -67,6 +84,15 @@ function rateLimit(req, res, next) {
   loginAttempts.set(ip, rec);
   next();
 }
+
+// ── Security headers ────────────────────────────────────────
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
 
 // ── Core middleware ─────────────────────────────────────────
 app.use(express.json());
@@ -143,7 +169,7 @@ app.get('/api/settings', (req, res) => {
   res.json(obj);
 });
 
-app.post('/api/subscribe', (req, res) => {
+app.post('/api/subscribe', subscribeLimit, (req, res) => {
   const { email } = req.body;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ success: false, error: 'Email invalid.' });
