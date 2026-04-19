@@ -324,39 +324,49 @@ async function loadGallery() {
     `).join('');
 
     const wrap    = grid.parentElement;
-    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (isTouch) {
-      // Touch: single set of items, native scroll-snap handles swipe
-      grid.innerHTML = itemHTML;
-    } else {
-      // Desktop: duplicate for seamless infinite marquee loop
-      grid.innerHTML = itemHTML + itemHTML;
+    // Always duplicate for seamless infinite marquee loop (desktop + mobile)
+    grid.innerHTML = itemHTML + itemHTML;
 
-      let offset  = 0;
-      let paused  = false;
-      let visible = true;
-      const speed = 0.5;
+    let offset  = 0;
+    let paused  = false;
+    let visible = true;
+    const speed = 0.5;
 
-      function marqueeStep() {
-        if (!paused && visible && !reduced) {
-          const half = grid.scrollWidth / 2;
-          offset += speed;
-          if (offset >= half) offset = 0;
-          grid.style.transform = `translateX(-${offset}px)`;
-        }
-        requestAnimationFrame(marqueeStep);
+    function marqueeStep() {
+      if (!paused && visible && !reduced) {
+        const half = grid.scrollWidth / 2;
+        offset += speed;
+        if (offset >= half) offset = 0;
+        grid.style.transform = `translateX(-${offset}px)`;
       }
       requestAnimationFrame(marqueeStep);
-
-      wrap.addEventListener('mouseenter', () => { paused = true; });
-      wrap.addEventListener('mouseleave', () => { paused = false; });
-
-      new IntersectionObserver(entries => {
-        visible = entries[0].isIntersecting;
-      }, { threshold: 0 }).observe(wrap);
     }
+    requestAnimationFrame(marqueeStep);
+
+    // Desktop: pause on hover
+    wrap.addEventListener('mouseenter', () => { paused = true; });
+    wrap.addEventListener('mouseleave', () => { paused = false; });
+
+    // Mobile: manual drag — pause marquee, move with finger, resume on release
+    let touchStartX = 0;
+    grid.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+      paused = true;
+    }, { passive: true });
+    grid.addEventListener('touchmove', e => {
+      const delta = touchStartX - e.touches[0].clientX;
+      touchStartX = e.touches[0].clientX;
+      const half = grid.scrollWidth / 2;
+      offset = ((offset + delta) % half + half) % half;
+      grid.style.transform = `translateX(-${offset}px)`;
+    }, { passive: true });
+    grid.addEventListener('touchend', () => { paused = false; }, { passive: true });
+
+    new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+    }, { threshold: 0 }).observe(wrap);
 
     // Lightbox state
     let lightbox  = null;

@@ -1498,10 +1498,15 @@ body {
 }
 
 /* ── Marquee wrap ── */
+.gallery-stage {
+  position: relative;
+  width: 100%;
+  margin-top: 48px;
+}
+
 .gallery-marquee-wrap {
   width: 100%;
   overflow: hidden;
-  margin-top: 48px;
   cursor: grab;
   position: relative;
 }
@@ -2667,22 +2672,6 @@ body {
   .footer-logo { font-size: 1.2rem; }
 }
 
-/* ── Gallery swipe on touch devices ── */
-@media (hover: none) and (pointer: coarse) {
-  .gallery-marquee-wrap {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .gallery-marquee-wrap::-webkit-scrollbar {
-    display: none;
-  }
-  .gallery-item {
-    scroll-snap-align: start;
-  }
-}
 
 /* ============================================================
    WAVE DIVIDERS
