@@ -2,13 +2,19 @@
 // THE BOHEMIANS FESTIVAL 2026 — main.js
 // ══════════════════════════════════════════════════════════
 
-// ── Navbar scroll + Back to top ────────────────────────────
-const navbar    = document.getElementById('navbar');
-const backToTop = document.getElementById('backToTop');
+// ── Navbar scroll + Back to top + Scroll progress ──────────
+const navbar       = document.getElementById('navbar');
+const backToTop    = document.getElementById('backToTop');
+const progressBar  = document.getElementById('scroll-progress');
 
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 50);
   backToTop.classList.toggle('visible', window.scrollY > 500);
+
+  // Scroll progress bar
+  const scrolled = document.documentElement.scrollTop;
+  const total    = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  progressBar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
 }, { passive: true });
 
 backToTop.addEventListener('click', () => {
@@ -466,6 +472,42 @@ function initCookieBanner() {
   });
 }
 
+// ── Navbar active section ───────────────────────────────────
+function initNavActive() {
+  const navLinks = document.querySelectorAll('.nav-links li a[href^="#"]');
+  if (!navLinks.length) return;
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { threshold: 0.35, rootMargin: '-5% 0px -55% 0px' });
+
+  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+}
+
+// ── Ripple effect on ticket buttons ────────────────────────
+function initRipple() {
+  document.querySelectorAll('.btn-ticket').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const rect   = btn.getBoundingClientRect();
+      const size   = Math.max(rect.width, rect.height);
+      const x      = e.clientX - rect.left - size / 2;
+      const y      = e.clientY - rect.top  - size / 2;
+      const ripple = document.createElement('span');
+      ripple.className = 'btn-ripple';
+      ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+      btn.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+  });
+}
+
 // ── Service Worker ──────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -477,6 +519,8 @@ if ('serviceWorker' in navigator) {
 document.addEventListener('DOMContentLoaded', () => {
   initCookieBanner();
   initScrollAnimations();
+  initNavActive();
+  initRipple();
   loadSettings();
   loadArtists();
   loadAnnouncements();
