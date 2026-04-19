@@ -2,7 +2,7 @@
    THE BOHEMIANS FESTIVAL 2026 — Design System + Sections
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fleur+De+Leah&family=Italianno&family=Righteous&family=Nunito:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded via <link> in HTML — no @import needed here */
 
 /* ============================================================
    ACCESSIBILITY UTILITIES
