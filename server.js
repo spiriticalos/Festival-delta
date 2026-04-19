@@ -1,18 +1,30 @@
 require('dotenv').config();
-const express  = require('express');
-const path     = require('path');
-const fs       = require('fs');
-const crypto   = require('crypto');
-const session  = require('express-session');
-const bcrypt   = require('bcryptjs');
-const multer   = require('multer');
-const sharp    = require('sharp');
-const db       = require('./db');
+const express      = require('express');
+const path         = require('path');
+const fs           = require('fs');
+const crypto       = require('crypto');
+const session      = require('express-session');
+const bcrypt       = require('bcryptjs');
+const multer       = require('multer');
+const sharp        = require('sharp');
+const compression  = require('compression');
+const nodemailer   = require('nodemailer');
+const db           = require('./db');
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
 const EMAILS_FILE = path.join(__dirname, 'emails.txt');
 const UPLOADS_DIR = path.join(__dirname, 'public/images/uploads');
+
+// ── Mailer (optional — only active when SMTP_HOST is set) ───
+const mailer = process.env.SMTP_HOST
+  ? nodemailer.createTransport({
+      host:   process.env.SMTP_HOST,
+      port:   parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth:   { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    })
+  : null;
 
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
@@ -110,6 +122,9 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// ── Gzip compression ────────────────────────────────────────
+app.use(compression());
 
 // ── Core middleware ─────────────────────────────────────────
 app.use(express.json());
@@ -214,6 +229,16 @@ app.post('/api/subscribe', subscribeLimit, (req, res) => {
   fs.appendFile(EMAILS_FILE, email + '\n', err => {
     if (err) return res.status(500).json({ success: false });
     res.json({ success: true });
+    // Send confirmation email if SMTP is configured
+    if (mailer) {
+      mailer.sendMail({
+        from:    `"The Bohemians Festival" <${process.env.SMTP_USER}>`,
+        to:      email,
+        subject: 'You\'re on the list — The Bohemians Festival 2026',
+        text:    'Thank you for subscribing. You\'ll be the first to know when we announce the artists.\n\nSee you at the Delta,\nThe Bohemians Team',
+        html:    `<p>Thank you for subscribing.</p><p>You'll be the first to know when we announce the artists.</p><p>See you at the Delta,<br><strong>The Bohemians Team</strong></p>`,
+      }).catch(() => {}); // fire and forget — never block the response
+    }
   });
 });
 
@@ -329,3 +354,32 @@ app.listen(PORT, () => {
   console.log(`The Bohemians Festival → http://localhost:${PORT}`);
   console.log(`Admin panel           → http://localhost:${PORT}/admin`);
 });
+
+// ── Automated daily DB backup at 03:00 server time ─────────
+function scheduleDailyBackup() {
+  const now   = new Date();
+  const next  = new Date(now);
+  next.setHours(3, 0, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1);
+  const msUntil = next - now;
+
+  setTimeout(async () => {
+    const backupDir  = path.join(__dirname, 'backups');
+    if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir);
+    const backupFile = path.join(backupDir, `festival-${new Date().toISOString().slice(0, 10)}.db`);
+    try {
+      await db.backup(backupFile);
+      // Keep only last 7 backups
+      const files = fs.readdirSync(backupDir)
+        .filter(f => f.endsWith('.db'))
+        .sort()
+        .reverse();
+      files.slice(7).forEach(f => { try { fs.unlinkSync(path.join(backupDir, f)); } catch (_) {} });
+      console.log(`[backup] DB backed up → ${backupFile}`);
+    } catch (e) {
+      console.error('[backup] Failed:', e.message);
+    }
+    scheduleDailyBackup(); // schedule next day
+  }, msUntil);
+}
+scheduleDailyBackup();
