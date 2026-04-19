@@ -9,6 +9,7 @@ const multer       = require('multer');
 const sharp        = require('sharp');
 const compression  = require('compression');
 const nodemailer   = require('nodemailer');
+const helmet       = require('helmet');
 const db           = require('./db');
 
 const app         = express();
@@ -98,33 +99,34 @@ function rateLimit(req, res, next) {
   next();
 }
 
-// ── Security headers ────────────────────────────────────────
+// ── CSP (custom per-route — Helmet's default CSP is disabled above) ─
 app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  // Admin panel has inline scripts — no CSP (already protected by auth)
+  if (req.path.startsWith('/admin')) return next();
 
-  // CSP only on public pages — admin has inline scripts and is already auth-protected
-  if (!req.path.startsWith('/admin')) {
-    res.setHeader('Content-Security-Policy', [
-      "default-src 'self'",
-      "script-src 'self'",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: https://img.youtube.com",
-      "frame-src https://www.youtube.com https://www.google.com",
-      "connect-src 'self'",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join('; '));
-  }
+  res.setHeader('Content-Security-Policy', [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https://img.youtube.com",
+    "frame-src https://www.youtube.com https://www.google.com",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; '));
   next();
 });
 
 // ── Gzip compression ────────────────────────────────────────
 app.use(compression());
+
+// ── Security headers (Helmet) ───────────────────────────────
+app.use(helmet({
+  // We set CSP manually per-route below (public strict, admin relaxed)
+  contentSecurityPolicy: false,
+}));
 
 // ── Core middleware ─────────────────────────────────────────
 app.use(express.json());
