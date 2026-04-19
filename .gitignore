@@ -4,3 +4,4 @@ festival.db
 emails.txt
 logs/
 *.db
+backups/

@@ -8,6 +8,29 @@
    ACCESSIBILITY UTILITIES
    ============================================================ */
 
+/* Skip to main content — visible only on keyboard focus */
+.skip-to-main {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  background: var(--orange);
+  color: #fff;
+  padding: 10px 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  z-index: 300;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.2s ease;
+}
+
+.skip-to-main:focus {
+  top: 0;
+}
+
 /* Visually hidden but readable by screen readers */
 .sr-only {
   position: absolute;
@@ -426,6 +449,10 @@ body {
 
 .nav-mobile-link:hover {
   color: var(--text);
+}
+
+.nav-mobile-link.active {
+  color: var(--orange);
 }
 
 .nav-mobile-btn {

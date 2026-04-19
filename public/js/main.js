@@ -474,14 +474,16 @@ function initCookieBanner() {
 
 // ── Navbar active section ───────────────────────────────────
 function initNavActive() {
-  const navLinks = document.querySelectorAll('.nav-links li a[href^="#"]');
-  if (!navLinks.length) return;
+  const navLinks       = document.querySelectorAll('.nav-links li a[href^="#"]');
+  const mobileLinks    = document.querySelectorAll('.nav-mobile-link[href^="#"]');
+  const allNavLinks    = [...navLinks, ...mobileLinks];
+  if (!allNavLinks.length) return;
 
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.id;
-        navLinks.forEach(link => {
+        allNavLinks.forEach(link => {
           link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
         });
       }
