@@ -236,14 +236,6 @@ async function loadSettings() {
       TARGET = new Date(s.festival_date);
     }
 
-    // Tickets remaining badge
-    const tickets = parseInt(s.tickets_remaining, 10);
-    const ticketsEl = document.getElementById('hero-tickets');
-    if (ticketsEl && !isNaN(tickets) && tickets > 0) {
-      ticketsEl.textContent = `Only ${tickets} tickets left`;
-      ticketsEl.style.display = 'block';
-    }
-
     // Early bird badge
     if (s.early_bird_active === '1') {
       const eb = document.getElementById('hero-early-bird');
@@ -331,37 +323,40 @@ async function loadGallery() {
       </div>
     `).join('');
 
-    // Duplicate for seamless infinite loop
-    grid.innerHTML = itemHTML + itemHTML;
-
-    // JS-driven marquee (replaces CSS animation — works on iOS Safari)
-    let offset    = 0;
-    let paused    = false;
-    let visible   = true;
-    const isIOS   = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const speed   = isIOS ? 1.0 : 0.5;
     const wrap    = grid.parentElement;
+    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (reduced) {
-      grid.style.transform = 'none';
-    }
+    if (isTouch) {
+      // Touch: single set of items, native scroll-snap handles swipe
+      grid.innerHTML = itemHTML;
+    } else {
+      // Desktop: duplicate for seamless infinite marquee loop
+      grid.innerHTML = itemHTML + itemHTML;
 
-    function marqueeStep() {
-      if (!paused && visible && !reduced) {
-        const half = grid.scrollWidth / 2;
-        offset += speed;
-        if (offset >= half) offset = 0;
-        grid.style.transform = `translateX(-${offset}px)`;
+      let offset  = 0;
+      let paused  = false;
+      let visible = true;
+      const speed = 0.5;
+
+      function marqueeStep() {
+        if (!paused && visible && !reduced) {
+          const half = grid.scrollWidth / 2;
+          offset += speed;
+          if (offset >= half) offset = 0;
+          grid.style.transform = `translateX(-${offset}px)`;
+        }
+        requestAnimationFrame(marqueeStep);
       }
       requestAnimationFrame(marqueeStep);
-    }
-    requestAnimationFrame(marqueeStep);
 
-    wrap.addEventListener('mouseenter', () => { paused = true; });
-    wrap.addEventListener('mouseleave', () => { paused = false; });
-    wrap.addEventListener('touchstart', () => { paused = true; },  { passive: true });
-    wrap.addEventListener('touchend',   () => { paused = false; }, { passive: true });
+      wrap.addEventListener('mouseenter', () => { paused = true; });
+      wrap.addEventListener('mouseleave', () => { paused = false; });
+
+      new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
+      }, { threshold: 0 }).observe(wrap);
+    }
 
     // Lightbox state
     let lightbox  = null;
@@ -422,11 +417,6 @@ async function loadGallery() {
       if (e.key === 'ArrowLeft')   renderLightbox(current - 1);
       if (e.key === 'ArrowRight')  renderLightbox(current + 1);
     });
-
-    // Pause rAF when gallery is off-screen
-    new IntersectionObserver(entries => {
-      visible = entries[0].isIntersecting;
-    }, { threshold: 0 }).observe(wrap);
 
   } catch (e) {
     // gallery unavailable

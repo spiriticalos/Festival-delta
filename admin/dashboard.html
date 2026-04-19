@@ -468,10 +468,6 @@
 
         <div class="settings-row">
           <div class="field">
-            <label>Bilete rămase</label>
-            <input type="number" id="s-tickets" min="0" />
-          </div>
-          <div class="field">
             <label>Data festivalului</label>
             <input type="datetime-local" id="s-date" />
           </div>
@@ -701,8 +697,7 @@
     // ══════════════════════════════════════════════════════
     async function loadSettings() {
       const s = await api.get('/api/settings');
-      document.getElementById('s-tickets').value   = s.tickets_remaining || '';
-      document.getElementById('s-earlybird').checked = s.early_bird_active === '1';
+document.getElementById('s-earlybird').checked = s.early_bird_active === '1';
       // datetime-local needs YYYY-MM-DDTHH:MM (no seconds)
       if (s.festival_date) {
         document.getElementById('s-date').value = s.festival_date.slice(0, 16);
@@ -713,8 +708,7 @@
       const btn = document.getElementById('btn-save-settings');
       btn.disabled = true;
       await Promise.all([
-        api.patch('/api/settings/tickets_remaining', { value: document.getElementById('s-tickets').value }),
-        api.patch('/api/settings/early_bird_active',  { value: document.getElementById('s-earlybird').checked ? '1' : '0' }),
+api.patch('/api/settings/early_bird_active',  { value: document.getElementById('s-earlybird').checked ? '1' : '0' }),
         api.patch('/api/settings/festival_date',       { value: document.getElementById('s-date').value }),
       ]);
       btn.disabled = false;

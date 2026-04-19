@@ -51,9 +51,12 @@ const insertArtist = db.prepare(
   [3, 'Efi',              'Electronic', '/images/uploads/artist-efi.jpg'],
   [4, 'Eleez',            'Electronic', '/images/uploads/artist-eleez.jpg'],
   [5, 'Emotional Tourist','Electronic', '/images/uploads/artist-emotional-tourist.jpg'],
-  [6, 'Oscar',            'Electronic', null],
+  [6, 'Oscar',            'Electronic', '/images/uploads/artist-oscar.webp'],
   [7, 'Pascal Junior',    'Electronic', '/images/uploads/artist-pascal-junior.jpg'],
 ].forEach(([id, name, genre, image_path]) => insertArtist.run(id, name, genre, image_path));
+
+// Patch existing artists where image_path was NULL
+db.prepare("UPDATE artists SET image_path = '/images/uploads/artist-oscar.webp' WHERE id = 6").run();
 
 // ── Seed gallery ───────────────────────────────────────────
 const insertGallery = db.prepare(
