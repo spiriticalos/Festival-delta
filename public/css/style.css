@@ -5,6 +5,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fleur+De+Leah&family=Italianno&family=Righteous&family=Nunito:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================
+   ACCESSIBILITY UTILITIES
+   ============================================================ */
+
+/* Visually hidden but readable by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles — visible keyboard navigation */
+:focus-visible {
+  outline: 2px solid #D4845A;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Remove focus ring on mouse click (only show for keyboard) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ============================================================
    SCROLL ANIMATIONS
    ============================================================ */
 
@@ -1713,9 +1742,17 @@ body {
 
   .gallery-lightbox-prev,
   .gallery-lightbox-next {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 1.8rem;
+  }
+
+  .gallery-lightbox-close {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

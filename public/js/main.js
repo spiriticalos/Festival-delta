@@ -176,11 +176,13 @@ document.querySelectorAll('.faq-q').forEach(btn => {
     document.querySelectorAll('.faq-item.open').forEach(el => {
       el.classList.remove('open');
       el.querySelector('.faq-icon').textContent = '+';
+      el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
     });
 
     if (!isOpen) {
       item.classList.add('open');
       btn.querySelector('.faq-icon').textContent = '−';
+      btn.setAttribute('aria-expanded', 'true');
     }
   });
 });
@@ -323,7 +325,8 @@ async function loadGallery() {
       </div>
     `).join('');
 
-    const wrap    = grid.parentElement;
+    const wrap    = grid.parentElement;           // .gallery-marquee-wrap
+    const stage   = wrap.parentElement;            // .gallery-stage (includes overlay text)
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Always duplicate for seamless infinite marquee loop (desktop + mobile)
@@ -345,32 +348,33 @@ async function loadGallery() {
     }
     requestAnimationFrame(marqueeStep);
 
-    // Desktop: pause on hover
-    wrap.addEventListener('mouseenter', () => { paused = true; });
-    wrap.addEventListener('mouseleave', () => { paused = false; });
+    // Desktop: pause on hover over the full stage (includes overlay text)
+    stage.addEventListener('mouseenter', () => { paused = true; });
+    stage.addEventListener('mouseleave', () => { paused = false; });
 
-    // Mobile: manual drag — pause marquee, move with finger, resume on release
+    // Mobile: manual drag on wrap — pause marquee, move with finger, resume on release
     let touchStartX = 0;
-    grid.addEventListener('touchstart', e => {
+    wrap.addEventListener('touchstart', e => {
       touchStartX = e.touches[0].clientX;
       paused = true;
     }, { passive: true });
-    grid.addEventListener('touchmove', e => {
+    wrap.addEventListener('touchmove', e => {
       const delta = touchStartX - e.touches[0].clientX;
       touchStartX = e.touches[0].clientX;
       const half = grid.scrollWidth / 2;
       offset = ((offset + delta) % half + half) % half;
       grid.style.transform = `translateX(-${offset}px)`;
     }, { passive: true });
-    grid.addEventListener('touchend', () => { paused = false; }, { passive: true });
+    wrap.addEventListener('touchend', () => { paused = false; }, { passive: true });
 
     new IntersectionObserver(entries => {
       visible = entries[0].isIntersecting;
-    }, { threshold: 0 }).observe(wrap);
+    }, { threshold: 0 }).observe(stage);
 
     // Lightbox state
-    let lightbox  = null;
-    let current   = 0;
+    let lightbox    = null;
+    let current     = 0;
+    let triggerEl   = null; // element that opened the lightbox, for focus restore
 
     function closeLightbox() {
       if (!lightbox) return;
@@ -378,6 +382,7 @@ async function loadGallery() {
       setTimeout(() => {
         if (lightbox) { lightbox.remove(); lightbox = null; }
         document.body.style.overflow = '';
+        if (triggerEl) { triggerEl.focus(); triggerEl = null; }
       }, 300);
     }
 
@@ -389,6 +394,9 @@ async function loadGallery() {
       if (!lightbox) {
         lightbox = document.createElement('div');
         lightbox.className = 'gallery-lightbox';
+        lightbox.setAttribute('role', 'dialog');
+        lightbox.setAttribute('aria-modal', 'true');
+        lightbox.setAttribute('aria-label', 'Gallery image viewer');
         document.body.appendChild(lightbox);
         requestAnimationFrame(() => lightbox.classList.add('open'));
         document.body.style.overflow = 'hidden';
@@ -403,21 +411,29 @@ async function loadGallery() {
       }
 
       lightbox.innerHTML = `
-        <button class="gallery-lightbox-close" aria-label="Închide">✕</button>
-        ${multi ? `<button class="gallery-lightbox-prev" aria-label="Anterior">&#8249;</button>` : ''}
+        <button class="gallery-lightbox-close" aria-label="Închide lightbox">✕</button>
+        ${multi ? `<button class="gallery-lightbox-prev" aria-label="Imaginea anterioară">&#8249;</button>` : ''}
         <div class="gallery-lightbox-img-wrap">
           <img src="${esc(item.image_path)}" alt="${esc(item.caption) || 'The Bohemians Festival'}" />
           ${item.caption ? `<p class="gallery-lightbox-caption">${esc(item.caption)}</p>` : ''}
         </div>
-        ${multi ? `<button class="gallery-lightbox-next" aria-label="Următor">&#8250;</button>` : ''}
-        ${multi ? `<span class="gallery-lightbox-counter">${current + 1} / ${items.length}</span>` : ''}
+        ${multi ? `<button class="gallery-lightbox-next" aria-label="Imaginea următoare">&#8250;</button>` : ''}
+        ${multi ? `<span class="gallery-lightbox-counter" aria-live="polite">${current + 1} / ${items.length}</span>` : ''}
       `;
+      // Move focus to close button after render
+      requestAnimationFrame(() => {
+        const closeBtn = lightbox.querySelector('.gallery-lightbox-close');
+        if (closeBtn) closeBtn.focus();
+      });
     }
 
     // Click on any gallery item (both original + duplicate sets)
     grid.addEventListener('click', e => {
       const item = e.target.closest('.gallery-item[data-index]');
-      if (item) renderLightbox(parseInt(item.dataset.index, 10));
+      if (item) {
+        triggerEl = e.target.closest('.gallery-item');
+        renderLightbox(parseInt(item.dataset.index, 10));
+      }
     });
 
     // Keyboard navigation

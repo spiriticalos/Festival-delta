@@ -232,11 +232,12 @@
     </div>
 
     <div class="hero-content">
+      <h1 class="sr-only">The Bohemians — Music &amp; Travel Festival 2026</h1>
       <div id="hero-early-bird" style="display:none;" class="hero-early-bird"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> Early Bird Active</div>
 
       <picture>
         <source srcset="/images/baza-4-transparent.webp" type="image/webp" />
-        <img src="/images/baza-4-transparent.png" alt="The Bohemians Festival" class="hero-logo-overlay" />
+        <img src="/images/baza-4-transparent.png" alt="The Bohemians Festival" class="hero-logo-overlay" width="600" height="300" />
       </picture>
       <p class="hero-tagline">The most unique festival experience in the Danube Delta.</p>
 
@@ -252,7 +253,9 @@
 <p class="hero-note"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> Limited Capacity · Boat Access Only</p>
       <!-- Countdown -->
       <p class="hero-date">18 – 21 June 2026</p>
-      <div class="countdown" id="countdown">
+      <div class="countdown" id="countdown"
+           role="timer" aria-label="Countdown to The Bohemians Festival, 18 June 2026"
+           aria-live="off">
         <div class="cd-card">
           <span class="cd-num" id="cd-days">00</span>
           <span class="cd-label">Days</span>
@@ -493,6 +496,7 @@
             src="https://img.youtube.com/vi/BAnWvS4GAW8/maxresdefault.jpg"
             alt="The Bohemians Festival 2025"
             loading="lazy"
+            width="1280" height="720"
             class="video-thumb-img" />
           <button class="video-play-btn" aria-label="Play video">
             <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -853,11 +857,11 @@
         <div class="faq-list">
 
           <div class="faq-item">
-            <button class="faq-q">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">
               How do I get to the festival?
-              <span class="faq-icon">+</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
             </button>
-            <div class="faq-a">
+            <div class="faq-a" id="faq-a-1" role="region">
               <p>By car or bus to Murighiol or Tulcea,
                 then by boat to Sfântu Gheorghe (45–90 min).
                 Full details in the Venue section.</p>
@@ -865,32 +869,32 @@
           </div>
 
           <div class="faq-item">
-            <button class="faq-q">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">
               Does the ticket include accommodation?
-              <span class="faq-icon">+</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
             </button>
-            <div class="faq-a">
+            <div class="faq-a" id="faq-a-2" role="region">
               <p>No. The festival ticket is separate from accommodation.
                 All options are listed in the Accommodation section above.</p>
             </div>
           </div>
 
           <div class="faq-item">
-            <button class="faq-q">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">
               What is the minimum age?
-              <span class="faq-icon">+</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
             </button>
-            <div class="faq-a">
+            <div class="faq-a" id="faq-a-3" role="region">
               <p>18 years old by the date of the festival.</p>
             </div>
           </div>
 
           <div class="faq-item">
-            <button class="faq-q">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4">
               Can I come with a tent?
-              <span class="faq-icon">+</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
             </button>
-            <div class="faq-a">
+            <div class="faq-a" id="faq-a-4" role="region">
               <p>Yes. Green Dolphin Camping has 500 spots.
                 Contact events@greenvillage.ro after buying your ticket,
                 quoting the code Bohemian.</p>
@@ -898,11 +902,11 @@
           </div>
 
           <div class="faq-item">
-            <button class="faq-q">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5">
               Is it safe to come alone?
-              <span class="faq-icon">+</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
             </button>
-            <div class="faq-a">
+            <div class="faq-a" id="faq-a-5" role="region">
               <p>Yes. The festival has a curated crowd, discreet security,
                 and a community that respects each other.
                 We're in our third edition and the safety of attendees is our priority.</p>
@@ -910,11 +914,11 @@
           </div>
 
           <div class="faq-item">
-            <button class="faq-q">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6">
               How do I pay for my ticket?
-              <span class="faq-icon">+</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
             </button>
-            <div class="faq-a">
+            <div class="faq-a" id="faq-a-6" role="region">
               <p>Online through the Kompostor platform.
                 Click the Buy Tickets button and pay by card or bank transfer.</p>
             </div>
@@ -955,6 +959,7 @@
       <p class="email-sub">When we announce the artists, you'll hear first.</p>
 
       <div class="email-form" id="emailForm">
+        <label class="sr-only" for="emailInput">Email address</label>
         <input
           type="email"
           id="emailInput"
