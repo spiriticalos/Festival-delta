@@ -13,9 +13,9 @@
   <meta property="og:type"        content="event" />
   <meta property="og:title"       content="The Bohemians — Music & Travel Festival 2026" />
   <meta property="og:description" content="A music & travel festival in one of the wildest places in Europe — right where the river meets the sea. Danube Delta, 18–21 June 2026." />
-  <meta property="og:image"       content="https://thebohemiansociety.ro/images/baza-4.jpg" />
-  <meta property="og:image:width" content="1220" />
-  <meta property="og:image:height" content="539" />
+  <meta property="og:image"       content="https://thebohemiansociety.ro/images/bohemians-social-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url"         content="https://thebohemiansociety.ro" />
   <meta property="og:locale"      content="en_GB" />
 
@@ -23,7 +23,7 @@
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="The Bohemians — Music & Travel Festival 2026" />
   <meta name="twitter:description" content="A music & travel festival in the Danube Delta — right where the river meets the sea. 18–21 June 2026." />
-  <meta name="twitter:image"       content="https://thebohemiansociety.ro/images/baza-4.jpg" />
+  <meta name="twitter:image"       content="https://thebohemiansociety.ro/images/bohemians-social-preview.jpg" />
 
   <!-- Schema.org Event -->
   <script type="application/ld+json">
@@ -50,7 +50,7 @@
         "longitude": 29.5978
       }
     },
-    "image": "https://thebohemiansociety.ro/images/baza-4.jpg",
+    "image": "https://thebohemiansociety.ro/images/bohemians-social-preview.jpg",
     "performer": [
       {"@type": "MusicGroup", "name": "Hraach"},
       {"@type": "MusicGroup", "name": "Sabo"},
@@ -135,8 +135,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="/css/style.css" />
 
-  <!-- Favicon -->
+  <!-- Favicon & PWA -->
   <link rel="icon" href="/images/sun-icon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#D4845A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Bohemians" />
+  <link rel="apple-touch-icon" href="/images/pwa-icon-192.png" />
 
   <!-- Preload critical assets -->
   <link rel="preload" as="image" href="/images/hero-bg.webp" media="(min-width: 481px)" fetchpriority="high" />
@@ -232,7 +238,7 @@
         <source srcset="/images/baza-4-transparent.webp" type="image/webp" />
         <img src="/images/baza-4-transparent.png" alt="The Bohemians Festival" class="hero-logo-overlay" />
       </picture>
-      <p class="hero-tagline">Right where the river meets the sea.</p>
+      <p class="hero-tagline">The most unique festival experience in the Danube Delta.</p>
 
     </div>
 
@@ -664,6 +670,17 @@
           </div>
 
           <div class="cazare-card">
+            <div class="cazare-img">
+              <picture>
+                <source type="image/webp"
+                        srcset="/images/uploads/bohemians-guesthouse-delta-600.webp 600w,
+                                /images/uploads/bohemians-guesthouse-delta.webp 900w"
+                        sizes="(max-width: 768px) 100vw, 33vw" />
+                <img src="/images/uploads/bohemians-guesthouse-delta.jpg"
+                     alt="Guesthouse or Private House — Sfântu Gheorghe" loading="lazy"
+                     width="900" height="600" />
+              </picture>
+            </div>
             <div class="cazare-content">
               <span class="cazare-tag">Local Stay</span>
               <h3 class="cazare-title">Guesthouse or Private House</h3>

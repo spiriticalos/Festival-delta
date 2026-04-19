@@ -181,20 +181,20 @@ body {
   text-decoration: none;
 }
 
-/* Hero variant — two-line, larger */
+/* Hero variant — two-line */
 .btn-ticket--hero {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px 40px 14px 32px;
-  gap: 2px;
+  padding: 9px 26px 9px 21px;
+  gap: 1px;
   margin-bottom: 16px;
 }
 
 .btn-ticket-sub {
   font-family: 'Nunito', sans-serif;
   font-style: normal;
-  font-size: 9px;
+  font-size: 6px;
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -204,7 +204,7 @@ body {
 .btn-ticket-main {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 17px;
+  font-size: 11px;
   letter-spacing: 0.5px;
 }
 

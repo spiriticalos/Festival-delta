@@ -1,0 +1,36 @@
+{
+  "name": "The Bohemians Festival 2026",
+  "short_name": "Bohemians",
+  "description": "Music & Travel Festival · Delta Dunării · 18–21 June 2026",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1208",
+  "theme_color": "#D4845A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
