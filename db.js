@@ -46,12 +46,22 @@ const insertArtist = db.prepare(
   'INSERT OR IGNORE INTO artists (id, name, genre, image_path) VALUES (?, ?, ?, ?)'
 );
 [
-  [1, 'Hraach',           'Electronic', '/images/uploads/artist-hraach.webp'],
-  [2, 'Sabo',             'Electronic', '/images/uploads/artist-sabo.webp'],
-  [3, 'Efi',              'Electronic', '/images/uploads/artist-efi.webp'],
-  [4, 'Eleez',            'Electronic', '/images/uploads/artist-eleez.webp'],
-  [5, 'Emotional Tourist','Electronic', '/images/uploads/artist-emotional-tourist.webp'],
-  [7, 'Pascal Junior',    'Electronic', '/images/uploads/artist-pascal-junior.webp'],
+  [1,  'Hraach',           'Electronic', '/images/uploads/artist-hraach.webp'],
+  [2,  'Sabo',             'Electronic', '/images/uploads/artist-sabo.webp'],
+  [3,  'Efi',              'Electronic', '/images/uploads/artist-efi.webp'],
+  [4,  'Eleez',            'Electronic', '/images/uploads/artist-eleez.webp'],
+  [5,  'Emotional Tourist','Electronic', '/images/uploads/artist-emotional-tourist.webp'],
+  [7,  'Pascal Junior',    'Electronic', '/images/uploads/artist-pascal-junior.webp'],
+  [8,  'Afgo & Lemon',    'Electronic', '/images/uploads/artist-afgo-lemon.webp'],
+  [9,  'Brad Brunner',    'Electronic', '/images/uploads/artist-brad-brunner.webp'],
+  [10, 'Dobrikan',        'Electronic', '/images/uploads/artist-dobrikan.webp'],
+  [11, 'Optick',          'Electronic', '/images/uploads/artist-optick.webp'],
+  [12, 'Rhem',            'Electronic', '/images/uploads/artist-rhem.webp'],
+  [13, 'Sahar Z',         'Electronic', '/images/uploads/artist-sahar-z.webp'],
+  [14, 'Shai T',          'Electronic', '/images/uploads/artist-shai-t.webp'],
+  [15, 'Emann',           'Electronic', '/images/uploads/artist-emann.webp'],
+  [16, 'Kristopher',      'Electronic', '/images/uploads/artist-kristopher.webp'],
+  [17, 'Zamfirov',        'Electronic', '/images/uploads/artist-zamfirov.webp'],
 ].forEach(([id, name, genre, image_path]) => insertArtist.run(id, name, genre, image_path));
 
 // Remove Oscar if still present from old seed
