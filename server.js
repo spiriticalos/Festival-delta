@@ -142,7 +142,13 @@ app.use(session({
     sameSite: 'strict',
   },
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+// Images cached 30 days, JS/CSS 7 days, HTML no-cache
+app.use('/images', express.static(path.join(__dirname, 'public/images'), {
+  maxAge: '30d', immutable: true,
+}));
+app.use('/css', express.static(path.join(__dirname, 'public/css'), { maxAge: '7d' }));
+app.use('/js',  express.static(path.join(__dirname, 'public/js'),  { maxAge: '7d' }));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0 }));
 
 // ── isAdmin middleware ──────────────────────────────────────
 function isAdmin(req, res, next) {
