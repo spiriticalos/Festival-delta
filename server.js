@@ -201,7 +201,7 @@ app.get('/health', (req, res) => {
 // ══════════════════════════════════════════════════════════
 
 app.get('/api/artists', (req, res) => {
-  res.json(db.prepare('SELECT * FROM artists ORDER BY created_at DESC').all());
+  res.json(db.prepare('SELECT * FROM artists ORDER BY name ASC').all());
 });
 
 app.get('/api/gallery', (req, res) => {
