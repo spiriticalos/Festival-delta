@@ -493,22 +493,6 @@ function initNavActive() {
   document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
 }
 
-// ── Ripple effect on ticket buttons ────────────────────────
-function initRipple() {
-  document.querySelectorAll('.btn-ticket').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const rect   = btn.getBoundingClientRect();
-      const size   = Math.max(rect.width, rect.height);
-      const x      = e.clientX - rect.left - size / 2;
-      const y      = e.clientY - rect.top  - size / 2;
-      const ripple = document.createElement('span');
-      ripple.className = 'btn-ripple';
-      ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
-      btn.appendChild(ripple);
-      ripple.addEventListener('animationend', () => ripple.remove());
-    });
-  });
-}
 
 // ── Service Worker ──────────────────────────────────────────
 if ('serviceWorker' in navigator) {
@@ -522,7 +506,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initCookieBanner();
   initScrollAnimations();
   initNavActive();
-  initRipple();
   loadSettings();
   loadArtists();
   loadAnnouncements();

@@ -124,8 +124,8 @@ app.use(compression());
 
 // ── Security headers (Helmet) ───────────────────────────────
 app.use(helmet({
-  // We set CSP manually per-route below (public strict, admin relaxed)
-  contentSecurityPolicy: false,
+  contentSecurityPolicy:      false, // set manually per-route below
+  crossOriginEmbedderPolicy:  false, // required for YouTube / Google Maps iframes
 }));
 
 // ── Core middleware ─────────────────────────────────────────

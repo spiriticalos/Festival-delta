@@ -189,76 +189,37 @@ body {
 }
 
 /* ── Ticket Button ── */
-.btn-ticket {
+.btn-buy {
   display: inline-block;
-  position: relative;
-  background: #F0E2A8;
-  color: #1e1008;
-  padding: 10px 28px 10px 20px;
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 13px;
-  letter-spacing: 1px;
+  background: var(--orange);
+  color: #fff;
+  padding: 13px 32px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  border-top: 1.5px dashed rgba(80,40,10,0.45);
-  border-bottom: 1.5px dashed rgba(80,40,10,0.45);
-  border-left: 1.5px solid rgba(80,40,10,0.35);
-  border-right: none;
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  border-radius: 2px;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Perforated right edge */
-.btn-ticket::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 3px,
-    rgba(80,40,10,0.4) 3px,
-    rgba(80,40,10,0.4) 6px
-  );
-}
-
-.btn-ticket:hover {
+.btn-buy:hover {
+  background: #c4733e;
   transform: translateY(-2px);
-  box-shadow: 2px 5px 16px rgba(0,0,0,0.28);
-  color: #1e1008;
+  box-shadow: 0 8px 24px rgba(212, 132, 90, 0.4);
+  color: #fff;
   text-decoration: none;
 }
 
-/* Hero variant — two-line */
-.btn-ticket--hero {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 9px 26px 9px 21px;
-  gap: 1px;
-  margin-bottom: 16px;
-}
-
-.btn-ticket-sub {
-  font-family: 'Nunito', sans-serif;
-  font-style: normal;
-  font-size: 6px;
-  font-weight: 600;
+.btn-buy--hero {
+  padding: 15px 40px;
+  font-size: 13px;
   letter-spacing: 3px;
-  text-transform: uppercase;
-  opacity: 0.55;
-}
-
-.btn-ticket-main {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.5px;
+  margin-bottom: 16px;
 }
 
 /* ── Buttons ── */
@@ -403,10 +364,8 @@ body {
 }
 
 .nav-cta {
-  padding: 8px 20px 8px 14px !important;
-  font-size: 12px !important;
-  text-transform: none !important;
-  letter-spacing: 0.5px !important;
+  padding: 9px 22px !important;
+  font-size: 11px !important;
 }
 
 .nav-hamburger {
@@ -2776,25 +2735,6 @@ body {
   pointer-events: none;
 }
 
-/* ============================================================
-   RIPPLE EFFECT
-   ============================================================ */
-
-.btn-ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple-anim 0.55s linear;
-  background: rgba(80, 40, 10, 0.18);
-  pointer-events: none;
-}
-
-@keyframes ripple-anim {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
 
 /* ============================================================
    WAVE DIVIDERS
