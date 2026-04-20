@@ -201,6 +201,10 @@ const videoIframe  = document.getElementById('videoIframe');
 
 if (videoThumb) {
   videoThumb.addEventListener('click', () => {
+    if (window.innerWidth < 768) {
+      window.open('https://youtu.be/BAnWvS4GAW8', '_blank', 'noopener');
+      return;
+    }
     videoIframe.src = videoIframe.dataset.src;
     videoLightbox.style.display = 'flex';
     document.body.style.overflow = 'hidden';
