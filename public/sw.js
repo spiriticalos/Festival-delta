@@ -1,4 +1,4 @@
-const CACHE = 'bohemians-v1';
+const CACHE = 'bohemians-v2';
 const STATIC = [
   '/',
   '/css/style.css',
