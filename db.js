@@ -41,31 +41,31 @@ const insertSetting = db.prepare('INSERT OR IGNORE INTO settings (key, value) VA
   ['festival_date',     '2026-06-18T12:00:00'],
 ].forEach(([k, v]) => insertSetting.run(k, v));
 
-// ── Seed artists ───────────────────────────────────────────
+// ── Seed artists (by name — never creates duplicates) ──────
 const insertArtist = db.prepare(
-  'INSERT OR IGNORE INTO artists (id, name, genre, image_path) VALUES (?, ?, ?, ?)'
+  'INSERT INTO artists (name, genre, image_path) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM artists WHERE name = ?)'
 );
 [
-  [1,  'Hraach',           'Electronic', '/images/uploads/artist-hraach.webp'],
-  [2,  'Sabo',             'Electronic', '/images/uploads/artist-sabo.webp'],
-  [3,  'Efi',              'Electronic', '/images/uploads/artist-efi.webp'],
-  [4,  'Eleez',            'Electronic', '/images/uploads/artist-eleez.webp'],
-  [5,  'Emotional Tourist','Electronic', '/images/uploads/artist-emotional-tourist.webp'],
-  [7,  'Pascal Junior',    'Electronic', '/images/uploads/artist-pascal-junior.webp'],
-  [8,  'Afgo & Lemon',    'Electronic', '/images/uploads/artist-afgo-lemon.webp'],
-  [9,  'Brad Brunner',    'Electronic', '/images/uploads/artist-brad-brunner.webp'],
-  [10, 'Dobrikan',        'Electronic', '/images/uploads/artist-dobrikan.webp'],
-  [11, 'Optick',          'Electronic', '/images/uploads/artist-optick.webp'],
-  [12, 'Rhem',            'Electronic', '/images/uploads/artist-rhem.webp'],
-  [13, 'Sahar Z',         'Electronic', '/images/uploads/artist-sahar-z.webp'],
-  [14, 'Shai T',          'Electronic', '/images/uploads/artist-shai-t.webp'],
-  [15, 'Emann',           'Electronic', '/images/uploads/artist-emann.webp'],
-  [16, 'Kristopher',      'Electronic', '/images/uploads/artist-kristopher.webp'],
-  [17, 'Zamfirov',        'Electronic', '/images/uploads/artist-zamfirov.webp'],
-].forEach(([id, name, genre, image_path]) => insertArtist.run(id, name, genre, image_path));
+  ['Hraach',           'Electronic', '/images/uploads/artist-hraach.webp'],
+  ['Sabo',             'Electronic', '/images/uploads/artist-sabo.webp'],
+  ['Efi',              'Electronic', '/images/uploads/artist-efi.webp'],
+  ['Eleez',            'Electronic', '/images/uploads/artist-eleez.webp'],
+  ['Emotional Tourist','Electronic', '/images/uploads/artist-emotional-tourist.webp'],
+  ['Pascal Junior',    'Electronic', '/images/uploads/artist-pascal-junior.webp'],
+  ['Afgo & Lemon',    'Electronic', '/images/uploads/artist-afgo-lemon.webp'],
+  ['Brad Brunner',    'Electronic', '/images/uploads/artist-brad-brunner.webp'],
+  ['Dobrikan',        'Electronic', '/images/uploads/artist-dobrikan.webp'],
+  ['Optick',          'Electronic', '/images/uploads/artist-optick.webp'],
+  ['Rhem',            'Electronic', '/images/uploads/artist-rhem.webp'],
+  ['Sahar Z',         'Electronic', '/images/uploads/artist-sahar-z.webp'],
+  ['Shai T',          'Electronic', '/images/uploads/artist-shai-t.webp'],
+  ['Emann',           'Electronic', '/images/uploads/artist-emann.webp'],
+  ['Kristopher',      'Electronic', '/images/uploads/artist-kristopher.webp'],
+  ['Zamfirov',        'Electronic', '/images/uploads/artist-zamfirov.webp'],
+].forEach(([name, genre, image_path]) => insertArtist.run(name, genre, image_path, name));
 
 // Remove Oscar if still present from old seed
-db.prepare('DELETE FROM artists WHERE name = ? AND image_path = ?').run('Oscar', '/images/uploads/artist-oscar.webp');
+db.prepare("DELETE FROM artists WHERE name = 'Oscar'").run();
 
 // ── Seed gallery ───────────────────────────────────────────
 const insertGallery = db.prepare(
