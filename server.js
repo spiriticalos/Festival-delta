@@ -352,6 +352,54 @@ app.get('/api/db/backup', isAdmin, async (req, res) => {
   }
 });
 
+// ── Countdown image (used in newsletter emails) ─────────────
+app.get('/countdown.png', async (req, res) => {
+  const target = new Date('2026-06-18T18:00:00+03:00');
+  const diff   = Math.max(0, target - Date.now());
+  const days   = Math.floor(diff / 86400000);
+  const hours  = Math.floor((diff % 86400000) / 3600000);
+  const mins   = Math.floor((diff % 3600000)  / 60000);
+
+  const pad = n => String(n).padStart(2, '0');
+  const W = 480, H = 110;
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+    <rect width="${W}" height="${H}" fill="#2a1810"/>
+
+    <!-- Days -->
+    <text x="80"  y="58" font-family="Georgia,serif" font-size="46" font-weight="bold"
+          fill="#f5ede3" text-anchor="middle">${pad(days)}</text>
+    <text x="80"  y="88" font-family="Arial,sans-serif" font-size="11" letter-spacing="3"
+          fill="#D4845A" text-anchor="middle">DAYS</text>
+
+    <!-- separator -->
+    <text x="160" y="56" font-family="Georgia,serif" font-size="40" fill="#D4845A" text-anchor="middle">·</text>
+
+    <!-- Hours -->
+    <text x="240" y="58" font-family="Georgia,serif" font-size="46" font-weight="bold"
+          fill="#f5ede3" text-anchor="middle">${pad(hours)}</text>
+    <text x="240" y="88" font-family="Arial,sans-serif" font-size="11" letter-spacing="3"
+          fill="#D4845A" text-anchor="middle">HOURS</text>
+
+    <!-- separator -->
+    <text x="320" y="56" font-family="Georgia,serif" font-size="40" fill="#D4845A" text-anchor="middle">·</text>
+
+    <!-- Minutes -->
+    <text x="400" y="58" font-family="Georgia,serif" font-size="46" font-weight="bold"
+          fill="#f5ede3" text-anchor="middle">${pad(mins)}</text>
+    <text x="400" y="88" font-family="Arial,sans-serif" font-size="11" letter-spacing="3"
+          fill="#D4845A" text-anchor="middle">MINS</text>
+  </svg>`;
+
+  try {
+    const buf = await sharp(Buffer.from(svg)).png().toBuffer();
+    res.set({ 'Content-Type': 'image/png', 'Cache-Control': 'no-store' });
+    res.send(buf);
+  } catch (e) {
+    res.status(500).end();
+  }
+});
+
 // ── 404 ─────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public/404.html'));
