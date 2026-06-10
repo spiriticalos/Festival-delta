@@ -1,0 +1,17 @@
+{
+  "name": "gsc-tools",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "queries": "node gsc-query.mjs queries",
+    "pages": "node gsc-query.mjs pages",
+    "countries": "node gsc-query.mjs countries",
+    "devices": "node gsc-query.mjs devices",
+    "daily": "node gsc-query.mjs daily",
+    "summary": "node gsc-query.mjs summary"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}

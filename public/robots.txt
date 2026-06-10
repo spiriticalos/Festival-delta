@@ -1,5 +1,102 @@
+# Default rules for all crawlers
 User-agent: *
 Disallow: /api/
-Disallow: /admin/
+Disallow: /admin
+Disallow: /health
+Disallow: /countdown.png
+Disallow: /wp-content/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+
+# Explicit opt-in for AI crawlers (training + answer engines)
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Bytespider
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: YouBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: MistralAI-User
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
 
 Sitemap: https://thebohemiansociety.ro/sitemap.xml

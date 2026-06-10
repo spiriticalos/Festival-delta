@@ -50,7 +50,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 // ── Countdown Timer ────────────────────────────────────────
-let TARGET = new Date('2026-06-18T12:00:00');
+let TARGET = new Date('2026-06-18T12:00:00+03:00');
 
 const elDays  = document.getElementById('cd-days');
 const elHours = document.getElementById('cd-hours');
@@ -277,6 +277,12 @@ async function loadArtists() {
         </div>
       </div>
     `).join('');
+
+    grid.querySelectorAll('.lineup-card').forEach((el, i) => {
+      el.classList.add('animate-ready');
+      el.style.transitionDelay = (i * 0.08) + 's';
+      observer.observe(el);
+    });
   } catch (e) {
     // artists unavailable — keep placeholders
   }

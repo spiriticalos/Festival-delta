@@ -14,8 +14,9 @@ const db           = require('./db');
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
-const EMAILS_FILE = path.join(__dirname, 'emails.txt');
-const UPLOADS_DIR = path.join(__dirname, 'public/images/uploads');
+const IS_PROD     = process.env.NODE_ENV === 'production';
+const EMAILS_FILE = IS_PROD ? '/data/emails.txt'   : path.join(__dirname, 'emails.txt');
+const UPLOADS_DIR = IS_PROD ? '/data/uploads'      : path.join(__dirname, 'public/images/uploads');
 
 // ── Mailer (optional — only active when SMTP_HOST is set) ───
 const mailer = process.env.SMTP_HOST
@@ -27,7 +28,18 @@ const mailer = process.env.SMTP_HOST
     })
   : null;
 
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  if (IS_PROD) {
+    const initial = path.join(__dirname, 'public/images/uploads');
+    if (fs.existsSync(initial)) {
+      fs.readdirSync(initial).forEach(f => {
+        const dest = path.join(UPLOADS_DIR, f);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(initial, f), dest);
+      });
+    }
+  }
+}
 
 // Hash admin password once at startup
 const ADMIN_USER      = process.env.ADMIN_USER || 'admin';
@@ -99,6 +111,32 @@ function rateLimit(req, res, next) {
   next();
 }
 
+// ── www → non-www redirect ──────────────────────────────────
+if (IS_PROD) {
+  app.use((req, res, next) => {
+    if (req.hostname.startsWith('www.')) {
+      return res.redirect(301, `https://thebohemiansociety.ro${req.url}`);
+    }
+    next();
+  });
+}
+
+// ── Permissions-Policy (applied to all routes) ─────────────
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', [
+    'camera=()',
+    'microphone=()',
+    'geolocation=()',
+    'payment=()',
+    'usb=()',
+    'magnetometer=()',
+    'gyroscope=()',
+    'accelerometer=()',
+    'interest-cohort=()',
+  ].join(', '));
+  next();
+});
+
 // ── CSP (custom per-route — Helmet's default CSP is disabled above) ─
 app.use((req, res, next) => {
   // Admin panel has inline scripts — no CSP (already protected by auth)
@@ -106,12 +144,12 @@ app.use((req, res, next) => {
 
   res.setHeader('Content-Security-Policy', [
     "default-src 'self'",
-    "script-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https://img.youtube.com",
+    "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://stats.g.doubleclick.net",
     "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com",
-    "connect-src 'self'",
+    "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -143,6 +181,9 @@ app.use(session({
   },
 }));
 // Images cached 30 days, JS/CSS 7 days, HTML no-cache
+if (IS_PROD) {
+  app.use('/images/uploads', express.static(UPLOADS_DIR, { maxAge: '30d', immutable: true }));
+}
 app.use('/images', express.static(path.join(__dirname, 'public/images'), {
   maxAge: '30d', immutable: true,
 }));
@@ -271,7 +312,7 @@ app.delete('/api/artists/:id', isAdmin, csrfProtect, (req, res) => {
   const artist = db.prepare('SELECT * FROM artists WHERE id = ?').get(req.params.id);
   if (!artist) return res.status(404).json({ error: 'Not found' });
   if (artist.image_path) {
-    try { fs.unlinkSync(path.join(__dirname, 'public', artist.image_path)); } catch (_) {}
+    try { fs.unlinkSync(path.join(UPLOADS_DIR, path.basename(artist.image_path))); } catch (_) {}
   }
   db.prepare('DELETE FROM artists WHERE id = ?').run(req.params.id);
   res.json({ success: true });
@@ -294,7 +335,7 @@ app.delete('/api/gallery/:id', isAdmin, csrfProtect, (req, res) => {
   const item = db.prepare('SELECT * FROM gallery WHERE id = ?').get(req.params.id);
   if (!item) return res.status(404).json({ error: 'Not found' });
   if (item.image_path) {
-    try { fs.unlinkSync(path.join(__dirname, 'public', item.image_path)); } catch (_) {}
+    try { fs.unlinkSync(path.join(UPLOADS_DIR, path.basename(item.image_path))); } catch (_) {}
   }
   db.prepare('DELETE FROM gallery WHERE id = ?').run(req.params.id);
   res.json({ success: true });
@@ -354,7 +395,7 @@ app.get('/api/db/backup', isAdmin, async (req, res) => {
 
 // ── Countdown image (used in newsletter emails) ─────────────
 app.get('/countdown.png', async (req, res) => {
-  const target = new Date('2026-06-18T18:00:00+03:00');
+  const target = new Date('2026-06-18T12:00:00+03:00');
   const diff   = Math.max(0, target - Date.now());
   const days   = Math.floor(diff / 86400000);
   const hours  = Math.floor((diff % 86400000) / 3600000);
@@ -398,6 +439,14 @@ app.get('/countdown.png', async (req, res) => {
   } catch (e) {
     res.status(500).end();
   }
+});
+
+// ── 410 Gone pentru path-uri WordPress (deindexare mai rapida) ──
+app.use((req, res, next) => {
+  if (/^\/(wp-content|wp-admin|wp-includes|wp-login\.php)/.test(req.path)) {
+    return res.status(410).end();
+  }
+  next();
 });
 
 // ── 404 ─────────────────────────────────────────────────────

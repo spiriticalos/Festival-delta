@@ -62,58 +62,34 @@ Schimbă parola înainte de deploy în producție.
 
 ---
 
-## Deploy pe VPS (Ubuntu/Debian)
+## Deploy pe Fly.io
 
-### 1. Instalează Node.js
+Site-ul rulează pe **Fly.io** (app: `festival-delta`, region: Amsterdam).
+Domeniu: `thebohemiansociety.ro` (DNS prin Cloudflare).
 
-```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
+### Deploy după modificări de cod
+
+```powershell
+cd "D:\party\Festival delta"
+flyctl deploy
 ```
 
-### 2. Clonează și instalează
+Durează ~2-3 minute. Baza de date și pozele din admin rămân intacte.
 
-```bash
-git clone <repo> /var/www/bohemians
-cd /var/www/bohemians
-npm install --production
-cp .env.example .env
-nano .env   # completează valorile reale
+### Comenzi utile
+
+```powershell
+flyctl status                        # starea aplicației
+flyctl logs                          # logs live
+flyctl ssh console                   # terminal în container
+flyctl secrets list                  # variabilele de mediu setate
+flyctl secrets set CHEIE=valoare     # adaugă/modifică o variabilă
+flyctl certs check thebohemiansociety.ro  # verifică SSL
 ```
 
-### 3. PM2 — proces persistent
+### Admin panel
 
-```bash
-npm install -g pm2
-pm2 start server.js --name bohemians
-pm2 save
-pm2 startup
-```
-
-### 4. Nginx reverse proxy
-
-```nginx
-server {
-    listen 80;
-    server_name thebohemiansociety.ro www.thebohemiansociety.ro;
-
-    location / {
-        proxy_pass         http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header   Upgrade $http_upgrade;
-        proxy_set_header   Connection 'upgrade';
-        proxy_set_header   Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-### 5. SSL cu Certbot
-
-```bash
-sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d thebohemiansociety.ro -d www.thebohemiansociety.ro
-```
+`https://thebohemiansociety.ro/admin` — user și parolă din `.env` local.
 
 ---
 

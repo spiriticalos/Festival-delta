@@ -5,3 +5,5 @@ emails.txt
 logs/
 *.db
 backups/
+gsc-tools/node_modules/
+gsc-tools/output/
