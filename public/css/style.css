@@ -512,7 +512,7 @@ body {
   width: clamp(260px, 55vw, 580px);
   height: auto;
   display: block;
-  margin: 0 auto 4px;
+  margin: 0 auto 16px;
   pointer-events: none;
   animation: fadeUp 0.9s ease both;
   animation-delay: 0.2s;

@@ -1,7 +1,7 @@
 const CACHE = 'bohemians-v5';
 const STATIC = [
   '/',
-  '/css/style.css?v=20260621',
+  '/css/style.css?v=20260913',
   '/js/main.js?v=20260913',
   '/images/hero-bg.webp',
   '/images/hero-bg-mobile.webp',
