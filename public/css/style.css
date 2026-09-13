@@ -482,7 +482,7 @@ body {
   height: 100vh;
   min-height: 600px;
   background-color: #1a1208;
-  background-image: url('/images/hero-bg.webp');
+  background-image: url('/images/bohemians-festival-crowd-sunflower-stage-night.webp');
   background-size: cover;
   background-position: center center;
   display: flex;
@@ -2659,7 +2659,7 @@ body {
 
   /* Hero — imagine portrait */
   .hero {
-    background-image: url('/images/hero-bg-mobile.webp');
+    background-image: url('/images/bohemians-festival-crowd-sunflower-stage-night-mobile.webp');
     background-position: center center;
     min-height: 100svh;
     padding-bottom: 60px;

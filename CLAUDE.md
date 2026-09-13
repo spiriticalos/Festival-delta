@@ -12,6 +12,12 @@ Site-ul are două limbi: engleză la `/` și română la `/ro/`, generate din ac
 - `llms.txt` pentru AI se generează din `views/llms.en.md` + `views/llms.ro.md` (servite la `/llms.txt` și `/ro/llms.txt`); cele două trebuie să aibă aceleași placeholdere și aceeași structură. `/llms-full.txt` și `/ro/llms-full.txt` se generează automat din pagină (`llms.js`). Nu mai există `public/llms.txt`.
 - Înainte de commit rulează `npm test` (= `node scripts/check-i18n.js`). Același check rulează în GitHub Actions și **blochează deploy-ul** dacă EN și RO nu sunt sincronizate.
 
+## Poze
+
+- Nume de fișier descriptive în engleză, un singur fișier pentru ambele limbi (`bohemians-festival-…`). Uploadurile din admin primesc automat nume din caption / numele artistului.
+- `alt`-urile se traduc (lang files); galeria și artiștii primesc sufixe din `js.photoAltSuffix` / `js.artistAlt`.
+- `/sitemap.xml` e generat de server (pagini EN/RO cu hreflang + toate pozele din pagină și din DB). Dacă redenumești o poză veche, adaugă redirect în `RENAMED_IMAGES` din `server.js`.
+
 ## Deploy
 
 Push pe `main` → GitHub Actions (check EN/RO, apoi `flyctl deploy`). După modificări în CSS/JS, crește `?v=` în `views/index.html` și în `public/sw.js`.

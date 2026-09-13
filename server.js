@@ -50,9 +50,13 @@ const ADMIN_PASS_HASH = bcrypt.hashSync(process.env.ADMIN_PASS || 'changeme123',
 // ── Multer ──────────────────────────────────────────────────
 const storage = multer.diskStorage({
   destination: UPLOADS_DIR,
+  // SEO-friendly names from the form fields sent before the file (gallery caption / artist name)
   filename: (req, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, unique + path.extname(file.originalname));
+    const slug = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+    const label = slug(req.body.caption || (req.body.name && 'artist ' + req.body.name) || req.body.section);
+    const unique = Date.now().toString(36);
+    cb(null, ['bohemians-festival', label, unique].filter(Boolean).join('-') + path.extname(file.originalname).toLowerCase());
   },
 });
 const upload = multer({
@@ -182,6 +186,15 @@ app.use(session({
     sameSite: 'strict',
   },
 }));
+// Images renamed for SEO — old URLs keep working
+const RENAMED_IMAGES = {
+  '/images/hero-bg.webp':               '/images/bohemians-festival-crowd-sunflower-stage-night.webp',
+  '/images/hero-bg-mobile.webp':        '/images/bohemians-festival-crowd-sunflower-stage-night-mobile.webp',
+  '/images/baza-5-transparent.webp':    '/images/the-bohemians-festival-logo.webp',
+  '/images/baza-5-transparent.png':     '/images/the-bohemians-festival-logo.png',
+};
+app.use((req, res, next) => RENAMED_IMAGES[req.path] ? res.redirect(301, RENAMED_IMAGES[req.path]) : next());
+
 // Images cached 30 days, JS/CSS 7 days, HTML no-cache
 if (IS_PROD) {
   app.use('/images/uploads', express.static(UPLOADS_DIR, { maxAge: '30d', immutable: true }));
@@ -195,14 +208,15 @@ app.use('/js',  express.static(path.join(__dirname, 'public/js'),  { maxAge: '7d
 // Lineup is server-rendered so crawlers that don't run JS (AI bots) see artist names.
 const escHtml = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function lineupHtml() {
+function lineupHtml(lang) {
   try {
     const artists = db.prepare('SELECT name, image_path FROM artists ORDER BY name ASC').all();
     if (!artists.length) return null;
+    const altSuffix = i18n.STRINGS[lang]['js.artistAlt'];
     return artists.map(a => `
           <div class="lineup-card lineup-card--artist">
             ${a.image_path
-              ? `<img src="${escHtml(a.image_path)}" alt="${escHtml(a.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
+              ? `<img src="${escHtml(a.image_path)}" alt="${escHtml(a.name + ' — ' + altSuffix)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
               : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
             <div class="lineup-card-name"><span class="lineup-card-title">${escHtml(a.name)}</span></div>
           </div>`).join('');
@@ -212,7 +226,7 @@ function lineupHtml() {
 }
 
 const sendPage = lang => (req, res) =>
-  res.set('Cache-Control', 'public, max-age=0').type('html').send(i18n.render(lang, lineupHtml()));
+  res.set('Cache-Control', 'public, max-age=0').type('html').send(i18n.render(lang, lineupHtml(lang)));
 
 app.use((req, res, next) => {
   if (req.path === '/ro') return res.redirect(301, '/ro/' + req.url.slice(3));
@@ -231,8 +245,46 @@ const sendText = build => (req, res) =>
 
 app.get('/llms.txt',          sendText(() => llms.summary('en', artistNames())));
 app.get('/ro/llms.txt',       sendText(() => llms.summary('ro', artistNames())));
-app.get('/llms-full.txt',     sendText(() => llms.full('en', lineupHtml())));
-app.get('/ro/llms-full.txt',  sendText(() => llms.full('ro', lineupHtml())));
+app.get('/llms-full.txt',     sendText(() => llms.full('en', lineupHtml('en'))));
+app.get('/ro/llms-full.txt',  sendText(() => llms.full('ro', lineupHtml('ro'))));
+
+// Sitemap with hreflang alternates and every image (page images + gallery + artists from the DB)
+const SITE = 'https://thebohemiansociety.ro';
+const SITEMAP_LASTMOD = new Date().toISOString().slice(0, 10);
+
+app.get('/sitemap.xml', (req, res) => {
+  const pageImages = i18n.TEMPLATE.match(/\/images\/[\w\-/.]+\.(?:webp|jpg|png)/g) || [];
+  let dbImages = [];
+  try {
+    dbImages = [
+      ...db.prepare('SELECT image_path FROM gallery WHERE image_path IS NOT NULL').all(),
+      ...db.prepare('SELECT image_path FROM artists WHERE image_path IS NOT NULL').all(),
+    ].map(r => r.image_path);
+  } catch (e) {}
+  const images = [...new Set([...pageImages, ...dbImages])]
+    .filter(p => !/-600\.webp$|pwa-icon/.test(p))
+    .map(p => `    <image:image><image:loc>${SITE}${escHtml(p)}</image:loc></image:image>`)
+    .join('\n');
+  const alternates = [['en', '/'], ['ro', '/ro/'], ['x-default', '/']]
+    .map(([l, p]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE}${p}" />`)
+    .join('\n');
+  const page = loc => `  <url>\n    <loc>${SITE}${loc}</loc>\n${alternates}\n    <lastmod>${SITEMAP_LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n${images}\n  </url>`;
+
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${page('/')}
+${page('/ro/')}
+  <url>
+    <loc>${SITE}/cookie-policy.html</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+</urlset>
+`);
+});
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0 }));
 

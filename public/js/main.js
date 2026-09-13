@@ -6,6 +6,7 @@
 const LANG = document.documentElement.lang === 'ro' ? 'ro' : 'en';
 const I18N = window.I18N || {};
 const captionOf = item => (LANG === 'ro' && item.caption_ro) || item.caption;
+const photoAlt  = item => captionOf(item) ? `${captionOf(item)} — ${I18N['js.photoAltSuffix']}` : I18N['js.photoAltSuffix'];
 
 // ── Navbar scroll + Back to top + Scroll progress ──────────
 const navbar       = document.getElementById('navbar');
@@ -285,7 +286,7 @@ async function loadArtists() {
     grid.innerHTML = artists.map(a => `
       <div class="lineup-card lineup-card--artist">
         ${a.image_path
-          ? `<img src="${esc(a.image_path)}" alt="${esc(a.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
+          ? `<img src="${esc(a.image_path)}" alt="${esc(a.name + ' — ' + I18N['js.artistAlt'])}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
           : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
         <div class="lineup-card-name">
           <span class="lineup-card-title">${esc(a.name)}</span>
@@ -389,7 +390,7 @@ async function loadGallery() {
     const itemHTML = items.map((item, i) => `
       <div class="gallery-item" data-index="${i}">
         <img src="${esc(item.image_path)}"
-             alt="${esc(captionOf(item)) || 'The Bohemians Festival'}"
+             alt="${esc(photoAlt(item))}"
              loading="${i < 4 ? 'eager' : 'lazy'}"
              decoding="async" />
         ${captionOf(item) ? `<div class="gallery-caption">${esc(captionOf(item))}</div>` : ''}
@@ -485,7 +486,7 @@ async function loadGallery() {
         <button class="gallery-lightbox-close" aria-label="${esc(I18N['js.closeImage'])}">✕</button>
         ${multi ? `<button class="gallery-lightbox-prev" aria-label="${esc(I18N['js.prevImage'])}">&#8249;</button>` : ''}
         <div class="gallery-lightbox-img-wrap">
-          <img src="${esc(item.image_path)}" alt="${esc(captionOf(item)) || 'The Bohemians Festival'}" />
+          <img src="${esc(item.image_path)}" alt="${esc(photoAlt(item))}" />
           ${captionOf(item) ? `<p class="gallery-lightbox-caption">${esc(captionOf(item))}</p>` : ''}
         </div>
         ${multi ? `<button class="gallery-lightbox-next" aria-label="${esc(I18N['js.nextImage'])}">&#8250;</button>` : ''}

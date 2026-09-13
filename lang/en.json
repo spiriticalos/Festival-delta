@@ -184,6 +184,8 @@
   "js.prevImage": "Previous image",
   "js.nextImage": "Next image",
   "js.close": "Close",
+  "js.photoAltSuffix": "The Bohemians Festival, Danube Delta",
+  "js.artistAlt": "artist at The Bohemians Festival 2026",
   "email.subject": "You're on the list — The Bohemians Festival 2027",
   "email.text": "Thank you for subscribing. You'll be the first to know when we announce the 2027 dates, lineup and tickets.\n\nSee you at the Delta,\nThe Bohemians Team",
   "email.html": "<p>Thank you for subscribing.</p><p>You'll be the first to know when we announce the 2027 dates, lineup and tickets.</p><p>See you at the Delta,<br><strong>The Bohemians Team</strong></p>"
