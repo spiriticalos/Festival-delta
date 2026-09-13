@@ -12,6 +12,7 @@ const nodemailer   = require('nodemailer');
 const helmet       = require('helmet');
 const db           = require('./db');
 const i18n         = require('./i18n');
+const llms         = require('./llms');
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
@@ -219,6 +220,19 @@ app.use((req, res, next) => {
 });
 app.get(['/', '/index.html'], sendPage('en'));
 app.get(['/ro/', '/ro/index.html'], sendPage('ro'));
+
+// llms.txt / llms-full.txt for AI crawlers, generated from the same texts as the pages
+function artistNames() {
+  try { return db.prepare('SELECT name FROM artists ORDER BY name ASC').all().map(a => a.name); }
+  catch (e) { return []; }
+}
+const sendText = build => (req, res) =>
+  res.set('Cache-Control', 'public, max-age=0').type('text/plain; charset=utf-8').send(build());
+
+app.get('/llms.txt',          sendText(() => llms.summary('en', artistNames())));
+app.get('/ro/llms.txt',       sendText(() => llms.summary('ro', artistNames())));
+app.get('/llms-full.txt',     sendText(() => llms.full('en', lineupHtml())));
+app.get('/ro/llms-full.txt',  sendText(() => llms.full('ro', lineupHtml())));
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0 }));
 

@@ -4,6 +4,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { LANGS, STRINGS, TEMPLATE, PLACEHOLDER, render } = require('../i18n');
+const llms = require('../llms');
 
 const ROOT   = path.join(__dirname, '..');
 const read   = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -28,8 +29,11 @@ for (const k of Object.keys(en)) {
 }
 
 // 3. Every key used by the template exists; every key is used somewhere
-const used = new Set([...TEMPLATE.matchAll(PLACEHOLDER)].filter(m => m[1] !== 'active').map(m => m[2]));
+const llmsTemplate = l => read(`views/llms.${l}.md`);
+const used = new Set([TEMPLATE, llmsTemplate('en'), llmsTemplate('ro')]
+  .flatMap(tpl => [...tpl.matchAll(PLACEHOLDER)].filter(m => m[1] !== 'active').map(m => m[2])));
 used.delete('i18nJson');
+used.delete('lineupList');
 for (const k of used) if (!(k in en)) errors.push(`views/index.html uses unknown key "${k}"`);
 const code = read('public/js/main.js') + read('server.js');
 for (const k of Object.keys(en)) {
@@ -66,6 +70,26 @@ for (const l of LANGS) {
     if (!html.includes(`<html lang="${l}">`)) errors.push(`The ${l} page does not declare <html lang="${l}">`);
   } catch (e) {
     errors.push(`Rendering the ${l} page failed: ${e.message}`);
+  }
+}
+
+// 6. llms.txt summaries: EN and RO templates have the same placeholders and the same shape
+const placeholders = s => [...s.matchAll(PLACEHOLDER)].map(m => m[0]).sort().join(' ');
+const shape = s => s.split('\n').map(l => (l.match(/^(#+ |- |> )/) || [''])[0]).join('');
+if (placeholders(llmsTemplate('en')) !== placeholders(llmsTemplate('ro'))) {
+  errors.push('views/llms.en.md and views/llms.ro.md use different placeholders');
+}
+if (shape(llmsTemplate('en')) !== shape(llmsTemplate('ro'))) {
+  errors.push('views/llms.en.md and views/llms.ro.md have a different structure (headings / bullets)');
+}
+for (const l of LANGS) {
+  try {
+    const s = llms.summary(l, ['Test Artist']);
+    const f = llms.full(l);
+    if (s.includes('{{') || f.includes('{{')) errors.push(`Unrendered placeholder left in the ${l} llms files`);
+    if ((f.match(/^### /gm) || []).length < 6) errors.push(`llms-full (${l}) lost its FAQ — check htmlToMarkdown in llms.js`);
+  } catch (e) {
+    errors.push(`Rendering the ${l} llms files failed: ${e.message}`);
   }
 }
 
