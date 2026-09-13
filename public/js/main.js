@@ -72,15 +72,20 @@ function animateDigit(el, newVal) {
 
 function pad(n) { return String(n).padStart(2, '0'); }
 
+let cdInterval = null;
+
 function tick() {
   const now  = new Date();
   const diff = TARGET - now;
 
+  // Past festival_date → hide countdown until admin sets the next edition's date
   if (diff <= 0) {
-    cdWrap.innerHTML = '<p class="countdown-done">See you there.</p>';
+    cdWrap.style.display = 'none';
     clearInterval(cdInterval);
+    cdInterval = null;
     return;
   }
+  cdWrap.style.display = '';
 
   animateDigit(elDays,  pad(Math.floor(diff / 864e5)));
   animateDigit(elHours, pad(Math.floor((diff / 36e5) % 24)));
@@ -93,8 +98,12 @@ function tick() {
   el.style.transition = 'transform 0.15s ease, opacity 0.15s ease';
 });
 
-const cdInterval = setInterval(tick, 1000);
-tick();
+function startCountdown() {
+  tick();
+  if (TARGET > new Date() && !cdInterval) cdInterval = setInterval(tick, 1000);
+}
+
+startCountdown();
 
 // ── Scroll animations — IntersectionObserver ───────────────
 const observerCfg = { threshold: 0.15 };
@@ -246,6 +255,7 @@ async function loadSettings() {
     // Update countdown target from settings
     if (s.festival_date) {
       TARGET = new Date(s.festival_date);
+      startCountdown();
     }
 
     // Early bird badge

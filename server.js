@@ -317,9 +317,9 @@ app.post('/api/subscribe', subscribeLimit, (req, res) => {
       mailer.sendMail({
         from:    `"The Bohemians Festival" <${process.env.SMTP_USER}>`,
         to:      email,
-        subject: 'You\'re on the list — The Bohemians Festival 2026',
-        text:    'Thank you for subscribing. You\'ll be the first to know when we announce the artists.\n\nSee you at the Delta,\nThe Bohemians Team',
-        html:    `<p>Thank you for subscribing.</p><p>You'll be the first to know when we announce the artists.</p><p>See you at the Delta,<br><strong>The Bohemians Team</strong></p>`,
+        subject: 'You\'re on the list — The Bohemians Festival 2027',
+        text:    'Thank you for subscribing. You\'ll be the first to know when we announce the 2027 dates, lineup and tickets.\n\nSee you at the Delta,\nThe Bohemians Team',
+        html:    `<p>Thank you for subscribing.</p><p>You'll be the first to know when we announce the 2027 dates, lineup and tickets.</p><p>See you at the Delta,<br><strong>The Bohemians Team</strong></p>`,
       }).catch(() => {}); // fire and forget — never block the response
     }
   });
@@ -429,7 +429,8 @@ app.get('/api/db/backup', isAdmin, async (req, res) => {
 
 // ── Countdown image (used in newsletter emails) ─────────────
 app.get('/countdown.png', async (req, res) => {
-  const target = new Date('2026-06-18T12:00:00+03:00');
+  const row    = db.prepare("SELECT value FROM settings WHERE key = 'festival_date'").get();
+  const target = new Date(row ? row.value : 0);
   const diff   = Math.max(0, target - Date.now());
   const days   = Math.floor(diff / 86400000);
   const hours  = Math.floor((diff % 86400000) / 3600000);

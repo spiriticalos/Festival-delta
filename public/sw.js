@@ -1,11 +1,11 @@
-const CACHE = 'bohemians-v4';
+const CACHE = 'bohemians-v5';
 const STATIC = [
   '/',
   '/css/style.css?v=20260621',
-  '/js/main.js?v=20260621-2',
+  '/js/main.js?v=20260913',
   '/images/hero-bg.webp',
   '/images/hero-bg-mobile.webp',
-  '/images/baza-4-transparent.webp',
+  '/images/baza-5-transparent.webp',
   '/images/sun-icon.svg',
   '/images/pwa-icon-192.png',
 ];
