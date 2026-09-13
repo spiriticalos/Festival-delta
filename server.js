@@ -189,6 +189,30 @@ app.use('/images', express.static(path.join(__dirname, 'public/images'), {
 }));
 app.use('/css', express.static(path.join(__dirname, 'public/css'), { maxAge: '7d' }));
 app.use('/js',  express.static(path.join(__dirname, 'public/js'),  { maxAge: '7d' }));
+// Homepage with the lineup server-rendered, so crawlers that don't run JS (AI bots) see artist names
+const INDEX_HTML = fs.readFileSync(path.join(__dirname, 'public/index.html'), 'utf8');
+const escHtml = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+app.get(['/', '/index.html'], (req, res) => {
+  let html = INDEX_HTML;
+  try {
+    const artists = db.prepare('SELECT name, image_path FROM artists ORDER BY name ASC').all();
+    if (artists.length) {
+      const cards = artists.map(a => `
+          <div class="lineup-card lineup-card--artist">
+            ${a.image_path
+              ? `<img src="${escHtml(a.image_path)}" alt="${escHtml(a.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
+              : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
+            <div class="lineup-card-name"><span class="lineup-card-title">${escHtml(a.name)}</span></div>
+          </div>`).join('');
+      html = html.replace(/<!--lineup:start-->[\s\S]*?<!--lineup:end-->/, cards);
+    }
+  } catch (e) {
+    // DB unavailable — serve placeholders, JS will retry
+  }
+  res.set('Cache-Control', 'public, max-age=0').type('html').send(html);
+});
+
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0 }));
 
 // ── isAdmin middleware ──────────────────────────────────────
