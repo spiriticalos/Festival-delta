@@ -1002,6 +1002,47 @@ body {
   margin-right: auto;
 }
 
+.editia-review-btn {
+  display: inline-block;
+  margin-top: 40px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 40px auto 0;
+  text-align: left;
+}
+
+.review-card {
+  background: var(--bg);
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(42, 24, 16, 0.1);
+}
+
+.review-card-rating {
+  color: var(--orange);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.review-card-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.review-card-author {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 .editia-sub {
   font-family: 'Playfair Display', serif;
   font-style: italic;

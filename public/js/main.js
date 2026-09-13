@@ -93,8 +93,8 @@ function tick() {
   el.style.transition = 'transform 0.15s ease, opacity 0.15s ease';
 });
 
-tick();
 const cdInterval = setInterval(tick, 1000);
+tick();
 
 // ── Scroll animations — IntersectionObserver ───────────────
 const observerCfg = { threshold: 0.15 };
@@ -314,6 +314,46 @@ async function loadAnnouncements() {
   }
 }
 
+// ── c2) Reviews ─────────────────────────────────────────────
+async function loadReviews() {
+  try {
+    const data = await fetch('/api/reviews').then(r => r.json());
+    const grid = document.getElementById('reviews-grid');
+    if (!grid || !data.reviews || !data.reviews.length) return;
+
+    grid.innerHTML = data.reviews.map(rv => `
+      <div class="review-card">
+        <div class="review-card-rating">${'★'.repeat(rv.rating)}${'☆'.repeat(5 - rv.rating)}</div>
+        <p class="review-card-text">${esc(rv.text)}</p>
+        <p class="review-card-author">${esc(rv.author)} · ${esc(rv.time)}</p>
+      </div>
+    `).join('');
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: 'The Bohemians Festival',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: data.rating,
+        reviewCount: data.total
+      },
+      review: data.reviews.map(rv => ({
+        '@type': 'Review',
+        author: { '@type': 'Person', name: rv.author },
+        reviewRating: { '@type': 'Rating', ratingValue: rv.rating, bestRating: 5 },
+        reviewBody: rv.text
+      }))
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  } catch (e) {
+    // reviews unavailable
+  }
+}
+
 // ── d) Gallery ─────────────────────────────────────────────
 async function loadGallery() {
   try {
@@ -520,4 +560,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadArtists();
   loadAnnouncements();
   loadGallery();
+  loadReviews();
 });

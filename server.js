@@ -263,6 +263,40 @@ app.get('/api/announcements/active', (req, res) => {
   res.json(db.prepare('SELECT * FROM announcements WHERE active = 1 ORDER BY created_at DESC').all());
 });
 
+let reviewsCache = { data: null, ts: 0 };
+const REVIEWS_CACHE_MS = 24 * 60 * 60 * 1000;
+
+app.get('/api/reviews', async (req, res) => {
+  const { GOOGLE_PLACES_API_KEY, GOOGLE_PLACE_ID } = process.env;
+  if (!GOOGLE_PLACES_API_KEY || !GOOGLE_PLACE_ID) {
+    return res.json({ rating: null, total: 0, reviews: [] });
+  }
+
+  if (reviewsCache.data && Date.now() - reviewsCache.ts < REVIEWS_CACHE_MS) {
+    return res.json(reviewsCache.data);
+  }
+
+  try {
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${GOOGLE_PLACE_ID}&fields=rating,user_ratings_total,reviews&key=${GOOGLE_PLACES_API_KEY}`;
+    const json = await fetch(url).then(r => r.json());
+    const result = json.result || {};
+    const data = {
+      rating: result.rating || null,
+      total: result.user_ratings_total || 0,
+      reviews: (result.reviews || []).map(rv => ({
+        author: rv.author_name,
+        rating: rv.rating,
+        text: rv.text,
+        time: rv.relative_time_description
+      }))
+    };
+    reviewsCache = { data, ts: Date.now() };
+    res.json(data);
+  } catch (e) {
+    res.json(reviewsCache.data || { rating: null, total: 0, reviews: [] });
+  }
+});
+
 app.get('/api/settings', (req, res) => {
   const rows = db.prepare('SELECT * FROM settings').all();
   const obj  = {};
