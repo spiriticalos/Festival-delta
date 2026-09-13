@@ -2,6 +2,11 @@
 // THE BOHEMIANS FESTIVAL 2026 — main.js
 // ══════════════════════════════════════════════════════════
 
+// ── Language (strings come from lang/*.json via window.I18N) ─
+const LANG = document.documentElement.lang === 'ro' ? 'ro' : 'en';
+const I18N = window.I18N || {};
+const captionOf = item => (LANG === 'ro' && item.caption_ro) || item.caption;
+
 // ── Navbar scroll + Back to top + Scroll progress ──────────
 const navbar       = document.getElementById('navbar');
 const backToTop    = document.getElementById('backToTop');
@@ -163,21 +168,21 @@ if (emailBtn) {
       const res  = await fetch('/api/subscribe', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ email: val }),
+        body:    JSON.stringify({ email: val, lang: LANG }),
       });
       const data = await res.json();
       if (data.success) {
         const p    = document.createElement('p');
         p.className   = 'email-success';
-        p.textContent = '✓ You\'re on the list.';
+        p.textContent = I18N['js.subscribed'];
         document.getElementById('emailForm').replaceWith(p);
       } else {
         emailBtn.disabled    = false;
-        emailBtn.textContent = 'Notify Me';
+        emailBtn.textContent = I18N['js.notifyMe'];
       }
     } catch {
       emailBtn.disabled    = false;
-      emailBtn.textContent = 'Notify Me';
+      emailBtn.textContent = I18N['js.notifyMe'];
     }
   });
 }
@@ -310,8 +315,8 @@ async function loadAnnouncements() {
 
     const banner = document.getElementById('ann-banner');
     banner.innerHTML = `
-      <span>${esc(ann.title)}</span>
-      <button class="ann-dismiss" aria-label="Închide">✕</button>
+      <span>${esc((LANG === 'ro' && ann.title_ro) || ann.title)}</span>
+      <button class="ann-dismiss" aria-label="${esc(I18N['js.close'])}">✕</button>
     `;
     banner.style.display = 'block';
 
@@ -372,7 +377,7 @@ async function loadGallery() {
     if (!grid) return;
 
     if (!items.length) {
-      grid.innerHTML = '<p class="gallery-empty">Photos coming soon.</p>';
+      grid.innerHTML = `<p class="gallery-empty">${esc(I18N['js.galleryEmpty'])}</p>`;
       return;
     }
 
@@ -384,10 +389,10 @@ async function loadGallery() {
     const itemHTML = items.map((item, i) => `
       <div class="gallery-item" data-index="${i}">
         <img src="${esc(item.image_path)}"
-             alt="${esc(item.caption) || 'The Bohemians Festival'}"
+             alt="${esc(captionOf(item)) || 'The Bohemians Festival'}"
              loading="${i < 4 ? 'eager' : 'lazy'}"
              decoding="async" />
-        ${item.caption ? `<div class="gallery-caption">${esc(item.caption)}</div>` : ''}
+        ${captionOf(item) ? `<div class="gallery-caption">${esc(captionOf(item))}</div>` : ''}
       </div>
     `).join('');
 
@@ -462,7 +467,7 @@ async function loadGallery() {
         lightbox.className = 'gallery-lightbox';
         lightbox.setAttribute('role', 'dialog');
         lightbox.setAttribute('aria-modal', 'true');
-        lightbox.setAttribute('aria-label', 'Gallery image viewer');
+        lightbox.setAttribute('aria-label', I18N['js.galleryViewer']);
         document.body.appendChild(lightbox);
         requestAnimationFrame(() => lightbox.classList.add('open'));
         document.body.style.overflow = 'hidden';
@@ -477,13 +482,13 @@ async function loadGallery() {
       }
 
       lightbox.innerHTML = `
-        <button class="gallery-lightbox-close" aria-label="Închide lightbox">✕</button>
-        ${multi ? `<button class="gallery-lightbox-prev" aria-label="Imaginea anterioară">&#8249;</button>` : ''}
+        <button class="gallery-lightbox-close" aria-label="${esc(I18N['js.closeImage'])}">✕</button>
+        ${multi ? `<button class="gallery-lightbox-prev" aria-label="${esc(I18N['js.prevImage'])}">&#8249;</button>` : ''}
         <div class="gallery-lightbox-img-wrap">
-          <img src="${esc(item.image_path)}" alt="${esc(item.caption) || 'The Bohemians Festival'}" />
-          ${item.caption ? `<p class="gallery-lightbox-caption">${esc(item.caption)}</p>` : ''}
+          <img src="${esc(item.image_path)}" alt="${esc(captionOf(item)) || 'The Bohemians Festival'}" />
+          ${captionOf(item) ? `<p class="gallery-lightbox-caption">${esc(captionOf(item))}</p>` : ''}
         </div>
-        ${multi ? `<button class="gallery-lightbox-next" aria-label="Imaginea următoare">&#8250;</button>` : ''}
+        ${multi ? `<button class="gallery-lightbox-next" aria-label="${esc(I18N['js.nextImage'])}">&#8250;</button>` : ''}
         ${multi ? `<span class="gallery-lightbox-counter" aria-live="polite">${current + 1} / ${items.length}</span>` : ''}
       `;
       // Move focus to close button after render

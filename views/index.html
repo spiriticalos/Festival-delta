@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{a:meta.lang}}">
 <head>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -11,22 +11,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>The Bohemians: Bohemian Music Festival 2027 · Danube Delta</title>
-  <meta name="description" content="The Bohemians Festival 2027 — boutique house, deep house & tech house festival in the Danube Delta. 5th edition, June 2027, Sfântu Gheorghe, Romania. Join the list for dates & early tickets." />
+  <title>{{meta.title}}</title>
+  <meta name="description" content="{{a:meta.description}}" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://thebohemiansociety.ro/" />
+  <link rel="canonical" href="{{a:meta.canonical}}" />
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly summary" />
+  <link rel="alternate" hreflang="en" href="https://thebohemiansociety.ro/" />
+  <link rel="alternate" hreflang="ro" href="https://thebohemiansociety.ro/ro/" />
+  <link rel="alternate" hreflang="x-default" href="https://thebohemiansociety.ro/" />
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website" />
-  <meta property="og:title"       content="The Bohemians: Bohemian Music Festival 2027 · Danube Delta" />
-  <meta property="og:description" content="Boutique house, deep house & tech house festival in the Danube Delta — wild nature, intimate stages, where the river meets the sea. 5th edition · June 2027." />
+  <meta property="og:title"       content="{{a:meta.title}}" />
+  <meta property="og:description" content="{{a:meta.ogDescription}}" />
   <meta property="og:image"       content="https://thebohemiansociety.ro/images/bohemians-social-preview.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:url"         content="https://thebohemiansociety.ro/" />
-  <meta property="og:locale"      content="en_GB" />
-  <meta property="og:locale:alternate" content="ro_RO" />
+  <meta property="og:url"         content="{{a:meta.canonical}}" />
+  <meta property="og:locale"      content="{{a:meta.ogLocale}}" />
+  <meta property="og:locale:alternate" content="{{a:meta.ogLocaleAlt}}" />
 
   <!-- Geo targeting -->
   <meta name="geo.region"    content="RO-TL" />
@@ -36,8 +39,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="The Bohemians: Bohemian Music Festival 2027 · Danube Delta" />
-  <meta name="twitter:description" content="House, deep house & tech house festival in the Danube Delta — where the river meets the sea. 5th edition · June 2027." />
+  <meta name="twitter:title"       content="{{a:meta.title}}" />
+  <meta name="twitter:description" content="{{a:meta.twitterDescription}}" />
   <meta name="twitter:image"       content="https://thebohemiansociety.ro/images/bohemians-social-preview.jpg" />
 
   <!-- Schema.org Event -->
@@ -89,7 +92,7 @@
       "name": "Cyclic Agency",
       "url": "https://www.cyclic.ro/events/"
     },
-    "description": "House, deep house and tech house festival in Sfântu Gheorghe, Danube Delta. 18–21 June 2026. Limited capacity."
+    "description": "{{j:schema.eventDescription}}"
   }
   </script>
 
@@ -101,50 +104,50 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "How do I get to the festival?",
+        "name": "{{j:faq.q1}}",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "By car or bus to Murighiol or Tulcea, then by boat to Sfântu Gheorghe (45–90 min). Full details in the Venue section of the website."
+          "text": "{{j:schema.faqA1}}"
         }
       },
       {
         "@type": "Question",
-        "name": "Does the ticket include accommodation?",
+        "name": "{{j:faq.q2}}",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. The festival ticket is separate from accommodation. Options include Green Village Resort, Green Dolphin Wooden Houses, and Green Dolphin Camping."
+          "text": "{{j:schema.faqA2}}"
         }
       },
       {
         "@type": "Question",
-        "name": "What is the minimum age?",
+        "name": "{{j:faq.q3}}",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "18 years old by the date of the festival."
+          "text": "{{j:schema.faqA3}}"
         }
       },
       {
         "@type": "Question",
-        "name": "Can I come with a tent?",
+        "name": "{{j:faq.q4}}",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Green Dolphin Camping has 500 spots. Booking details for 2027 will be announced together with the festival dates."
+          "text": "{{j:schema.faqA4}}"
         }
       },
       {
         "@type": "Question",
-        "name": "Is it safe to come alone?",
+        "name": "{{j:faq.q5}}",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. The festival has a curated crowd, discreet security, and a community that respects each other. After four editions, the safety of attendees remains our top priority."
+          "text": "{{j:schema.faqA5}}"
         }
       },
       {
         "@type": "Question",
-        "name": "When do tickets for 2027 go on sale?",
+        "name": "{{j:faq.q6}}",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Dates and tickets for the 5th edition will be announced soon. Join the mailing list on the website to hear first and get early access."
+          "text": "{{j:schema.faqA6}}"
         }
       }
     ]
@@ -160,7 +163,7 @@
     "alternateName": "The Bohemians Society",
     "url": "https://thebohemiansociety.ro/",
     "logo": "https://thebohemiansociety.ro/images/baza-5-transparent.png",
-    "description": "Boutique house, deep house and tech house music festival in the Danube Delta, Romania.",
+    "description": "{{j:schema.orgDescription}}",
     "sameAs": [
       "https://www.instagram.com/the_bohemian_society/",
       "https://www.facebook.com/theBohemiansSociety"
@@ -184,7 +187,7 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
-  <link rel="stylesheet" href="/css/style.css?v=20260913" />
+  <link rel="stylesheet" href="/css/style.css?v=20260914" />
 
   <!-- Favicon & PWA -->
   <link rel="icon" href="/images/sun-icon.svg" type="image/svg+xml" />
@@ -206,7 +209,7 @@
   <!-- End Google Tag Manager (noscript) -->
 
   <div id="scroll-progress" aria-hidden="true"></div>
-  <a href="#main" class="skip-to-main">Skip to main content</a>
+  <a href="#main" class="skip-to-main">{{nav.skip}}</a>
 
   <!-- ═══════════════════════════════════════════
        NAVBAR
@@ -216,31 +219,33 @@
       <a href="#" class="nav-logo">THE BOHEMIANS</a>
 
       <ul class="nav-links">
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#venue">Venue</a></li>
-        <li><a href="#cazare">Accommodation</a></li>
-        <li><a href="#activitati">Activities</a></li>
-        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#experience">{{nav.experience}}</a></li>
+        <li><a href="#venue">{{nav.venue}}</a></li>
+        <li><a href="#cazare">{{nav.accommodation}}</a></li>
+        <li><a href="#activitati">{{nav.activities}}</a></li>
+        <li><a href="#gallery">{{nav.gallery}}</a></li>
         <li><a href="#editia-trecuta">2025</a></li>
+        <li class="nav-lang"><a href="/" hreflang="en" lang="en" class="{{active:en}}">EN</a><span aria-hidden="true">/</span><a href="/ro/" hreflang="ro" lang="ro" class="{{active:ro}}">RO</a></li>
         <li>
-          <a href="#contact" class="btn-buy nav-cta">Join the List</a>
+          <a href="#contact" class="btn-buy nav-cta">{{nav.cta}}</a>
         </li>
       </ul>
 
-      <button class="nav-hamburger" id="hamburger" aria-label="Meniu">&#9776;</button>
+      <button class="nav-hamburger" id="hamburger" aria-label="{{a:nav.menu}}">&#9776;</button>
     </div>
 
     <!-- Mobile dropdown -->
     <div class="nav-mobile" id="navMobile">
       <ul>
-        <li><a href="#experience" class="nav-mobile-link">Experience</a></li>
-        <li><a href="#venue"      class="nav-mobile-link">Venue</a></li>
-        <li><a href="#cazare"     class="nav-mobile-link">Accommodation</a></li>
-        <li><a href="#activitati"     class="nav-mobile-link">Activities</a></li>
-        <li><a href="#gallery"        class="nav-mobile-link">Gallery</a></li>
+        <li><a href="#experience" class="nav-mobile-link">{{nav.experience}}</a></li>
+        <li><a href="#venue"      class="nav-mobile-link">{{nav.venue}}</a></li>
+        <li><a href="#cazare"     class="nav-mobile-link">{{nav.accommodation}}</a></li>
+        <li><a href="#activitati"     class="nav-mobile-link">{{nav.activities}}</a></li>
+        <li><a href="#gallery"        class="nav-mobile-link">{{nav.gallery}}</a></li>
         <li><a href="#editia-trecuta" class="nav-mobile-link">2025</a></li>
+        <li class="nav-lang nav-lang--mobile"><a href="/" hreflang="en" lang="en" class="{{active:en}}">EN</a><span aria-hidden="true">/</span><a href="/ro/" hreflang="ro" lang="ro" class="{{active:ro}}">RO</a></li>
         <li>
-          <a href="#contact" class="btn-buy nav-mobile-btn">Join the List</a>
+          <a href="#contact" class="btn-buy nav-mobile-btn">{{nav.cta}}</a>
         </li>
       </ul>
     </div>
@@ -265,7 +270,7 @@
         <circle cx="80" cy="80" r="68" fill="none" stroke="#D0B9A7" stroke-width="0.7" stroke-dasharray="2 5" opacity="0.55"/>
         <circle cx="80" cy="80" r="46" fill="none" stroke="#D0B9A7" stroke-width="0.7" opacity="0.45"/>
         <text font-family="DM Sans, sans-serif" font-size="7.8" letter-spacing="3.2" fill="#D0B9A7" opacity="0.85">
-          <textPath href="#seal-text-path" startOffset="2%">EDIȚIA V · SFÂNTU GHEORGHE · DELTA · 2027 ·</textPath>
+          <textPath href="#seal-text-path" startOffset="2%">{{hero.seal}}</textPath>
         </text>
         <g transform="translate(80,72)">
           <line x1="0" y1="-22" x2="0" y2="-16" stroke="#D0B9A7" stroke-width="1.4" stroke-linecap="round" opacity="0.85"/>
@@ -284,38 +289,38 @@
     </div>
 
     <div class="hero-content">
-      <h1 class="sr-only">The Bohemians — Music &amp; Travel Festival 2027</h1>
-      <div id="hero-early-bird" style="display:none;" class="hero-early-bird"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> Early Bird Active</div>
+      <h1 class="sr-only">{{hero.h1}}</h1>
+      <div id="hero-early-bird" style="display:none;" class="hero-early-bird"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> {{hero.earlyBird}}</div>
 
       <picture>
         <source srcset="/images/baza-5-transparent.webp" type="image/webp" />
-        <img src="/images/baza-5-transparent.png" alt="The Bohemians Festival logo — Bohemian Music Festival in the Danube Delta" class="hero-logo-overlay" width="800" height="292" />
+        <img src="/images/baza-5-transparent.png" alt="{{a:hero.logoAlt}}" class="hero-logo-overlay" width="800" height="292" />
       </picture>
-      <p class="hero-tagline">The most unique festival experience in the Danube Delta.</p>
+      <p class="hero-tagline">{{hero.tagline}}</p>
 
     </div>
 
     <div class="hero-bottom">
       <a href="#contact" class="btn-buy btn-buy--hero">
-        Join the List
+        {{nav.cta}}
       </a>
-<p class="hero-note"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> Limited Capacity · Boat Access Only</p>
+<p class="hero-note"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> {{hero.note}}</p>
       <!-- Countdown (shown by JS only while festival_date is in the future) -->
-      <p class="hero-date">5th Edition · June 2027 · Dates Soon</p>
+      <p class="hero-date">{{hero.date}}</p>
       <div class="countdown" id="countdown" style="display:none;"
-           role="timer" aria-label="Countdown to The Bohemians Festival"
+           role="timer" aria-label="{{a:hero.countdownLabel}}"
            aria-live="off">
         <div class="cd-card">
           <span class="cd-num" id="cd-days">00</span>
-          <span class="cd-label">Days</span>
+          <span class="cd-label">{{hero.days}}</span>
         </div>
         <div class="cd-card">
           <span class="cd-num" id="cd-hours">00</span>
-          <span class="cd-label">Hours</span>
+          <span class="cd-label">{{hero.hours}}</span>
         </div>
         <div class="cd-card">
           <span class="cd-num" id="cd-mins">00</span>
-          <span class="cd-label">Minutes</span>
+          <span class="cd-label">{{hero.minutes}}</span>
         </div>
       </div>
     </div>
@@ -338,20 +343,20 @@
 
         <div class="strip-col">
           <div class="strip-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-          <h3 class="strip-title">Wild Delta</h3>
-          <p class="strip-text">Endless beach, canals, water lilies and sunsets straight into the sea.</p>
+          <h3 class="strip-title">{{strip.t1}}</h3>
+          <p class="strip-text">{{strip.d1}}</p>
         </div>
 
         <div class="strip-col">
           <div class="strip-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-          <h3 class="strip-title">Curated Music</h3>
-          <p class="strip-text">Handpicked electronic music. No compromises on the lineup.</p>
+          <h3 class="strip-title">{{strip.t2}}</h3>
+          <p class="strip-text">{{strip.d2}}</p>
         </div>
 
         <div class="strip-col">
           <div class="strip-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-          <h3 class="strip-title">Small Crowd, Big Vibe</h3>
-          <p class="strip-text">500 people who know exactly why they came.</p>
+          <h3 class="strip-title">{{strip.t3}}</h3>
+          <p class="strip-text">{{strip.d3}}</p>
         </div>
 
       </div>
@@ -363,8 +368,8 @@
     ════════════════════════════════════════════ -->
     <section class="gallery" id="gallery">
       <div class="container">
-        <p class="gallery-label">Moments</p>
-        <h2 class="section-heading">Gallery</h2>
+        <p class="gallery-label">{{gallery.label}}</p>
+        <h2 class="section-heading">{{nav.gallery}}</h2>
       </div>
       <div class="gallery-stage">
         <div class="gallery-marquee-wrap">
@@ -377,8 +382,8 @@
           <div class="gallery-marquee" id="gallery-grid"></div>
         </div>
         <div class="gallery-overlay-text" aria-hidden="true">
-          <p>Hidden Boutique</p>
-          <p>Festival in Danube Delta</p>
+          <p>{{gallery.overlay1}}</p>
+          <p>{{gallery.overlay2}}</p>
         </div>
       </div>
     </section>
@@ -388,9 +393,9 @@
     ════════════════════════════════════════════ -->
     <section class="editia-trecuta" id="editia-trecuta">
       <div class="container">
-        <p class="editia-label">3rd Edition · 2025</p>
-        <h2 class="section-heading">How It Was</h2>
-        <p class="editia-sub">If you weren't there, here's what you missed. If you were, you know why you're coming back.</p>
+        <p class="editia-label">{{past.label}}</p>
+        <h2 class="section-heading">{{past.heading}}</h2>
+        <p class="editia-sub">{{past.sub}}</p>
 
         <!-- Video lightbox trigger -->
         <div class="video-thumb" id="videoThumb">
@@ -398,12 +403,12 @@
             <source type="image/webp" srcset="/images/aftermovie-2025-thumbnail.webp" />
             <img
               src="/images/aftermovie-2025-thumbnail.jpg"
-              alt="Aftermovie video — The Bohemians Festival 2025 in the Danube Delta"
+              alt="{{a:past.videoAlt}}"
               loading="lazy"
               width="1280" height="720"
               class="video-thumb-img" />
           </picture>
-          <button class="video-play-btn" aria-label="Play video">
+          <button class="video-play-btn" aria-label="{{a:past.play}}">
             <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="32" cy="32" r="31" stroke="#fff" stroke-width="2" opacity="0.85"/>
               <polygon points="26,20 48,32 26,44" fill="#fff"/>
@@ -418,19 +423,19 @@
               id="videoIframe"
               src=""
               data-src="https://www.youtube-nocookie.com/embed/BAnWvS4GAW8?rel=0&playsinline=1"
-              title="The Bohemians Festival 2025"
+              title="{{a:past.videoTitle}}"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
               allowfullscreen>
             </iframe>
           </div>
-          <button class="video-lightbox-close" id="videoClose" aria-label="Închide">
-            ✕ &nbsp;Close
+          <button class="video-lightbox-close" id="videoClose" aria-label="{{a:past.close}}">
+            ✕ &nbsp;{{past.close}}
           </button>
         </div>
 
         <a href="https://g.page/r/CUHofIi7eWjmEAE/review"
            target="_blank" rel="noopener noreferrer"
-           class="btn-outline editia-review-btn">Leave us a review</a>
+           class="btn-outline editia-review-btn">{{past.review}}</a>
 
         <div class="reviews-grid" id="reviews-grid"></div>
       </div>
@@ -448,8 +453,8 @@
     ════════════════════════════════════════════ -->
     <section class="lineup" id="lineup">
       <div class="container">
-        <h2 class="section-heading" style="text-align:center;">Artists 2026</h2>
-        <p class="lineup-sub">Thank you for the 4th edition · 2027 Lineup Coming Soon</p>
+        <h2 class="section-heading" style="text-align:center;">{{lineup.heading}}</h2>
+        <p class="lineup-sub">{{lineup.sub}}</p>
 
         <div class="lineup-grid" id="lineup-grid"><!--lineup:start-->
           <div class="lineup-card"><span class="lineup-q">?</span></div>
@@ -464,7 +469,7 @@
           <a href="https://www.instagram.com/the_bohemian_society/"
              target="_blank" rel="noopener noreferrer"
              class="btn-outline">Instagram</a>
-          <span class="lineup-social-text">Follow us for announcements</span>
+          <span class="lineup-social-text">{{lineup.follow}}</span>
           <a href="https://www.facebook.com/theBohemiansSociety"
              target="_blank" rel="noopener noreferrer"
              class="btn-outline">Facebook</a>
@@ -485,26 +490,26 @@
                           /images/uploads/bohemians-escape-stage-lights-night.webp 1200w"
                   sizes="(max-width: 768px) 100vw, 50vw" />
           <img src="/images/uploads/bohemians-escape-stage-lights-night.webp"
-               alt="Outdoor festival stage with red lights at night during The Bohemians Festival in the Danube Delta" loading="lazy"
+               alt="{{a:split.escapeAlt}}" loading="lazy"
                width="1200" height="900" />
         </picture>
       </div>
       <div class="split-text" style="background:#bda48f;">
-        <p class="split-label">01 / Escape</p>
-        <h2 class="section-heading">Escape</h2>
-        <p class="split-body">No cities. No noise. No rush.</p>
-        <p class="split-body">Just nature, rhythm, and space.</p>
-        <p class="split-italic">Electronic music, deep in the Danube Delta.</p>
+        <p class="split-label">{{split.escapeLabel}}</p>
+        <h2 class="section-heading">{{split.escapeHeading}}</h2>
+        <p class="split-body">{{split.escapeBody1}}</p>
+        <p class="split-body">{{split.escapeBody2}}</p>
+        <p class="split-italic">{{split.escapeItalic}}</p>
       </div>
     </section>
 
     <!-- B — Nature (text stânga) -->
     <section class="split" id="experience-nature">
       <div class="split-text" style="background:var(--bg);">
-        <p class="split-label">02 / Nature</p>
-        <h2 class="section-heading">Nature</h2>
-        <p class="split-body">The Danube Delta is not a backdrop. It's the main character.</p>
-        <p class="split-italic">Dance between water, birds and sunsets.</p>
+        <p class="split-label">{{split.natureLabel}}</p>
+        <h2 class="section-heading">{{split.natureHeading}}</h2>
+        <p class="split-body">{{split.natureBody}}</p>
+        <p class="split-italic">{{split.natureItalic}}</p>
       </div>
       <div class="split-img">
         <picture>
@@ -513,7 +518,7 @@
                           /images/uploads/bohemians-nature-delta-terrace-river.webp 1200w"
                   sizes="(max-width: 768px) 100vw, 50vw" />
           <img src="/images/uploads/bohemians-nature-delta-terrace-river.webp"
-               alt="Wooden riverside terrace overlooking the Danube Delta at sunset" loading="lazy"
+               alt="{{a:split.natureAlt}}" loading="lazy"
                width="1200" height="900" />
         </picture>
       </div>
@@ -528,16 +533,16 @@
                           /images/uploads/bohemians-community-group-terrace-delta.webp 1200w"
                   sizes="(max-width: 768px) 100vw, 50vw" />
           <img src="/images/uploads/bohemians-community-group-terrace-delta.webp"
-               alt="Group of friends gathered on a riverside terrace during The Bohemians Festival in the Danube Delta" loading="lazy"
+               alt="{{a:split.communityAlt}}" loading="lazy"
                width="1200" height="900" />
         </picture>
       </div>
       <div class="split-text" style="background:#bda48f;">
-        <p class="split-label">03 / Community</p>
-        <h2 class="section-heading">Community</h2>
-        <p class="split-body">This is not a mass festival.</p>
-        <p class="split-body">It's a moment shared by a few hundred people choosing the same rhythm. And that changes everything.</p>
-        <p class="split-italic">Small crowd. Boutique experience.</p>
+        <p class="split-label">{{split.communityLabel}}</p>
+        <h2 class="section-heading">{{split.communityHeading}}</h2>
+        <p class="split-body">{{split.communityBody1}}</p>
+        <p class="split-body">{{split.communityBody2}}</p>
+        <p class="split-italic">{{split.communityItalic}}</p>
       </div>
     </section>
 
@@ -547,27 +552,23 @@
     <section class="about-cyclic">
       <div class="container">
         <div class="about-inner">
-          <p class="about-label">The Organiser</p>
-          <h2 class="section-heading">Who We Are</h2>
+          <p class="about-label">{{about.label}}</p>
+          <h2 class="section-heading">{{about.heading}}</h2>
           <p class="about-body about-questions">
-            Do you love art and beauty?<br/>
-            Is nature your home?<br/>
-            Are you longing for music, freedom, and connection?
+            {{about.questions}}
           </p>
           <p class="about-body">
-            Welcome to The Bohemians — a music &amp; travel festival set in one of the
-            wildest and most poetic places in Europe, right where the river meets the sea.
+            {{about.p1}}
           </p>
           <p class="about-body">
-            For four days and four nights, we gather a like-minded community to celebrate
-            music, nature, and the joy of being fully present.
+            {{about.p2}}
           </p>
           <p class="about-soul">
-            The kind of place you'll try to explain and fail.
+            {{about.soul}}
           </p>
           <hr class="about-divider" />
           <p class="about-contact">
-            Organised by <a href="https://www.cyclic.ro/events/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Cyclic Agency</a> · Director: Ionuț Hupca · <!--email_off-->ionut@cyclic.ro<!--/email_off-->
+            {{about.organisedBy}} <a href="https://www.cyclic.ro/events/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Cyclic Agency</a> · Director: Ionuț Hupca · <!--email_off-->ionut@cyclic.ro<!--/email_off-->
           </p>
         </div>
       </div>
@@ -580,39 +581,35 @@
     <section class="venue" id="venue">
       <div class="container">
 
-        <p class="venue-label">Location</p>
-        <h2 class="section-heading">Where Does the Festival Take Place?</h2>
-        <h3 class="venue-subheading">Sfântu Gheorghe, Danube Delta</h3>
+        <p class="venue-label">{{venue.label}}</p>
+        <h2 class="section-heading">{{venue.heading}}</h2>
+        <h3 class="venue-subheading">{{venue.subheading}}</h3>
         <p class="venue-body">
-          A fishing village at the end of the oldest arm of the Danube,
-          right where the river meets the Black Sea.
-          You can't get here by car. And that's exactly what makes it special.
+          {{venue.body}}
         </p>
 
-        <h4 class="venue-how-title">How to Get There?</h4>
+        <h4 class="venue-how-title">{{venue.howTitle}}</h4>
 
         <div class="venue-cards">
           <div class="venue-card">
             <div class="venue-card-icon"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h5 class="venue-card-title">By Car</h5>
+            <h5 class="venue-card-title">{{venue.carTitle}}</h5>
             <p class="venue-card-text">
-              Drive to Murighiol or Tulcea,
-              then take a boat transfer lasting 45 to 90 minutes.
+              {{venue.carText}}
             </p>
           </div>
 
           <div class="venue-card">
             <div class="venue-card-icon"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h5 class="venue-card-title">By Bus</h5>
+            <h5 class="venue-card-title">{{venue.busTitle}}</h5>
             <p class="venue-card-text">
-              Eurolines runs direct coaches to Murighiol.
-              From there, take a boat to Sfântu Gheorghe.
+              {{venue.busText}}
             </p>
           </div>
         </div>
 
         <p class="venue-boat-note">
-          "The boat ride isn't an inconvenience — it's the first part of the experience."
+          {{venue.boatNote}}
         </p>
 
 <iframe
@@ -621,7 +618,7 @@
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          title="Sfântu Gheorghe, Delta Dunării">
+          title="{{a:venue.mapTitle}}">
         </iframe>
 
       </div>
@@ -633,11 +630,10 @@
     <section class="cazare" id="cazare">
       <div class="container">
 
-        <p class="cazare-label">Where to Stay</p>
-        <h2 class="section-heading">Accommodation</h2>
+        <p class="cazare-label">{{stay.label}}</p>
+        <h2 class="section-heading">{{nav.accommodation}}</h2>
         <p class="cazare-intro">
-          The ticket does not include accommodation. Book directly with the venues below —
-          the partner booking code for 2027 will be announced together with the dates.
+          {{stay.intro}}
         </p>
 
         <div class="cazare-grid">
@@ -650,21 +646,20 @@
                                 /images/uploads/bohemians-green-village-resort-delta.webp 900w"
                         sizes="(max-width: 768px) 100vw, 33vw" />
                 <img src="/images/uploads/bohemians-green-village-resort-delta.webp"
-                     alt="Green Village Resort wooden cabins on the Danube Delta in Sfântu Gheorghe" loading="lazy"
+                     alt="{{a:stay.alt1}}" loading="lazy"
                      width="900" height="600" />
               </picture>
             </div>
             <div class="cazare-content">
-              <span class="cazare-tag">4-Star Resort</span>
+              <span class="cazare-tag">{{stay.tag1}}</span>
               <h3 class="cazare-title">Green Village Resort</h3>
-              <p class="cazare-text">The most complete resort in the Delta.
-                Pool, restaurant, real comfort by the water.</p>
+              <p class="cazare-text">{{stay.text1}}</p>
               <a href="https://maps.google.com/?q=Green+Village+Resort+Sfantu+Gheorghe+Delta+Dunarii+Romania"
                  target="_blank" rel="noopener noreferrer"
                  class="cazare-maps-link">📍 Sfântu Gheorghe, Delta Dunării</a>
               <a href="https://www.greenvillage.ro/"
                  target="_blank" rel="noopener noreferrer"
-                 class="btn-primary cazare-btn">Book Now</a>
+                 class="btn-primary cazare-btn">{{stay.book}}</a>
             </div>
           </div>
 
@@ -676,18 +671,17 @@
                                 /images/uploads/bohemians-dolphin-wooden-houses-delta.webp 900w"
                         sizes="(max-width: 768px) 100vw, 33vw" />
                 <img src="/images/uploads/bohemians-dolphin-wooden-houses-delta.webp"
-                     alt="Green Dolphin wooden houses on stilts in Sfântu Gheorghe, Danube Delta" loading="lazy"
+                     alt="{{a:stay.alt2}}" loading="lazy"
                      width="900" height="600" />
               </picture>
             </div>
             <div class="cazare-content">
-              <span class="cazare-tag">55 Wooden Cabins</span>
-              <h3 class="cazare-title">Green Dolphin — Wooden Houses</h3>
-              <p class="cazare-text">Authentic wooden cabins in the heart of the Delta.
-                Simple, warm, exactly what you need.</p>
+              <span class="cazare-tag">{{stay.tag2}}</span>
+              <h3 class="cazare-title">{{stay.title2}}</h3>
+              <p class="cazare-text">{{stay.text2}}</p>
               <a href="https://www.dolphincamping.ro/en/"
                  target="_blank" rel="noopener noreferrer"
-                 class="btn-primary cazare-btn">Book Now</a>
+                 class="btn-primary cazare-btn">{{stay.book}}</a>
             </div>
           </div>
 
@@ -699,21 +693,20 @@
                                 /images/uploads/bohemians-green-dolphin-camping-tents-delta.webp 900w"
                         sizes="(max-width: 768px) 100vw, 33vw" />
                 <img src="/images/uploads/bohemians-green-dolphin-camping-tents-delta.webp"
-                     alt="Green Dolphin camping tents pitched in nature at Sfântu Gheorghe, Danube Delta" loading="lazy"
+                     alt="{{a:stay.alt3}}" loading="lazy"
                      width="900" height="600" />
               </picture>
             </div>
             <div class="cazare-content">
-              <span class="cazare-tag">Camping · 500 Tent Spots</span>
+              <span class="cazare-tag">{{stay.tag3}}</span>
               <h3 class="cazare-title">Green Dolphin Camping</h3>
-              <p class="cazare-text">Closest to the stage, closest to the stars.
-                500 tent spots on the waterfront.</p>
+              <p class="cazare-text">{{stay.text3}}</p>
               <a href="https://maps.google.com/?q=Green+Dolphin+Camping+Sfantu+Gheorghe+827195+Tulcea+Romania"
                  target="_blank" rel="noopener noreferrer"
                  class="cazare-maps-link">📍 Sfântu Gheorghe 827195, Tulcea</a>
               <a href="https://www.dolphincamping.ro/en/"
                  target="_blank" rel="noopener noreferrer"
-                 class="btn-primary cazare-btn">Book Now</a>
+                 class="btn-primary cazare-btn">{{stay.book}}</a>
             </div>
           </div>
 
@@ -725,18 +718,17 @@
                                 /images/uploads/bohemians-guesthouse-delta.webp 900w"
                         sizes="(max-width: 768px) 100vw, 33vw" />
                 <img src="/images/uploads/bohemians-guesthouse-delta.webp"
-                     alt="Private guesthouse accommodation in Sfântu Gheorghe village, Danube Delta" loading="lazy"
+                     alt="{{a:stay.alt4}}" loading="lazy"
                      width="900" height="600" />
               </picture>
             </div>
             <div class="cazare-content">
-              <span class="cazare-tag">Local Stay</span>
-              <h3 class="cazare-title">Guesthouse or Private House</h3>
-              <p class="cazare-text">Stay with locals in the village of Sfântu Gheorghe.
-                Authentic delta experience, steps from everything.</p>
+              <span class="cazare-tag">{{stay.tag4}}</span>
+              <h3 class="cazare-title">{{stay.title4}}</h3>
+              <p class="cazare-text">{{stay.text4}}</p>
               <a href="https://www.turistinfo.ro/sfantu_gheorghe/cazare-hoteluri-vile-pensiuni-sfantu_gheorghe.html?fbclid=IwAR0aguJst4ozDt40STRz5tlgSX8PzLBcJbBQtkdq-R6zOkg8NBnxfE1e9sg"
                  target="_blank" rel="noopener noreferrer"
-                 class="btn-primary cazare-btn">Browse Options</a>
+                 class="btn-primary cazare-btn">{{stay.browse}}</a>
             </div>
           </div>
 
@@ -750,51 +742,45 @@
     <section class="activitati" id="activitati">
       <div class="container">
 
-        <p class="activitati-label">Off Stage</p>
-        <h2 class="section-heading">What to Do at the Festival</h2>
+        <p class="activitati-label">{{act.label}}</p>
+        <h2 class="section-heading">{{act.heading}}</h2>
 
         <div class="activitati-grid">
 
           <div class="act-card act-card--orange">
             <div class="act-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h3 class="act-title">Boat Trips</h3>
-            <p class="act-text">Guided boat excursions through the Delta's canals
-              in search of Europe's rarest birds.</p>
+            <h3 class="act-title">{{act.t1}}</h3>
+            <p class="act-text">{{act.d1}}</p>
           </div>
 
           <div class="act-card act-card--gold">
             <div class="act-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h3 class="act-title">Paddle Journeys</h3>
-            <p class="act-text">SUP sessions on calm lakes in the morning,
-              before the music begins.</p>
+            <h3 class="act-title">{{act.t2}}</h3>
+            <p class="act-text">{{act.d2}}</p>
           </div>
 
           <div class="act-card act-card--orange">
             <div class="act-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h3 class="act-title">Village Walk</h3>
-            <p class="act-text">Sfântu Gheorghe is an old fishing village on the Sulina arm of the Danube,
-              right where the river meets the sea. Worth exploring on foot.</p>
+            <h3 class="act-title">{{act.t3}}</h3>
+            <p class="act-text">{{act.d3}}</p>
           </div>
 
           <div class="act-card act-card--gold">
             <div class="act-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h3 class="act-title">Beach &amp; Sunset</h3>
-            <p class="act-text">Wild beach, fine sand, sunset straight into the sea.
-              No sunbeds, no crowds, no noise.</p>
+            <h3 class="act-title">{{act.t4}}</h3>
+            <p class="act-text">{{act.d4}}</p>
           </div>
 
           <div class="act-card act-card--orange">
             <div class="act-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h3 class="act-title">Yoga &amp; Meditation</h3>
-            <p class="act-text">Morning sessions in the open air, surrounded by nature.
-              Reset before the music takes over.</p>
+            <h3 class="act-title">{{act.t5}}</h3>
+            <p class="act-text">{{act.d5}}</p>
           </div>
 
           <div class="act-card act-card--gold">
             <div class="act-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-            <h3 class="act-title">Kayak &amp; Bike Rides</h3>
-            <p class="act-text">Explore the Delta at your own pace — by kayak through the canals
-              or by bike across the island.</p>
+            <h3 class="act-title">{{act.t6}}</h3>
+            <p class="act-text">{{act.d6}}</p>
           </div>
 
         </div>
@@ -808,80 +794,80 @@
     <section class="packing" id="packing">
       <div class="container">
 
-        <p class="packing-label">Practical Info</p>
-        <h2 class="section-heading">What to Pack</h2>
+        <p class="packing-label">{{pack.label}}</p>
+        <h2 class="section-heading">{{pack.heading}}</h2>
 
         <div class="packing-grid">
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Sunscreen &amp; lip balm</p>
-              <p class="packing-item-text">The Delta sun is intense. Bring SPF 50 and reapply often.</p>
+              <p class="packing-item-name">{{pack.n1}}</p>
+              <p class="packing-item-text">{{pack.d1}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Warm layers</p>
-              <p class="packing-item-text">Nights by the water get cold, even in June. A light jacket is essential.</p>
+              <p class="packing-item-name">{{pack.n2}}</p>
+              <p class="packing-item-text">{{pack.d2}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Cash</p>
-              <p class="packing-item-text">Card terminals are limited in the village. There are no ATMs in Sf. Gheorghe.</p>
+              <p class="packing-item-name">{{pack.n3}}</p>
+              <p class="packing-item-text">{{pack.d3}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Comfortable shoes</p>
-              <p class="packing-item-text">You'll walk on sand, grass, and cobblestones. Pack both shoes and sandals.</p>
+              <p class="packing-item-name">{{pack.n4}}</p>
+              <p class="packing-item-text">{{pack.d4}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Swimwear</p>
-              <p class="packing-item-text">Wild beach five minutes from the venue. Don't miss the sunset swim.</p>
+              <p class="packing-item-name">{{pack.n5}}</p>
+              <p class="packing-item-text">{{pack.d5}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Torch or headlamp</p>
-              <p class="packing-item-text">Village streets have no lighting at night.</p>
+              <p class="packing-item-name">{{pack.n6}}</p>
+              <p class="packing-item-text">{{pack.d6}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Insect repellent</p>
-              <p class="packing-item-text">You're in the Danube Delta. Mosquitoes are part of the experience.</p>
+              <p class="packing-item-name">{{pack.n7}}</p>
+              <p class="packing-item-text">{{pack.d7}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Reusable bottle</p>
-              <p class="packing-item-text">Refill points available on-site. Less plastic, better Delta.</p>
+              <p class="packing-item-name">{{pack.n8}}</p>
+              <p class="packing-item-text">{{pack.d8}}</p>
             </div>
           </div>
 
           <div class="packing-item">
             <div class="packing-item-dot"></div>
             <div>
-              <p class="packing-item-name">Personal medication</p>
-              <p class="packing-item-text">Nearest pharmacy is in Tulcea, 90 minutes away by boat.</p>
+              <p class="packing-item-name">{{pack.n9}}</p>
+              <p class="packing-item-text">{{pack.d9}}</p>
             </div>
           </div>
 
@@ -894,74 +880,67 @@
     ════════════════════════════════════════════ -->
     <section class="faq" id="faq">
       <div class="container">
-        <h2 class="section-heading">Frequently Asked Questions</h2>
+        <h2 class="section-heading">{{faq.heading}}</h2>
 
         <div class="faq-list">
 
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">
-              How do I get to the festival?
+              {{faq.q1}}
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-a-1" role="region">
-              <p>By car or bus to Murighiol or Tulcea,
-                then by boat to Sfântu Gheorghe (45–90 min).
-                Full details in the Venue section.</p>
+              <p>{{faq.a1}}</p>
             </div>
           </div>
 
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">
-              Does the ticket include accommodation?
+              {{faq.q2}}
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-a-2" role="region">
-              <p>No. The festival ticket is separate from accommodation.
-                All options are listed in the Accommodation section above.</p>
+              <p>{{faq.a2}}</p>
             </div>
           </div>
 
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">
-              What is the minimum age?
+              {{faq.q3}}
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-a-3" role="region">
-              <p>18 years old by the date of the festival.</p>
+              <p>{{faq.a3}}</p>
             </div>
           </div>
 
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4">
-              Can I come with a tent?
+              {{faq.q4}}
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-a-4" role="region">
-              <p>Yes. Green Dolphin Camping has 500 spots.
-                Booking details for 2027 will be announced together with the dates.</p>
+              <p>{{faq.a4}}</p>
             </div>
           </div>
 
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5">
-              Is it safe to come alone?
+              {{faq.q5}}
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-a-5" role="region">
-              <p>Yes. The festival has a curated crowd, discreet security,
-                and a community that respects each other.
-                After four editions, the safety of attendees remains our priority.</p>
+              <p>{{faq.a5}}</p>
             </div>
           </div>
 
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6">
-              When do tickets for 2027 go on sale?
+              {{faq.q6}}
               <span class="faq-icon" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-a-6" role="region">
-              <p>Dates and tickets for the 5th edition will be announced soon.
-                <a href="#contact">Join the list</a> to hear first and get early access.</p>
+              <p>{{faq.a6}}</p>
             </div>
           </div>
 
@@ -976,7 +955,7 @@
   ════════════════════════════════════════════ -->
   <section class="sponsors">
     <div class="container">
-      <p class="sponsors-label">Official Partners</p>
+      <p class="sponsors-label">{{sponsors.label}}</p>
       <div class="sponsors-row">
         <div class="sponsor-item sponsor-item--text">Green Dolphin</div>
         <div class="sponsor-item sponsor-item--text">Green Village</div>
@@ -986,7 +965,7 @@
       </div>
       <div class="sponsors-cta">
         <!--email_off--><a href="mailto:ionut@cyclic.ro?subject=Sponsor%20The%20Bohemians%202027"
-           class="btn-outline sponsors-btn">Want to become a sponsor?</a><!--/email_off-->
+           class="btn-outline sponsors-btn">{{sponsors.cta}}</a><!--/email_off-->
       </div>
     </div>
   </section>
@@ -996,21 +975,21 @@
   ════════════════════════════════════════════ -->
   <section class="email-capture" id="contact">
     <div class="container">
-      <h2 class="email-heading">Be the first to know.</h2>
-      <p class="email-sub">2027 dates, lineup and early tickets — you'll hear first.</p>
+      <h2 class="email-heading">{{contact.heading}}</h2>
+      <p class="email-sub">{{contact.sub}}</p>
 
       <div class="email-form" id="emailForm">
-        <label class="sr-only" for="emailInput">Email address</label>
+        <label class="sr-only" for="emailInput">{{contact.emailLabel}}</label>
         <input
           type="email"
           id="emailInput"
           class="email-input"
-          placeholder="Your email address"
+          placeholder="{{a:contact.placeholder}}"
           autocomplete="email"
         />
-        <button class="email-btn" id="emailBtn">Notify Me</button>
+        <button class="email-btn" id="emailBtn">{{contact.button}}</button>
       </div>
-      <p class="email-fine">No spam. Only what matters.</p>
+      <p class="email-fine">{{contact.fine}}</p>
     </div>
   </section>
 
@@ -1023,34 +1002,34 @@
 
         <div class="footer-col footer-col--left">
           <p class="footer-logo">The Bohemians</p>
-          <p class="footer-tagline">Hidden in nature. Guided by music.</p>
+          <p class="footer-tagline">{{footer.tagline}}</p>
           <p class="footer-copy">© 2026 The Bohemians Festival</p>
-          <p class="footer-copy">Organised by <a href="https://www.cyclic.ro/events/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Cyclic Agency</a></p>
+          <p class="footer-copy">{{about.organisedBy}} <a href="https://www.cyclic.ro/events/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Cyclic Agency</a></p>
         </div>
 
         <div class="footer-col footer-col--center">
           <nav class="footer-nav">
-            <a href="#experience">Experience</a>
-            <a href="#venue">Venue</a>
-            <a href="#cazare">Accommodation</a>
-            <a href="#activitati">Activities</a>
-            <a href="#packing">What to Pack</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#editia-trecuta">Edition 2025</a>
+            <a href="#experience">{{nav.experience}}</a>
+            <a href="#venue">{{nav.venue}}</a>
+            <a href="#cazare">{{nav.accommodation}}</a>
+            <a href="#activitati">{{nav.activities}}</a>
+            <a href="#packing">{{pack.heading}}</a>
+            <a href="#gallery">{{nav.gallery}}</a>
+            <a href="#editia-trecuta">{{footer.edition}}</a>
             <a href="#faq">FAQ</a>
-            <a href="#contact">Contact</a>
+            <a href="#contact">{{footer.contact}}</a>
           </nav>
         </div>
 
         <div class="footer-col footer-col--right">
-          <p class="footer-social-label">Follow Us</p>
+          <p class="footer-social-label">{{footer.follow}}</p>
           <div class="footer-social-links">
             <a href="https://www.instagram.com/the_bohemian_society/"
                target="_blank" rel="noopener noreferrer">Instagram</a>
             <a href="https://www.facebook.com/theBohemiansSociety"
                target="_blank" rel="noopener noreferrer">Facebook</a>
           </div>
-          <a href="#contact" class="btn-primary footer-cta">Join the List</a>
+          <a href="#contact" class="btn-primary footer-cta">{{nav.cta}}</a>
         </div>
 
       </div>
@@ -1060,13 +1039,14 @@
   <!-- ═══════════════════════════════════════════
        MOBILE STICKY BAR
   ════════════════════════════════════════════ -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+  <button class="back-to-top" id="backToTop" aria-label="{{a:ui.backToTop}}">↑</button>
 
   <div class="sticky-bar">
-    <a href="#contact" class="sticky-bar-link">Join the List — 2027 Early Access</a>
+    <a href="#contact" class="sticky-bar-link">{{sticky.cta}}</a>
   </div>
 
-  <script src="/js/main.js?v=20260913" defer></script>
+  <script>window.I18N = {{i18nJson}};</script>
+  <script src="/js/main.js?v=20260914" defer></script>
 
   <!-- ═══════════════════════════════════════════
        COOKIE CONSENT
@@ -1074,12 +1054,12 @@
   <div id="cookie-banner" style="display:none;">
     <div class="cookie-inner">
       <p class="cookie-text">
-        We use a strictly necessary session cookie to secure the admin area. With your consent, we also use marketing cookies for advertising.
-        <a href="/cookie-policy.html" target="_blank" rel="noopener noreferrer" class="cookie-link">Cookie Policy</a>
+        {{cookie.text}}
+        <a href="/cookie-policy.html" target="_blank" rel="noopener noreferrer" class="cookie-link">{{cookie.policy}}</a>
       </p>
       <div class="cookie-actions">
-        <button id="cookie-accept-all" class="cookie-btn cookie-btn--accept">Accept All</button>
-        <button id="cookie-necessary" class="cookie-btn cookie-btn--decline">Necessary Only</button>
+        <button id="cookie-accept-all" class="cookie-btn cookie-btn--accept">{{cookie.accept}}</button>
+        <button id="cookie-necessary" class="cookie-btn cookie-btn--decline">{{cookie.necessary}}</button>
       </div>
     </div>
   </div>

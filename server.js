@@ -11,6 +11,7 @@ const compression  = require('compression');
 const nodemailer   = require('nodemailer');
 const helmet       = require('helmet');
 const db           = require('./db');
+const i18n         = require('./i18n');
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
@@ -189,29 +190,35 @@ app.use('/images', express.static(path.join(__dirname, 'public/images'), {
 }));
 app.use('/css', express.static(path.join(__dirname, 'public/css'), { maxAge: '7d' }));
 app.use('/js',  express.static(path.join(__dirname, 'public/js'),  { maxAge: '7d' }));
-// Homepage with the lineup server-rendered, so crawlers that don't run JS (AI bots) see artist names
-const INDEX_HTML = fs.readFileSync(path.join(__dirname, 'public/index.html'), 'utf8');
+// Homepage in EN (/) and RO (/ro/) from views/index.html + lang/*.json.
+// Lineup is server-rendered so crawlers that don't run JS (AI bots) see artist names.
 const escHtml = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-app.get(['/', '/index.html'], (req, res) => {
-  let html = INDEX_HTML;
+function lineupHtml() {
   try {
     const artists = db.prepare('SELECT name, image_path FROM artists ORDER BY name ASC').all();
-    if (artists.length) {
-      const cards = artists.map(a => `
+    if (!artists.length) return null;
+    return artists.map(a => `
           <div class="lineup-card lineup-card--artist">
             ${a.image_path
               ? `<img src="${escHtml(a.image_path)}" alt="${escHtml(a.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
               : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
             <div class="lineup-card-name"><span class="lineup-card-title">${escHtml(a.name)}</span></div>
           </div>`).join('');
-      html = html.replace(/<!--lineup:start-->[\s\S]*?<!--lineup:end-->/, cards);
-    }
   } catch (e) {
-    // DB unavailable — serve placeholders, JS will retry
+    return null; // DB unavailable — serve placeholders, JS will retry
   }
-  res.set('Cache-Control', 'public, max-age=0').type('html').send(html);
+}
+
+const sendPage = lang => (req, res) =>
+  res.set('Cache-Control', 'public, max-age=0').type('html').send(i18n.render(lang, lineupHtml()));
+
+app.use((req, res, next) => {
+  if (req.path === '/ro') return res.redirect(301, '/ro/' + req.url.slice(3));
+  next();
 });
+app.get(['/', '/index.html'], sendPage('en'));
+app.get(['/ro/', '/ro/index.html'], sendPage('ro'));
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0 }));
 
@@ -330,6 +337,7 @@ app.get('/api/settings', (req, res) => {
 
 app.post('/api/subscribe', subscribeLimit, (req, res) => {
   const { email } = req.body;
+  const t = i18n.STRINGS[i18n.LANGS.includes(req.body.lang) ? req.body.lang : 'en'];
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ success: false, error: 'Email invalid.' });
   }
@@ -341,9 +349,9 @@ app.post('/api/subscribe', subscribeLimit, (req, res) => {
       mailer.sendMail({
         from:    `"The Bohemians Festival" <${process.env.SMTP_USER}>`,
         to:      email,
-        subject: 'You\'re on the list — The Bohemians Festival 2027',
-        text:    'Thank you for subscribing. You\'ll be the first to know when we announce the 2027 dates, lineup and tickets.\n\nSee you at the Delta,\nThe Bohemians Team',
-        html:    `<p>Thank you for subscribing.</p><p>You'll be the first to know when we announce the 2027 dates, lineup and tickets.</p><p>See you at the Delta,<br><strong>The Bohemians Team</strong></p>`,
+        subject: t['email.subject'],
+        text:    t['email.text'],
+        html:    t['email.html'],
       }).catch(() => {}); // fire and forget — never block the response
     }
   });
@@ -378,11 +386,11 @@ app.delete('/api/artists/:id', isAdmin, csrfProtect, (req, res) => {
 
 // Gallery
 app.post('/api/gallery', isAdmin, csrfProtect, upload.single('image'), async (req, res) => {
-  const { section, caption } = req.body;
+  const { section, caption, caption_ro } = req.body;
   if (!section || !section.trim()) return res.status(400).json({ error: 'Section is required.' });
   const image_path = req.file ? await processUpload(req.file) : null;
   try {
-    const r = db.prepare('INSERT INTO gallery (section, image_path, caption) VALUES (?, ?, ?)').run(section.trim(), image_path, caption || null);
+    const r = db.prepare('INSERT INTO gallery (section, image_path, caption, caption_ro) VALUES (?, ?, ?, ?)').run(section.trim(), image_path, caption || null, caption_ro || null);
     res.json({ id: r.lastInsertRowid });
   } catch (e) {
     res.status(500).json({ error: 'Database error.' });
@@ -405,10 +413,11 @@ app.get('/api/announcements', isAdmin, (req, res) => {
 });
 
 app.post('/api/announcements', isAdmin, csrfProtect, (req, res) => {
-  const { title, body } = req.body;
+  const { title, body, title_ro, body_ro } = req.body;
   if (!title || !title.trim()) return res.status(400).json({ error: 'Title is required.' });
+  if (!title_ro || !title_ro.trim()) return res.status(400).json({ error: 'Romanian title is required.' });
   try {
-    const r = db.prepare('INSERT INTO announcements (title, body, active) VALUES (?, ?, 1)').run(title.trim(), body || null);
+    const r = db.prepare('INSERT INTO announcements (title, body, title_ro, body_ro, active) VALUES (?, ?, ?, ?, 1)').run(title.trim(), body || null, title_ro.trim(), body_ro || null);
     res.json({ id: r.lastInsertRowid });
   } catch (e) {
     res.status(500).json({ error: 'Database error.' });

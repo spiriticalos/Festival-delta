@@ -6,8 +6,18 @@ on:
     branches:
       - main
 jobs:
+  check-i18n:
+    name: Check EN/RO texts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-i18n.js
   deploy:
     name: Deploy app
+    needs: check-i18n
     runs-on: ubuntu-latest
     concurrency: deploy-group    # optional: ensure only one action runs at a time
     steps:

@@ -1,0 +1,32 @@
+{
+  "_comment": "Exceptions for scripts/check-i18n.js. 'keys': strings allowed to be identical in EN and RO. 'text': proper nouns allowed to stay hardcoded in views/index.html.",
+  "keys": [
+    "hero.seal",
+    "past.videoTitle",
+    "venue.mapTitle",
+    "footer.contact"
+  ],
+  "text": [
+    "© 2026 The Bohemians Festival",
+    "📍 Sfântu Gheorghe 827195, Tulcea",
+    "📍 Sfântu Gheorghe, Delta Dunării",
+    "Director: Ionuț Hupca",
+    "Green Village Resort",
+    "Green Dolphin Camping",
+    "LLM-friendly summary",
+    "ionut@cyclic.ro",
+    "THE BOHEMIANS",
+    "The Bohemians",
+    "Cyclic Agency",
+    "Green Dolphin",
+    "Green Village",
+    "Coca-Cola",
+    "Instagram",
+    "Facebook",
+    "Aperol",
+    "Burn",
+    "FAQ",
+    "EN",
+    "RO"
+  ]
+}

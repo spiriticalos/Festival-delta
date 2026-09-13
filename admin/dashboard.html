@@ -402,8 +402,12 @@
               </select>
             </div>
             <div class="field">
-              <label>Caption</label>
-              <input type="text" name="caption" placeholder="Descriere scurtă" />
+              <label>Caption (EN)</label>
+              <input type="text" name="caption" placeholder="Short description" />
+            </div>
+            <div class="field">
+              <label>Caption (RO)</label>
+              <input type="text" name="caption_ro" placeholder="Descriere scurtă" />
             </div>
             <div class="field">
               <label>Imagine</label>
@@ -440,12 +444,21 @@
         <form id="form-announcement">
           <div class="form-row" style="grid-template-columns:1fr 2fr auto;">
             <div class="field">
-              <label>Titlu</label>
-              <input type="text" name="title" required placeholder="Titlul anunțului" />
+              <label>Titlu (EN)</label>
+              <input type="text" name="title" required placeholder="Announcement title" />
             </div>
             <div class="field">
-              <label>Text</label>
-              <textarea name="body" placeholder="Conținut anunț..." rows="2"></textarea>
+              <label>Text (EN)</label>
+              <textarea name="body" placeholder="Announcement text..." rows="2"></textarea>
+            </div>
+            <div class="field"></div>
+            <div class="field">
+              <label>Titlu (RO)</label>
+              <input type="text" name="title_ro" required placeholder="Titlul anunțului" />
+            </div>
+            <div class="field">
+              <label>Text (RO)</label>
+              <textarea name="body_ro" placeholder="Conținut anunț..." rows="2"></textarea>
             </div>
             <div class="field" style="justify-content:flex-end;">
               <button type="submit" class="btn">+ Adaugă</button>
@@ -661,6 +674,7 @@
               <span class="badge ${a.active ? 'active' : 'inactive'}">${a.active ? 'activ' : 'inactiv'}</span>
             </p>
             <p class="ann-body-preview">${esc(a.body || '')}</p>
+            <p class="ann-body-preview">RO: ${esc(a.title_ro || '— lipsește traducerea —')}${a.body_ro ? ' · ' + esc(a.body_ro) : ''}</p>
           </div>
           <div class="ann-actions">
             <label class="toggle" title="Toggle activ">

@@ -1,8 +1,9 @@
-const CACHE = 'bohemians-v6';
+const CACHE = 'bohemians-v7';
 const STATIC = [
   '/',
-  '/css/style.css?v=20260913',
-  '/js/main.js?v=20260913',
+  '/ro/',
+  '/css/style.css?v=20260914',
+  '/js/main.js?v=20260914',
   '/images/hero-bg.webp',
   '/images/hero-bg-mobile.webp',
   '/images/baza-5-transparent.webp',
@@ -29,6 +30,16 @@ self.addEventListener('fetch', e => {
 
   // API și admin — întotdeauna network
   if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin')) {
+    return;
+  }
+
+  // Pagini HTML (EN / RO) — network first, cache doar ca fallback offline
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).catch(() =>
+        caches.match(e.request).then(cached => cached || caches.match(url.pathname.startsWith('/ro') ? '/ro/' : '/'))
+      )
+    );
     return;
   }
 

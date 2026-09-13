@@ -100,4 +100,41 @@ const insertGallery = db.prepare(
   [23, 'community','/images/uploads/bohemians-festival-bohemian-woman-red.webp',          'Bohemian soul'],
 ].forEach(([id, section, image_path, caption]) => insertGallery.run(id, section, image_path, caption));
 
+// ── Romanian columns for admin-managed text (site falls back to EN when empty) ──
+function addColumn(table, column) {
+  const exists = db.prepare(`PRAGMA table_info(${table})`).all().some(c => c.name === column);
+  if (!exists) db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} TEXT`);
+}
+addColumn('gallery', 'caption_ro');
+addColumn('announcements', 'title_ro');
+addColumn('announcements', 'body_ro');
+
+// Romanian captions for the seeded gallery (only where the EN caption is unchanged and RO is empty)
+const setCaptionRo = db.prepare('UPDATE gallery SET caption_ro = ? WHERE id = ? AND caption = ? AND caption_ro IS NULL');
+[
+  [1,  'Main stage',              'Scena principală'],
+  [2,  'Delta at sunset',         'Delta la apus'],
+  [3,  'Red lights',              'Lumini roșii'],
+  [4,  'Kayak on the Danube',     'Cu caiacul pe Dunăre'],
+  [5,  'Hands up',                'Mâinile sus'],
+  [6,  'Arriving by boat',        'Sosirea cu barca'],
+  [7,  'Inside the venue',        'În locație'],
+  [8,  'At the port',             'În port'],
+  [9,  'Laser show',              'Show de lasere'],
+  [10, 'River deck',              'Terasa de pe apă'],
+  [11, 'DJ set',                  'DJ set în plină seară'],
+  [12, 'Outdoor stage',           'Scena în aer liber'],
+  [13, 'Night crowd',             'Lumea, noaptea'],
+  [14, 'Speedboat on the Danube', 'Cu șalupa pe Dunăre'],
+  [15, 'Under the moon',          'Sub lună'],
+  [16, 'Danube sunset',           'Apus pe Dunăre'],
+  [17, 'Stage energy',            'Energia scenei'],
+  [18, 'Good Vibes',              'Vibe bun'],
+  [19, 'Moving together',         'Dansăm împreună'],
+  [20, 'Good night',              'Noapte bună'],
+  [21, 'Hands up',                'Mâinile sus'],
+  [22, 'Free spirit',             'Spirit liber'],
+  [23, 'Bohemian soul',           'Suflet boem'],
+].forEach(([id, caption, captionRo]) => setCaptionRo.run(captionRo, id, caption));
+
 module.exports = db;

@@ -420,6 +420,37 @@ body {
   text-align: center;
 }
 
+/* Language switcher EN / RO */
+.nav-lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.nav-links li.nav-lang a,
+.nav-lang a {
+  opacity: 0.6;
+}
+
+.nav-links li.nav-lang a.is-active,
+.nav-lang a.is-active {
+  opacity: 1;
+  color: var(--text);
+}
+
+.nav-lang span {
+  opacity: 0.4;
+}
+
+.nav-lang--mobile a {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
 @media (max-width: 768px) {
   .nav-links {
     display: none;
