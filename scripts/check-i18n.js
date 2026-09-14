@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Fails (exit 1) when the English and Romanian homepage texts are out of sync.
+// Fails (exit 1) when the English and Romanian site texts are out of sync.
 // Runs in CI before every deploy — see .github/workflows/fly-deploy.yml and CLAUDE.md.
 const fs   = require('fs');
 const path = require('path');
-const { LANGS, STRINGS, TEMPLATE, PLACEHOLDER, render } = require('../i18n');
+const { LANGS, STRINGS, TEMPLATES, PLACEHOLDER, render, renderPage } = require('../i18n');
 const llms = require('../llms');
 
 const ROOT   = path.join(__dirname, '..');
@@ -28,48 +28,52 @@ for (const k of Object.keys(en)) {
   }
 }
 
-// 3. Every key used by the template exists; every key is used somewhere
+// 3. Every key used by a template exists; every key is used somewhere
 const llmsTemplate = l => read(`views/llms.${l}.md`);
-const used = new Set([TEMPLATE, llmsTemplate('en'), llmsTemplate('ro')]
+const used = new Set([...Object.values(TEMPLATES), llmsTemplate('en'), llmsTemplate('ro')]
   .flatMap(tpl => [...tpl.matchAll(PLACEHOLDER)].filter(m => m[1] !== 'active').map(m => m[2])));
 used.delete('i18nJson');
 used.delete('lineupList');
-for (const k of used) if (!(k in en)) errors.push(`views/index.html uses unknown key "${k}"`);
+for (const k of used) if (!(k in en)) errors.push(`A template uses unknown key "${k}"`);
 const code = read('public/js/main.js') + read('server.js');
 for (const k of Object.keys(en)) {
   if (!used.has(k) && !code.includes(`'${k}'`)) errors.push(`Unused key "${k}" (remove it from both lang files)`);
 }
 
-// 4. No visible text hardcoded in the template (it would show in English on /ro/)
+// 4. No visible text hardcoded in the HTML templates (it would show in English on /ro/)
 const allowed = [...sameOk.text].sort((a, b) => b.length - a.length);
 const stripAllowed = s => allowed.reduce((acc, phrase) => acc.split(phrase).join(' '), s);
 const hasWords = s => /[A-Za-zĂÂÎȘȚăâîșț]{2,}/.test(s);
-
-const markup = TEMPLATE
-  .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-  .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-  .replace(/<svg[\s\S]*?<\/svg>/gi, ' ')
-  .replace(/<noscript>[\s\S]*?<\/noscript>/gi, ' ')
-  .replace(/<!--[\s\S]*?-->/g, ' ');
-
-for (const chunk of markup.split(/<[^>]*>/)) {
-  const text = stripAllowed(chunk.replace(PLACEHOLDER, ' ').replace(/&[a-z#0-9]+;/gi, ' ')).trim();
-  if (hasWords(text)) errors.push(`Hardcoded text in views/index.html: "${text.replace(/\s+/g, ' ').slice(0, 80)}"`);
-}
 const attrRe = /\s(alt|aria-label|title|placeholder)="([^"]*)"|<meta\s+(?:name|property)="(?:description|og:title|og:description|twitter:title|twitter:description)"\s+content="([^"]*)"/gi;
-for (const m of markup.matchAll(attrRe)) {
-  const value = stripAllowed((m[2] ?? m[3]).replace(PLACEHOLDER, ' ')).trim();
-  if (hasWords(value)) errors.push(`Hardcoded attribute text in views/index.html: ${m[1] || 'meta content'}="${value.slice(0, 80)}"`);
+
+for (const [name, tpl] of Object.entries(TEMPLATES)) {
+  const markup = tpl
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<svg[\s\S]*?<\/svg>/gi, ' ')
+    .replace(/<noscript>[\s\S]*?<\/noscript>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ');
+
+  for (const chunk of markup.split(/<[^>]*>/)) {
+    const text = stripAllowed(chunk.replace(PLACEHOLDER, ' ').replace(/&[a-z#0-9]+;/gi, ' ')).trim();
+    if (hasWords(text)) errors.push(`Hardcoded text in views/${name}.html: "${text.replace(/\s+/g, ' ').slice(0, 80)}"`);
+  }
+  for (const m of markup.matchAll(attrRe)) {
+    const value = stripAllowed((m[2] ?? m[3]).replace(PLACEHOLDER, ' ')).trim();
+    if (hasWords(value)) errors.push(`Hardcoded attribute text in views/${name}.html: ${m[1] || 'meta content'}="${value.slice(0, 80)}"`);
+  }
 }
 
-// 5. Both pages actually render
+// 5. Every page renders in both languages
 for (const l of LANGS) {
-  try {
-    const html = render(l);
-    if (html.includes('{{')) errors.push(`Unrendered placeholder left on the ${l} page`);
-    if (!html.includes(`<html lang="${l}">`)) errors.push(`The ${l} page does not declare <html lang="${l}">`);
-  } catch (e) {
-    errors.push(`Rendering the ${l} page failed: ${e.message}`);
+  for (const name of Object.keys(TEMPLATES)) {
+    try {
+      const html = name === 'index' ? render(l) : renderPage(name, l);
+      if (html.includes('{{')) errors.push(`Unrendered placeholder left in views/${name}.html (${l})`);
+      if (!html.includes(`<html lang="${l}">`)) errors.push(`views/${name}.html (${l}) does not declare <html lang="${l}">`);
+    } catch (e) {
+      errors.push(`Rendering views/${name}.html (${l}) failed: ${e.message}`);
+    }
   }
 }
 
@@ -97,4 +101,4 @@ if (errors.length) {
   console.error(`✗ EN/RO check failed (${errors.length}):\n` + errors.map(e => '  - ' + e).join('\n'));
   process.exit(1);
 }
-console.log(`✓ EN/RO in sync — ${Object.keys(en).length} strings, ${used.size} used in the template`);
+console.log(`✓ EN/RO in sync — ${Object.keys(en).length} strings, ${Object.keys(TEMPLATES).length} pages + llms`);

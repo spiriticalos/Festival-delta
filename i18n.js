@@ -6,7 +6,10 @@ const fs   = require('fs');
 const path = require('path');
 
 const LANGS    = ['en', 'ro'];
-const TEMPLATE = fs.readFileSync(path.join(__dirname, 'views/index.html'), 'utf8');
+const TEMPLATES = Object.fromEntries(['index', 'cookie-policy', '404'].map(name =>
+  [name, fs.readFileSync(path.join(__dirname, `views/${name}.html`), 'utf8')]
+));
+const TEMPLATE = TEMPLATES.index;
 const STRINGS  = Object.fromEntries(LANGS.map(l =>
   [l, JSON.parse(fs.readFileSync(path.join(__dirname, 'lang', l + '.json'), 'utf8'))]
 ));
@@ -46,4 +49,6 @@ function render(lang, lineupHtml) {
   return html;
 }
 
-module.exports = { LANGS, STRINGS, TEMPLATE, PLACEHOLDER, fill, toText, render };
+const renderPage = (name, lang) => fill(TEMPLATES[name], lang);
+
+module.exports = { LANGS, STRINGS, TEMPLATE, TEMPLATES, PLACEHOLDER, fill, toText, render, renderPage };

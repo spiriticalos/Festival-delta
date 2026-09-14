@@ -235,6 +235,11 @@ app.use((req, res, next) => {
 app.get(['/', '/index.html'], sendPage('en'));
 app.get(['/ro/', '/ro/index.html'], sendPage('ro'));
 
+const sendStatic = (name, lang) => (req, res) =>
+  res.set('Cache-Control', 'public, max-age=0').type('html').send(i18n.renderPage(name, lang));
+app.get('/cookie-policy.html',    sendStatic('cookie-policy', 'en'));
+app.get('/ro/cookie-policy.html', sendStatic('cookie-policy', 'ro'));
+
 // llms.txt / llms-full.txt for AI crawlers, generated from the same texts as the pages
 function artistNames() {
   try { return db.prepare('SELECT name FROM artists ORDER BY name ASC').all().map(a => a.name); }
@@ -585,7 +590,8 @@ app.use((req, res, next) => {
 
 // ── 404 ─────────────────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'public/404.html'));
+  const lang = req.path.startsWith('/ro/') ? 'ro' : 'en';
+  res.status(404).type('html').send(i18n.renderPage('404', lang));
 });
 
 // ══════════════════════════════════════════════════════════

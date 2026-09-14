@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{a:meta.lang}}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 — The Bohemians Festival</title>
+  <title>{{notFound.title}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italianno&family=Nunito:wght@400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" />
   <style>
@@ -65,8 +65,8 @@
 </head>
 <body>
   <p class="num">404</p>
-  <h1>Lost in the Delta</h1>
-  <p>This page doesn't exist — but the festival does.<br>Head back and find your way.</p>
-  <a href="/">Back to the Festival</a>
+  <h1>{{notFound.h1}}</h1>
+  <p>{{notFound.p}}</p>
+  <a href="{{a:ui.homeUrl}}">{{notFound.back}}</a>
 </body>
 </html>

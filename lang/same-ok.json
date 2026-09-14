@@ -4,13 +4,19 @@
     "hero.seal",
     "past.videoTitle",
     "venue.mapTitle",
-    "footer.contact"
+    "footer.contact",
+    "cookiePage.adsType"
   ],
   "text": [
     "© 2026 The Bohemians Festival",
     "📍 Sfântu Gheorghe 827195, Tulcea",
     "📍 Sfântu Gheorghe, Delta Dunării",
     "Director: Ionuț Hupca",
+    "Google Analytics (GA4)",
+    "cookie-consent",
+    "localStorage",
+    "connect.sid",
+    "Google Ads",
     "Green Village Resort",
     "Green Dolphin Camping",
     "ionut@cyclic.ro",

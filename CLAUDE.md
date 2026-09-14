@@ -2,7 +2,7 @@
 
 ## Regula EN/RO (obligatorie)
 
-Site-ul are două limbi: engleză la `/` și română la `/ro/`, generate din același șablon.
+Site-ul are două limbi: engleză la `/` și română la `/ro/`, generate din aceleași șabloane (`views/index.html`, `views/cookie-policy.html`, `views/404.html`).
 
 - Textele NU se scriu direct în `views/index.html`. Orice text vizibil (inclusiv `alt`, `aria-label`, `title`, `placeholder`, meta description, FAQ din JSON-LD) e un placeholder `{{cheie}}` cu valoarea în `lang/en.json` și `lang/ro.json`.
 - Orice text adăugat sau modificat în engleză se adaugă / modifică și în română **în același commit**. Română naturală, cu diacritice, adresare cu **„tu”**, ton relaxat-boem — nu traducere cuvânt cu cuvânt.
