@@ -1,9 +1,9 @@
-const CACHE = 'bohemians-v9';
+const CACHE = 'bohemians-v10';
 const STATIC = [
   '/',
   '/ro/',
-  '/css/style.css?v=20260914c',
-  '/js/main.js?v=20260914c',
+  '/css/style.css?v=20260914d',
+  '/js/main.js?v=20260914d',
   '/images/bohemians-festival-crowd-sunflower-stage-night.webp',
   '/images/bohemians-festival-crowd-sunflower-stage-night-mobile.webp',
   '/images/the-bohemians-festival-logo.webp',

@@ -44,7 +44,8 @@
   <meta name="twitter:description" content="{{a:meta.twitterDescription}}" />
   <meta name="twitter:image"       content="https://thebohemiansociety.ro/images/bohemians-social-preview.jpg" />
 
-  <!-- Schema.org Event -->
+  <!-- Schema.org Event (only rendered once the upcoming edition has dates — see i18n.render) -->
+  <!--event:start-->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -79,6 +80,7 @@
     "description": "{{j:schema.eventDescription}}"
   }
   </script>
+  <!--event:end-->
 
   <!-- Schema.org FAQ -->
   <script type="application/ld+json">
@@ -171,7 +173,7 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
-  <link rel="stylesheet" href="/css/style.css?v=20260914c" />
+  <link rel="stylesheet" href="/css/style.css?v=20260914d" />
 
   <!-- Favicon & PWA -->
   <link rel="icon" href="/images/sun-icon.svg" type="image/svg+xml" />
@@ -1030,7 +1032,7 @@
   </div>
 
   <script>window.I18N = {{i18nJson}};</script>
-  <script src="/js/main.js?v=20260914c" defer></script>
+  <script src="/js/main.js?v=20260914d" defer></script>
 
   <!-- ═══════════════════════════════════════════
        COOKIE CONSENT

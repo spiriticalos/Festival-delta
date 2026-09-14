@@ -16,7 +16,7 @@ Site-ul are două limbi: engleză la `/` și română la `/ro/`, generate din ac
 
 - Nu scrie niciodată un an sau un număr de ediție direct în texte (`2027`, `5th`, `a V-a`, `four editions`). Folosește tokenurile din `edition.js`: `{{year}}`, `{{edition}}`, `{{editionRoman}}`, `{{prevYear}}`, `{{prevEdition}}`, `{{pastCount}}`, `{{pastYears}}`, `{{lineupYear}}`, `{{lineupEdition}}`, `{{recapYear}}`, `{{recapEdition}}`, `{{recapVideoId}}`, `{{eventDates}}`, `{{datesLabel}}`, `{{copyrightYear}}`. Merg în `lang/*.json`, `views/*.html` și `views/llms.*.md`. `npm test` pică dacă găsește un an / o ediție scrisă de mână (excepție: `cookiePage.subtitle`).
 - Valorile vin din admin → Setări: anul și numărul ediției următoare, anul artiștilor din Lineup, anul + linkul YouTube al aftermovie-ului, data festivalului (prima zi, festivalul ține 4 zile). Default-urile sunt în `edition.js` (`DEFAULTS`).
-- Data festivalului în anul ediției următoare → pe site apar datele exacte și JSON-LD `MusicEvent` devine ediția nouă. Altfel JSON-LD descrie ultima ediție cu date.
+- Data festivalului în anul ediției următoare → pe site apar datele exacte și apare JSON-LD `MusicEvent` pentru ediția nouă. Până atunci blocul `<!--event:start/end-->` nu se afișează (un eveniment trecut i-ar spune unui bot că festivalul a avut deja loc).
 - Thumbnail aftermovie: `public/images/aftermovie-<an>-thumbnail.jpg/.webp` dacă există, altfel se ia automat de pe YouTube.
 - Rollover anual (după festival): ediția următoare +1 și anul +1; când vine aftermovie-ul, anul + linkul lui; când se anunță lineup-ul nou, anul Lineup.
 

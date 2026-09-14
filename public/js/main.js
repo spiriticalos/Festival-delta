@@ -56,7 +56,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 // ── Countdown Timer ────────────────────────────────────────
-let TARGET = new Date('2026-06-18T12:00:00+03:00');
+let TARGET = new Date(0); // real date comes from /api/settings (festival_date)
 
 const elDays  = document.getElementById('cd-days');
 const elHours = document.getElementById('cd-hours');

@@ -65,6 +65,8 @@ function fill(template, lang, extra = {}) {
 
 function render(lang, lineupHtml) {
   let html = fill(TEMPLATE, lang);
+  // A past-dated MusicEvent tells bots the festival already happened; skip it until the next edition is dated
+  if (!edition.vars(lang).currentDates) html = html.replace(/<!--event:start-->[\s\S]*?<!--event:end-->/, '');
   if (lineupHtml) html = html.replace(/<!--lineup:start-->[\s\S]*?<!--lineup:end-->/, lineupHtml);
   return html;
 }
