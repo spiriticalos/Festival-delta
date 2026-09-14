@@ -41,7 +41,7 @@ const insertSetting = db.prepare('INSERT OR IGNORE INTO settings (key, value) VA
 [
   ['tickets_remaining', '380'],
   ['early_bird_active', '0'],
-  ['festival_date',     '2026-06-18T12:00:00'],
+  ...Object.entries(require('./edition').DEFAULTS),
 ].forEach(([k, v]) => insertSetting.run(k, v));
 
 // ── Seed artists (by name — never creates duplicates) ──────

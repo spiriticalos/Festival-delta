@@ -3,7 +3,7 @@
 // so both always match what the site says.
 const fs   = require('fs');
 const path = require('path');
-const { LANGS, STRINGS, fill, toText, render } = require('./i18n');
+const { LANGS, STRINGS, fill, text, toText, render } = require('./i18n');
 
 const SUMMARY = Object.fromEntries(LANGS.map(l =>
   [l, fs.readFileSync(path.join(__dirname, `views/llms.${l}.md`), 'utf8')]
@@ -49,8 +49,7 @@ function htmlToMarkdown(html) {
 }
 
 function full(lang, lineupHtml) {
-  const t = STRINGS[lang];
-  return `# ${toText(t['meta.title'])}\n\n> ${toText(t['meta.description'])}\n\n${t['meta.canonical']}\n\n`
+  return `# ${toText(text(lang, 'meta.title'))}\n\n> ${toText(text(lang, 'meta.description'))}\n\n${STRINGS[lang]['meta.canonical']}\n\n`
     + htmlToMarkdown(render(lang, lineupHtml)) + '\n';
 }
 

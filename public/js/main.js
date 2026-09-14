@@ -217,7 +217,7 @@ const videoIframe  = document.getElementById('videoIframe');
 if (videoThumb) {
   videoThumb.addEventListener('click', () => {
     if (window.innerWidth < 768) {
-      window.open('https://youtu.be/BAnWvS4GAW8', '_blank', 'noopener');
+      window.open('https://youtu.be/' + videoThumb.dataset.youtube, '_blank', 'noopener');
       return;
     }
     videoIframe.src = videoIframe.dataset.src;

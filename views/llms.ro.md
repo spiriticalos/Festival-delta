@@ -35,7 +35,7 @@ The Bohemians e unul dintre cele mai neobișnuite festivaluri din România și d
 
 - **Următoarea ediție:** {{m:hero.date}}
 - **Bilete:** {{m:schema.faqA6}}
-- **Ediții anterioare:** 2023, 2024, 2025, 2026 (ediția a IV-a: 18–21 iunie 2026)
+- **Ediții anterioare:** {{pastYears}} — cea mai recentă a fost ediția {{prevEdition}} ({{prevDates}})
 - **Locație:** Sfântu Gheorghe, Delta Dunării, județul Tulcea, România (44.8967° N, 29.5978° E)
 - **Capacitate:** aproximativ 500 de oameni
 - **Acces:** doar cu barca, din Murighiol sau Tulcea (45–90 de minute)

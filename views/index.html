@@ -49,9 +49,9 @@
   {
     "@context": "https://schema.org",
     "@type": "MusicEvent",
-    "name": "The Bohemians Festival 2026",
-    "startDate": "2026-06-18",
-    "endDate": "2026-06-21",
+    "name": "The Bohemians Festival {{eventYear}}",
+    "startDate": "{{eventStart}}",
+    "endDate": "{{eventEnd}}",
     "eventStatus": "https://schema.org/EventScheduled",
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "location": {
@@ -70,24 +70,7 @@
       }
     },
     "image": "https://thebohemiansociety.ro/images/bohemians-social-preview.jpg",
-    "performer": [
-      {"@type": "MusicGroup", "name": "Afgo & Lemon"},
-      {"@type": "MusicGroup", "name": "Brad Brunner"},
-      {"@type": "MusicGroup", "name": "Dobrikan"},
-      {"@type": "MusicGroup", "name": "Efi"},
-      {"@type": "MusicGroup", "name": "Eleez"},
-      {"@type": "MusicGroup", "name": "Emann"},
-      {"@type": "MusicGroup", "name": "Emotional Tourist"},
-      {"@type": "MusicGroup", "name": "Hraach"},
-      {"@type": "MusicGroup", "name": "Kristopher"},
-      {"@type": "MusicGroup", "name": "Optick"},
-      {"@type": "MusicGroup", "name": "Pascal Junior"},
-      {"@type": "MusicGroup", "name": "Rhem"},
-      {"@type": "MusicGroup", "name": "Sabo"},
-      {"@type": "MusicGroup", "name": "Sahar Z"},
-      {"@type": "MusicGroup", "name": "Shai T"},
-      {"@type": "MusicGroup", "name": "Zamfirov"}
-    ],
+    "performer": {{eventPerformers}},
     "organizer": {
       "@type": "Organization",
       "name": "Cyclic Agency",
@@ -188,7 +171,7 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
-  <link rel="stylesheet" href="/css/style.css?v=20260914b" />
+  <link rel="stylesheet" href="/css/style.css?v=20260914c" />
 
   <!-- Favicon & PWA -->
   <link rel="icon" href="/images/sun-icon.svg" type="image/svg+xml" />
@@ -225,7 +208,7 @@
         <li><a href="#cazare">{{nav.accommodation}}</a></li>
         <li><a href="#activitati">{{nav.activities}}</a></li>
         <li><a href="#gallery">{{nav.gallery}}</a></li>
-        <li><a href="#editia-trecuta">2025</a></li>
+        <li><a href="#editia-trecuta">{{recapYear}}</a></li>
         <li class="nav-lang"><a href="/" hreflang="en" lang="en" class="{{active:en}}">EN</a><span aria-hidden="true">/</span><a href="/ro/" hreflang="ro" lang="ro" class="{{active:ro}}">RO</a></li>
         <li>
           <a href="#contact" class="btn-buy nav-cta">{{nav.cta}}</a>
@@ -243,7 +226,7 @@
         <li><a href="#cazare"     class="nav-mobile-link">{{nav.accommodation}}</a></li>
         <li><a href="#activitati"     class="nav-mobile-link">{{nav.activities}}</a></li>
         <li><a href="#gallery"        class="nav-mobile-link">{{nav.gallery}}</a></li>
-        <li><a href="#editia-trecuta" class="nav-mobile-link">2025</a></li>
+        <li><a href="#editia-trecuta" class="nav-mobile-link">{{recapYear}}</a></li>
         <li class="nav-lang nav-lang--mobile"><a href="/" hreflang="en" lang="en" class="{{active:en}}">EN</a><span aria-hidden="true">/</span><a href="/ro/" hreflang="ro" lang="ro" class="{{active:ro}}">RO</a></li>
         <li>
           <a href="#contact" class="btn-buy nav-mobile-btn">{{nav.cta}}</a>
@@ -399,11 +382,11 @@
         <p class="editia-sub">{{past.sub}}</p>
 
         <!-- Video lightbox trigger -->
-        <div class="video-thumb" id="videoThumb">
+        <div class="video-thumb" id="videoThumb" data-youtube="{{recapVideoId}}">
           <picture>
-            <source type="image/webp" srcset="/images/aftermovie-2025-thumbnail.webp" />
+            <source type="image/webp" srcset="{{recapThumbWebp}}" />
             <img
-              src="/images/aftermovie-2025-thumbnail.jpg"
+              src="{{recapThumbJpg}}"
               alt="{{a:past.videoAlt}}"
               loading="lazy"
               width="1280" height="720"
@@ -423,7 +406,7 @@
             <iframe
               id="videoIframe"
               src=""
-              data-src="https://www.youtube-nocookie.com/embed/BAnWvS4GAW8?rel=0&playsinline=1"
+              data-src="https://www.youtube-nocookie.com/embed/{{recapVideoId}}?rel=0&playsinline=1"
               title="{{a:past.videoTitle}}"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
               allowfullscreen>
@@ -965,7 +948,7 @@
         <div class="sponsor-item sponsor-item--text">Burn</div>
       </div>
       <div class="sponsors-cta">
-        <!--email_off--><a href="mailto:ionut@cyclic.ro?subject=Sponsor%20The%20Bohemians%202027"
+        <!--email_off--><a href="mailto:ionut@cyclic.ro?subject=Sponsor%20The%20Bohemians%20{{year}}"
            class="btn-outline sponsors-btn">{{sponsors.cta}}</a><!--/email_off-->
       </div>
     </div>
@@ -1004,7 +987,7 @@
         <div class="footer-col footer-col--left">
           <p class="footer-logo">The Bohemians</p>
           <p class="footer-tagline">{{footer.tagline}}</p>
-          <p class="footer-copy">© 2026 The Bohemians Festival</p>
+          <p class="footer-copy">© {{copyrightYear}} The Bohemians Festival</p>
           <p class="footer-copy">{{about.organisedBy}} <a href="https://www.cyclic.ro/events/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Cyclic Agency</a></p>
         </div>
 
@@ -1047,7 +1030,7 @@
   </div>
 
   <script>window.I18N = {{i18nJson}};</script>
-  <script src="/js/main.js?v=20260914b" defer></script>
+  <script src="/js/main.js?v=20260914c" defer></script>
 
   <!-- ═══════════════════════════════════════════
        COOKIE CONSENT

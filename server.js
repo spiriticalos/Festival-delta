@@ -13,6 +13,7 @@ const helmet       = require('helmet');
 const db           = require('./db');
 const i18n         = require('./i18n');
 const llms         = require('./llms');
+const edition      = require('./edition');
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
@@ -212,7 +213,7 @@ function lineupHtml(lang) {
   try {
     const artists = db.prepare('SELECT name, image_path FROM artists ORDER BY name ASC').all();
     if (!artists.length) return null;
-    const altSuffix = i18n.STRINGS[lang]['js.artistAlt'];
+    const altSuffix = i18n.text(lang, 'js.artistAlt');
     return artists.map(a => `
           <div class="lineup-card lineup-card--artist">
             ${a.image_path
@@ -245,6 +246,15 @@ function artistNames() {
   try { return db.prepare('SELECT name FROM artists ORDER BY name ASC').all().map(a => a.name); }
   catch (e) { return []; }
 }
+
+// Edition years / numbers / recap video used by every page come from the admin settings
+edition.use(() => {
+  try {
+    const s = Object.fromEntries(db.prepare('SELECT key, value FROM settings').all().map(r => [r.key, r.value]));
+    return { ...s, artists: artistNames() };
+  } catch (e) { return {}; }
+});
+
 const sendText = build => (req, res) =>
   res.set('Cache-Control', 'public, max-age=0').type('text/plain; charset=utf-8').send(build());
 
@@ -258,7 +268,7 @@ const SITE = 'https://thebohemiansociety.ro';
 const SITEMAP_LASTMOD = new Date().toISOString().slice(0, 10);
 
 app.get('/sitemap.xml', (req, res) => {
-  const pageImages = i18n.TEMPLATE.match(/\/images\/[\w\-/.]+\.(?:webp|jpg|png)/g) || [];
+  const pageImages = i18n.render('en').match(/\/images\/[\w\-/.]+\.(?:webp|jpg|png)/g) || [];
   let dbImages = [];
   try {
     dbImages = [
@@ -408,7 +418,7 @@ app.get('/api/settings', (req, res) => {
 
 app.post('/api/subscribe', subscribeLimit, (req, res) => {
   const { email } = req.body;
-  const t = i18n.STRINGS[i18n.LANGS.includes(req.body.lang) ? req.body.lang : 'en'];
+  const lang = i18n.LANGS.includes(req.body.lang) ? req.body.lang : 'en';
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ success: false, error: 'Email invalid.' });
   }
@@ -420,9 +430,9 @@ app.post('/api/subscribe', subscribeLimit, (req, res) => {
       mailer.sendMail({
         from:    `"The Bohemians Festival" <${process.env.SMTP_USER}>`,
         to:      email,
-        subject: t['email.subject'],
-        text:    t['email.text'],
-        html:    t['email.html'],
+        subject: i18n.text(lang, 'email.subject'),
+        text:    i18n.text(lang, 'email.text'),
+        html:    i18n.text(lang, 'email.html'),
       }).catch(() => {}); // fire and forget — never block the response
     }
   });

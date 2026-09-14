@@ -2,8 +2,10 @@
 // Placeholders: {{key}} raw HTML · {{a:key}} attribute value · {{j:key}} inside a JSON-LD string
 //               {{m:key}} plain text (tags stripped, for llms.txt) · {{active:en}} → "is-active" on that language's page
 //               {{i18nJson}} → js.* strings for main.js
-const fs   = require('fs');
-const path = require('path');
+// Edition tokens ({{year}}, {{edition}}, ... — see edition.js) work in templates and inside lang values.
+const fs      = require('fs');
+const path    = require('path');
+const edition = require('./edition');
 
 const LANGS    = ['en', 'ro'];
 const TEMPLATES = Object.fromEntries(['index', 'cookie-policy', '404'].map(name =>
@@ -23,19 +25,37 @@ const toText = s => String(s)
   .replace(/\s+/g, ' ')
   .trim();
 
+function editionVars(lang) {
+  const v = edition.vars(lang);
+  v.datesLabel = v.currentDates || expand(STRINGS[lang]['hero.datesSoon'], v);
+  return v;
+}
+
+function expand(s, vars) {
+  return s.replace(PLACEHOLDER, (m, mode, key) => {
+    if (mode || !(key in vars)) throw new Error(`Unknown token ${m} in a lang value`);
+    return vars[key];
+  });
+}
+
+// One lang value with its edition tokens filled in (for server.js / llms.js)
+const text = (lang, key) => expand(STRINGS[lang][key], editionVars(lang));
+
 function fill(template, lang, extra = {}) {
   const t = STRINGS[lang];
   if (!t) throw new Error('Unknown language: ' + lang);
+  const vars = editionVars(lang);
 
   return template.replace(PLACEHOLDER, (m, mode, key) => {
     if (mode === 'active') return key === lang ? 'is-active' : '';
     if (key in extra) return extra[key];
+    if (key in vars) return vars[key];
     if (key === 'i18nJson') {
-      const js = Object.fromEntries(Object.entries(t).filter(([k]) => k.startsWith('js.')));
+      const js = Object.fromEntries(Object.entries(t).filter(([k]) => k.startsWith('js.')).map(([k, v]) => [k, expand(v, vars)]));
       return JSON.stringify(js).replace(/</g, '\\u003c');
     }
     if (!(key in t)) throw new Error(`Missing "${key}" in lang/${lang}.json`);
-    const v = t[key];
+    const v = expand(t[key], vars);
     if (mode === 'a') return v.replace(/"/g, '&quot;').replace(/</g, '&lt;');
     if (mode === 'j') return JSON.stringify(v).slice(1, -1).replace(/</g, '\\u003c');
     if (mode === 'm') return toText(v);
@@ -51,4 +71,4 @@ function render(lang, lineupHtml) {
 
 const renderPage = (name, lang) => fill(TEMPLATES[name], lang);
 
-module.exports = { LANGS, STRINGS, TEMPLATE, TEMPLATES, PLACEHOLDER, fill, toText, render, renderPage };
+module.exports = { LANGS, STRINGS, TEMPLATE, TEMPLATES, PLACEHOLDER, fill, text, toText, render, renderPage };

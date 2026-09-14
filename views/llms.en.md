@@ -35,7 +35,7 @@ The Bohemians is one of the most unusual festivals in Romania and South-East Eur
 
 - **Next edition:** {{m:hero.date}}
 - **Tickets:** {{m:schema.faqA6}}
-- **Past editions:** 2023, 2024, 2025, 2026 (4th edition: 18–21 June 2026)
+- **Past editions:** {{pastYears}} — the most recent was the {{prevEdition}} edition ({{prevDates}})
 - **Location:** Sfântu Gheorghe, Danube Delta, Tulcea County, Romania (44.8967° N, 29.5978° E)
 - **Capacity:** about 500 people
 - **Access:** boat only, from Murighiol or Tulcea (45–90 minutes)

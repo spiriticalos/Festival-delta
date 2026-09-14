@@ -4,7 +4,8 @@
 const fs   = require('fs');
 const path = require('path');
 const { LANGS, STRINGS, TEMPLATES, PLACEHOLDER, render, renderPage } = require('../i18n');
-const llms = require('../llms');
+const llms    = require('../llms');
+const edition = require('../edition');
 
 const ROOT   = path.join(__dirname, '..');
 const read   = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -34,8 +35,9 @@ const used = new Set([...Object.values(TEMPLATES), llmsTemplate('en'), llmsTempl
   .flatMap(tpl => [...tpl.matchAll(PLACEHOLDER)].filter(m => m[1] !== 'active').map(m => m[2])));
 used.delete('i18nJson');
 used.delete('lineupList');
+edition.NAMES.forEach(n => used.delete(n));
 for (const k of used) if (!(k in en)) errors.push(`A template uses unknown key "${k}"`);
-const code = read('public/js/main.js') + read('server.js');
+const code = read('public/js/main.js') + read('server.js') + read('i18n.js');
 for (const k of Object.keys(en)) {
   if (!used.has(k) && !code.includes(`'${k}'`)) errors.push(`Unused key "${k}" (remove it from both lang files)`);
 }
@@ -95,6 +97,22 @@ for (const l of LANGS) {
   } catch (e) {
     errors.push(`Rendering the ${l} llms files failed: ${e.message}`);
   }
+}
+
+// 7. Years and edition numbers are tokens from edition.js ({{year}}, {{edition}}, {{recapYear}}, ...),
+//    never typed into texts — otherwise the site mixes editions again after the next rollover.
+const YEAR_OK  = ['cookiePage.subtitle']; // a real "last updated" date, not an edition
+const HARDCODED_EDITION = /\b20[2-9]\d\b|\b\d{1,2}(?:st|nd|rd|th)\b|\ba [IVX]+-a\b|EDIȚIA [IVX]+\b|\b(?:one|two|three|four|five|six|seven|eight|nine|ten) editions\b|\b(?:două|trei|patru|cinci|șase|șapte|opt|nouă|zece) ediții\b/i;
+for (const l of LANGS) {
+  for (const [k, v] of Object.entries(STRINGS[l])) {
+    const m = !YEAR_OK.includes(k) && v.replace(PLACEHOLDER, ' ').match(HARDCODED_EDITION);
+    if (m) errors.push(`Hardcoded year/edition "${m[0]}" in lang/${l}.json "${k}" — use an edition token (see edition.js)`);
+  }
+}
+for (const [name, tpl] of Object.entries([...Object.entries(TEMPLATES), ['llms.en.md', llmsTemplate('en')], ['llms.ro.md', llmsTemplate('ro')]]
+  .reduce((o, [n, s]) => ({ ...o, [n]: s }), {}))) {
+  const m = tpl.replace(PLACEHOLDER, ' ').replace(/\?v=\w+/g, ' ').match(HARDCODED_EDITION);
+  if (m) errors.push(`Hardcoded year/edition "${m[0]}" in views/${name} — use an edition token (see edition.js)`);
 }
 
 if (errors.length) {

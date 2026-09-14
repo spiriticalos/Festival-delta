@@ -486,6 +486,33 @@
           </div>
         </div>
 
+        <p class="settings-label">Ediții (textele de pe site se schimbă singure, în EN și RO)</p>
+        <div class="settings-row">
+          <div class="field">
+            <label>Ediția următoare — anul</label>
+            <input type="number" id="s-edition-year" min="2023" max="2100" />
+          </div>
+          <div class="field">
+            <label>Ediția următoare — numărul (ex. 5)</label>
+            <input type="number" id="s-edition-number" min="1" max="12" />
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="field">
+            <label>Anul artiștilor din Lineup</label>
+            <input type="number" id="s-lineup-year" min="2023" max="2100" />
+          </div>
+          <div class="field">
+            <label>Aftermovie „Cum a fost” — anul</label>
+            <input type="number" id="s-recap-year" min="2023" max="2100" />
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:20px;">
+          <label>Aftermovie — link YouTube</label>
+          <input type="text" id="s-recap-video" placeholder="https://youtu.be/..." />
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Data festivalului = prima zi a ediției (festivalul ține 4 zile). Când e în anul ediției următoare, pe site apar datele exacte; până atunci apare „iunie + an · Datele, în curând”.</p>
+
         <div class="field" style="margin-bottom:20px;">
           <label style="display:flex;align-items:center;gap:12px;">
             <label class="toggle">
@@ -716,12 +743,30 @@ document.getElementById('s-earlybird').checked = s.early_bird_active === '1';
       if (s.festival_date) {
         document.getElementById('s-date').value = s.festival_date.slice(0, 16);
       }
+      document.getElementById('s-edition-year').value   = s.edition_year   || '';
+      document.getElementById('s-edition-number').value = s.edition_number || '';
+      document.getElementById('s-lineup-year').value    = s.lineup_year    || '';
+      document.getElementById('s-recap-year').value     = s.recap_year     || '';
+      document.getElementById('s-recap-video').value    = s.recap_video_id ? 'https://youtu.be/' + s.recap_video_id : '';
+    }
+
+    // Accepts a full YouTube link (youtu.be, watch?v=, shorts, embed) or just the 11-character id
+    function youtubeId(v) {
+      const m = String(v).trim().match(/(?:youtu\.be\/|v=|\/shorts\/|\/embed\/)([\w-]{11})/) || String(v).trim().match(/^([\w-]{11})$/);
+      return m ? m[1] : '';
     }
 
     document.getElementById('btn-save-settings').addEventListener('click', async () => {
       const btn = document.getElementById('btn-save-settings');
+      const videoId = youtubeId(document.getElementById('s-recap-video').value);
+      if (!videoId) { alert('Linkul YouTube nu e valid.'); return; }
       btn.disabled = true;
       await Promise.all([
+        api.patch('/api/settings/edition_year',   { value: document.getElementById('s-edition-year').value }),
+        api.patch('/api/settings/edition_number', { value: document.getElementById('s-edition-number').value }),
+        api.patch('/api/settings/lineup_year',    { value: document.getElementById('s-lineup-year').value }),
+        api.patch('/api/settings/recap_year',     { value: document.getElementById('s-recap-year').value }),
+        api.patch('/api/settings/recap_video_id', { value: videoId }),
 api.patch('/api/settings/early_bird_active',  { value: document.getElementById('s-earlybird').checked ? '1' : '0' }),
         api.patch('/api/settings/festival_date',       { value: document.getElementById('s-date').value }),
       ]);
