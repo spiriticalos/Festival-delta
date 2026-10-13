@@ -191,7 +191,7 @@ body {
 /* ── Ticket Button ── */
 .btn-buy {
   display: inline-block;
-  background: var(--orange);
+  background: #A65A32; /* darker than --orange so white text passes WCAG AA (5.1:1) */
   color: #fff;
   padding: 13px 32px;
   font-family: 'Nunito', sans-serif;
@@ -208,7 +208,7 @@ body {
 }
 
 .btn-buy:hover {
-  background: #c4733e;
+  background: #8F4B28;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(212, 132, 90, 0.4);
   color: #fff;
@@ -545,8 +545,13 @@ body {
   display: block;
   margin: 0 auto 16px;
   pointer-events: none;
-  animation: fadeUp 0.9s ease both;
-  animation-delay: 0.2s;
+  /* Largest element on first paint: slide in, but never start invisible (opacity 0 delays LCP) */
+  animation: logoRise 0.9s ease both;
+}
+
+@keyframes logoRise {
+  from { transform: translateY(28px); }
+  to   { transform: translateY(0); }
 }
 
 .hero-sub {

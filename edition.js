@@ -68,6 +68,7 @@ function vars(lang) {
 
   return {
     year:            String(s.year),
+    firstYear:       String(FIRST_YEAR),
     edition:         ordinal(s.number, lang),
     editionRoman:    ROMAN[s.number],
     prevYear:        String(s.year - 1),

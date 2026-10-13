@@ -151,12 +151,12 @@ app.use((req, res, next) => {
 
   res.setHeader('Content-Security-Policy', [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://static.cloudflareinsights.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://stats.g.doubleclick.net",
+    "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com",
     "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com",
-    "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com",
+    "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://www.googletagmanager.com https://cloudflareinsights.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -171,6 +171,8 @@ app.use(compression());
 app.use(helmet({
   contentSecurityPolicy:      false, // set manually per-route below
   crossOriginEmbedderPolicy:  false, // required for YouTube / Google Maps iframes
+  // Helmet's default "no-referrer" breaks YouTube embeds (Error 153) and hides our traffic from partner sites
+  referrerPolicy:             { policy: 'strict-origin-when-cross-origin' },
 }));
 
 // ── Core middleware ─────────────────────────────────────────
@@ -277,7 +279,7 @@ app.get('/sitemap.xml', (req, res) => {
     ].map(r => r.image_path);
   } catch (e) {}
   const images = [...new Set([...pageImages, ...dbImages])]
-    .filter(p => !/-600\.webp$|pwa-icon/.test(p))
+    .filter(p => !/-\d{3}\.webp$|pwa-icon/.test(p))
     .map(p => `    <image:image><image:loc>${SITE}${escHtml(p)}</image:loc></image:image>`)
     .join('\n');
   const alternates = [['en', '/'], ['ro', '/ro/'], ['x-default', '/']]
@@ -294,6 +296,12 @@ ${page('/ro/')}
   <url>
     <loc>${SITE}/cookie-policy.html</loc>
     <lastmod>2026-04-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>${SITE}/ro/cookie-policy.html</loc>
+    <lastmod>2026-09-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>

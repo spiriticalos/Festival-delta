@@ -1,5 +1,7 @@
 # Default rules for all crawlers
 User-agent: *
+# Content signals (contentsignals.org): yes to search, AI answers and AI training
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
@@ -94,6 +96,72 @@ Disallow: /admin
 Disallow: /health
 
 User-agent: MistralAI-User
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: OAI-AdsBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: meta-externalfetcher
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: Google-CloudVertexBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: GoogleOther
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /health
+
+User-agent: bingbot
 Allow: /
 Disallow: /api/
 Disallow: /admin

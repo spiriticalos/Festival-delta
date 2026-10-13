@@ -1,12 +1,13 @@
-const CACHE = 'bohemians-v10';
+const CACHE = 'bohemians-v11';
 const STATIC = [
   '/',
   '/ro/',
-  '/css/style.css?v=20260914d',
-  '/js/main.js?v=20260914d',
+  '/css/style.css?v=20261014a',
+  '/js/main.js?v=20261014a',
   '/images/bohemians-festival-crowd-sunflower-stage-night.webp',
   '/images/bohemians-festival-crowd-sunflower-stage-night-mobile.webp',
-  '/images/the-bohemians-festival-logo.webp',
+  '/images/the-bohemians-festival-logo-400.webp',
+  '/images/the-bohemians-festival-logo-720.webp',
   '/images/sun-icon.svg',
   '/images/pwa-icon-192.png',
 ];

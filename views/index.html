@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{a:meta.lang}}">
 <head>
+  <!-- Google Consent Mode v2: everything denied until the visitor clicks "Accept All" (see initCookieBanner in main.js) -->
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+  try { if (localStorage.getItem('cookie-consent') === 'all') gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted' }); } catch (e) {}
+  </script>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -72,15 +80,64 @@
     },
     "image": "https://thebohemiansociety.ro/images/bohemians-social-preview.jpg",
     "performer": {{eventPerformers}},
-    "organizer": {
-      "@type": "Organization",
-      "name": "Cyclic Agency",
-      "url": "https://www.cyclic.ro/events/"
-    },
+    "organizer": { "@id": "https://thebohemiansociety.ro/#organization" },
+    "superEvent": { "@id": "https://thebohemiansociety.ro/#festival" },
     "description": "{{j:schema.eventDescription}}"
   }
   </script>
   <!--event:end-->
+
+  <!-- Schema.org festival series + website: who / what / where, valid all year (no dates needed) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EventSeries",
+        "@id": "https://thebohemiansociety.ro/#festival",
+        "name": "The Bohemians Festival",
+        "alternateName": ["The Bohemians", "The Bohemians Society"],
+        "url": "https://thebohemiansociety.ro/",
+        "description": "{{j:schema.seriesDescription}}",
+        "image": "https://thebohemiansociety.ro/images/bohemians-social-preview.jpg",
+        "startDate": "{{firstYear}}",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "maximumAttendeeCapacity": 500,
+        "typicalAgeRange": "18-",
+        "keywords": "{{j:schema.keywords}}",
+        "location": { "@id": "https://thebohemiansociety.ro/#venue" },
+        "organizer": { "@id": "https://thebohemiansociety.ro/#organization" }
+      },
+      {
+        "@type": "Place",
+        "@id": "https://thebohemiansociety.ro/#venue",
+        "name": "Sfântu Gheorghe, Delta Dunării",
+        "description": "{{j:schema.placeDescription}}",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sfântu Gheorghe",
+          "addressRegion": "Tulcea",
+          "addressCountry": "RO"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": 44.8967, "longitude": 29.5978 },
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Danube Delta Biosphere Reserve",
+          "sameAs": "https://en.wikipedia.org/wiki/Danube_Delta"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://thebohemiansociety.ro/#website",
+        "name": "The Bohemians Festival",
+        "url": "https://thebohemiansociety.ro/",
+        "inLanguage": ["en", "ro"],
+        "publisher": { "@id": "https://thebohemiansociety.ro/#organization" },
+        "about": { "@id": "https://thebohemiansociety.ro/#festival" }
+      }
+    ]
+  }
+  </script>
 
   <!-- Schema.org FAQ -->
   <script type="application/ld+json">
@@ -88,6 +145,31 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "{{j:faq.q7}}",
+        "acceptedAnswer": { "@type": "Answer", "text": "{{j:faq.a7}}" }
+      },
+      {
+        "@type": "Question",
+        "name": "{{j:faq.q8}}",
+        "acceptedAnswer": { "@type": "Answer", "text": "{{j:faq.a8}}" }
+      },
+      {
+        "@type": "Question",
+        "name": "{{j:faq.q9}}",
+        "acceptedAnswer": { "@type": "Answer", "text": "{{j:faq.a9}}" }
+      },
+      {
+        "@type": "Question",
+        "name": "{{j:faq.q10}}",
+        "acceptedAnswer": { "@type": "Answer", "text": "{{j:faq.a10}}" }
+      },
+      {
+        "@type": "Question",
+        "name": "{{j:faq.q11}}",
+        "acceptedAnswer": { "@type": "Answer", "text": "{{j:faq.a11}}" }
+      },
       {
         "@type": "Question",
         "name": "{{j:faq.q1}}",
@@ -145,11 +227,14 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://thebohemiansociety.ro/#organization",
     "name": "The Bohemians",
     "alternateName": "The Bohemians Society",
     "url": "https://thebohemiansociety.ro/",
     "logo": "https://thebohemiansociety.ro/images/the-bohemians-festival-logo.png",
     "description": "{{j:schema.orgDescription}}",
+    "foundingDate": "{{firstYear}}",
+    "areaServed": "RO",
     "sameAs": [
       "https://www.instagram.com/the_bohemian_society/",
       "https://www.facebook.com/theBohemiansSociety"
@@ -157,7 +242,8 @@
     "parentOrganization": {
       "@type": "Organization",
       "name": "Cyclic Agency",
-      "url": "https://www.cyclic.ro/events/"
+      "url": "https://www.cyclic.ro/events/",
+      "sameAs": ["https://www.youtube.com/@cyclic_music"]
     },
     "contactPoint": {
       "@type": "ContactPoint",
@@ -173,7 +259,7 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Italianno&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
-  <link rel="stylesheet" href="/css/style.css?v=20260914d" />
+  <link rel="stylesheet" href="/css/style.css?v=20261014a" />
 
   <!-- Favicon & PWA -->
   <link rel="icon" href="/images/sun-icon.svg" type="image/svg+xml" />
@@ -187,6 +273,9 @@
   <!-- Preload critical assets -->
   <link rel="preload" as="image" href="/images/bohemians-festival-crowd-sunflower-stage-night.webp" media="(min-width: 481px)" fetchpriority="high" />
   <link rel="preload" as="image" href="/images/bohemians-festival-crowd-sunflower-stage-night-mobile.webp" media="(max-width: 480px)" fetchpriority="high" />
+  <link rel="preload" as="image" type="image/webp" fetchpriority="high"
+        imagesrcset="/images/the-bohemians-festival-logo-400.webp 400w, /images/the-bohemians-festival-logo-720.webp 720w, /images/the-bohemians-festival-logo.webp 1220w"
+        imagesizes="(max-width: 768px) min(85vw, 360px), min(55vw, 580px)" />
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -279,8 +368,9 @@
       <div id="hero-early-bird" style="display:none;" class="hero-early-bird"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"> {{hero.earlyBird}}</div>
 
       <picture>
-        <source srcset="/images/the-bohemians-festival-logo.webp" type="image/webp" />
-        <img src="/images/the-bohemians-festival-logo.png" alt="{{a:hero.logoAlt}}" class="hero-logo-overlay" width="800" height="292" />
+        <source srcset="/images/the-bohemians-festival-logo-400.webp 400w, /images/the-bohemians-festival-logo-720.webp 720w, /images/the-bohemians-festival-logo.webp 1220w"
+                sizes="(max-width: 768px) min(85vw, 360px), min(55vw, 580px)" type="image/webp" />
+        <img src="/images/the-bohemians-festival-logo.png" alt="{{a:hero.logoAlt}}" class="hero-logo-overlay" width="800" height="292" fetchpriority="high" />
       </picture>
       <p class="hero-tagline">{{hero.tagline}}</p>
 
@@ -329,19 +419,19 @@
 
         <div class="strip-col">
           <div class="strip-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-          <h3 class="strip-title">{{strip.t1}}</h3>
+          <h2 class="strip-title">{{strip.t1}}</h2>
           <p class="strip-text">{{strip.d1}}</p>
         </div>
 
         <div class="strip-col">
           <div class="strip-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-          <h3 class="strip-title">{{strip.t2}}</h3>
+          <h2 class="strip-title">{{strip.t2}}</h2>
           <p class="strip-text">{{strip.d2}}</p>
         </div>
 
         <div class="strip-col">
           <div class="strip-emoji"><img class="sun-icon" src="/images/sun-icon.svg" alt="" aria-hidden="true"></div>
-          <h3 class="strip-title">{{strip.t3}}</h3>
+          <h2 class="strip-title">{{strip.t3}}</h2>
           <p class="strip-text">{{strip.d3}}</p>
         </div>
 
@@ -411,6 +501,7 @@
               data-src="https://www.youtube-nocookie.com/embed/{{recapVideoId}}?rel=0&playsinline=1"
               title="{{a:past.videoTitle}}"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen>
             </iframe>
           </div>
@@ -871,6 +962,56 @@
         <div class="faq-list">
 
           <div class="faq-item">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-7">
+              {{faq.q7}}
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-a-7" role="region">
+              <p>{{faq.a7}}</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-8">
+              {{faq.q8}}
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-a-8" role="region">
+              <p>{{faq.a8}}</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-9">
+              {{faq.q9}}
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-a-9" role="region">
+              <p>{{faq.a9}}</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-10">
+              {{faq.q10}}
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-a-10" role="region">
+              <p>{{faq.a10}}</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false" aria-controls="faq-a-11">
+              {{faq.q11}}
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-a-11" role="region">
+              <p>{{faq.a11}}</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
             <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">
               {{faq.q1}}
               <span class="faq-icon" aria-hidden="true">+</span>
@@ -1032,7 +1173,7 @@
   </div>
 
   <script>window.I18N = {{i18nJson}};</script>
-  <script src="/js/main.js?v=20260914d" defer></script>
+  <script src="/js/main.js?v=20261014a" defer></script>
 
   <!-- ═══════════════════════════════════════════
        COOKIE CONSENT

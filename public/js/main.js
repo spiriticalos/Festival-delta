@@ -173,6 +173,8 @@ if (emailBtn) {
       });
       const data = await res.json();
       if (data.success) {
+        // Conversion signal for GTM (GA4 key event / ads) — no email or other personal data
+        (window.dataLayer = window.dataLayer || []).push({ event: 'newsletter_signup', signup_language: LANG });
         const p    = document.createElement('p');
         p.className   = 'email-success';
         p.textContent = I18N['js.subscribed'];
@@ -530,6 +532,9 @@ function initCookieBanner() {
   banner.style.display = 'block';
   document.getElementById('cookie-accept-all').addEventListener('click', () => {
     localStorage.setItem('cookie-consent', 'all');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted' });
+    }
     banner.style.display = 'none';
   });
   document.getElementById('cookie-necessary').addEventListener('click', () => {
