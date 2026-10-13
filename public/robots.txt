@@ -1,7 +1,5 @@
 # Default rules for all crawlers
 User-agent: *
-# Content signals (contentsignals.org): yes to search, AI answers and AI training
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
@@ -12,182 +10,156 @@ Disallow: /wp-includes/
 
 # Explicit opt-in for AI crawlers (training + answer engines)
 User-agent: GPTBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: OAI-SearchBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: ChatGPT-User
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: ClaudeBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: anthropic-ai
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Claude-Web
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Google-Extended
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: PerplexityBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Perplexity-User
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Applebot-Extended
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Bytespider
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Meta-ExternalAgent
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: cohere-ai
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: YouBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: MistralAI-User
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Claude-SearchBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Claude-User
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: OAI-AdsBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: CCBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: DuckAssistBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Amazonbot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Applebot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: meta-externalfetcher
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: Google-CloudVertexBot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: GoogleOther
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /health
 
 User-agent: bingbot
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin
