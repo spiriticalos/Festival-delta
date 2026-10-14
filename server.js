@@ -83,6 +83,36 @@ async function processUpload(file) {
   }
 }
 
+// ── Smaller "-sm" variants for gallery + artist cards (originals stay for the lightbox)
+// Gallery cards are 240×320 (mobile) / 380×520 (desktop) with object-fit: cover, artist cards ≤ 180px.
+const variantName = name => name.replace(/\.webp$/i, '-sm.webp');
+const variants = new Set(); // original filenames that have a smaller variant
+
+async function makeVariant(name) {
+  if (!/\.webp$/i.test(name) || /-(\d{3}|sm)\.webp$/i.test(name)) return;
+  const src = path.join(UPLOADS_DIR, name);
+  const dest = path.join(UPLOADS_DIR, variantName(name));
+  try {
+    if (!fs.existsSync(dest)) {
+      const box = /(^|-)artist-/.test(name) ? { width: 400, height: 400 } : { width: 480, height: 560 };
+      await sharp(src).resize({ ...box, fit: 'outside', withoutEnlargement: true }).webp({ quality: 78 }).toFile(dest);
+    }
+    if (fs.statSync(dest).size < fs.statSync(src).size) variants.add(name);
+    else fs.unlinkSync(dest); // not smaller than the original — not worth serving
+  } catch (_) {}
+}
+
+function removeVariant(imagePath) {
+  try { fs.unlinkSync(path.join(UPLOADS_DIR, variantName(path.basename(imagePath)))); } catch (_) {}
+}
+
+// Adds thumb_path when a smaller variant exists
+function withVariant(row) {
+  return row.image_path && variants.has(path.basename(row.image_path))
+    ? { ...row, thumb_path: row.image_path.replace(/\.webp$/i, '-sm.webp') }
+    : row;
+}
+
 // ── Rate limit (login) ──────────────────────────────────────
 const loginAttempts     = new Map();
 const subscribeAttempts = new Map();
@@ -216,10 +246,10 @@ function lineupHtml(lang) {
     const artists = db.prepare('SELECT name, image_path FROM artists ORDER BY name ASC').all();
     if (!artists.length) return null;
     const altSuffix = i18n.text(lang, 'js.artistAlt');
-    return artists.map(a => `
+    return artists.map(withVariant).map(a => `
           <div class="lineup-card lineup-card--artist">
             ${a.image_path
-              ? `<img src="${escHtml(a.image_path)}" alt="${escHtml(a.name + ' — ' + altSuffix)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
+              ? `<img src="${escHtml(a.thumb_path || a.image_path)}" alt="${escHtml(a.name + ' — ' + altSuffix)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
               : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
             <div class="lineup-card-name"><span class="lineup-card-title">${escHtml(a.name)}</span></div>
           </div>`).join('');
@@ -279,7 +309,7 @@ app.get('/sitemap.xml', (req, res) => {
     ].map(r => r.image_path);
   } catch (e) {}
   const images = [...new Set([...pageImages, ...dbImages])]
-    .filter(p => !/-\d{3}\.webp$|pwa-icon/.test(p))
+    .filter(p => !/-(\d{3}|sm)\.webp$|pwa-icon/.test(p))
     .map(p => `    <image:image><image:loc>${SITE}${escHtml(p)}</image:loc></image:image>`)
     .join('\n');
   const alternates = [['en', '/'], ['ro', '/ro/'], ['x-default', '/']]
@@ -368,15 +398,15 @@ app.get('/health', (req, res) => {
 // ══════════════════════════════════════════════════════════
 
 app.get('/api/artists', (req, res) => {
-  res.json(db.prepare('SELECT * FROM artists ORDER BY name ASC').all());
+  res.json(db.prepare('SELECT * FROM artists ORDER BY name ASC').all().map(withVariant));
 });
 
 app.get('/api/gallery', (req, res) => {
-  res.json(db.prepare('SELECT * FROM gallery ORDER BY created_at DESC').all());
+  res.json(db.prepare('SELECT * FROM gallery ORDER BY created_at DESC').all().map(withVariant));
 });
 
 app.get('/api/gallery/:section', (req, res) => {
-  res.json(db.prepare('SELECT * FROM gallery WHERE section = ? ORDER BY created_at DESC').all(req.params.section));
+  res.json(db.prepare('SELECT * FROM gallery WHERE section = ? ORDER BY created_at DESC').all(req.params.section).map(withVariant));
 });
 
 app.get('/api/announcements/active', (req, res) => {
@@ -455,6 +485,7 @@ app.post('/api/artists', isAdmin, csrfProtect, upload.single('image'), async (re
   const { name, genre } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required.' });
   const image_path = req.file ? await processUpload(req.file) : null;
+  if (image_path) await makeVariant(path.basename(image_path));
   try {
     const r = db.prepare('INSERT INTO artists (name, genre, image_path) VALUES (?, ?, ?)').run(name.trim(), genre || null, image_path);
     res.json({ id: r.lastInsertRowid });
@@ -468,6 +499,7 @@ app.delete('/api/artists/:id', isAdmin, csrfProtect, (req, res) => {
   if (!artist) return res.status(404).json({ error: 'Not found' });
   if (artist.image_path) {
     try { fs.unlinkSync(path.join(UPLOADS_DIR, path.basename(artist.image_path))); } catch (_) {}
+    removeVariant(artist.image_path);
   }
   db.prepare('DELETE FROM artists WHERE id = ?').run(req.params.id);
   res.json({ success: true });
@@ -478,6 +510,7 @@ app.post('/api/gallery', isAdmin, csrfProtect, upload.single('image'), async (re
   const { section, caption, caption_ro } = req.body;
   if (!section || !section.trim()) return res.status(400).json({ error: 'Section is required.' });
   const image_path = req.file ? await processUpload(req.file) : null;
+  if (image_path) await makeVariant(path.basename(image_path));
   try {
     const r = db.prepare('INSERT INTO gallery (section, image_path, caption, caption_ro) VALUES (?, ?, ?, ?)').run(section.trim(), image_path, caption || null, caption_ro || null);
     res.json({ id: r.lastInsertRowid });
@@ -491,6 +524,7 @@ app.delete('/api/gallery/:id', isAdmin, csrfProtect, (req, res) => {
   if (!item) return res.status(404).json({ error: 'Not found' });
   if (item.image_path) {
     try { fs.unlinkSync(path.join(UPLOADS_DIR, path.basename(item.image_path))); } catch (_) {}
+    removeVariant(item.image_path);
   }
   db.prepare('DELETE FROM gallery WHERE id = ?').run(req.params.id);
   res.json({ success: true });
@@ -616,6 +650,8 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`The Bohemians Festival → http://localhost:${PORT}`);
   console.log(`Admin panel           → http://localhost:${PORT}/admin`);
+  // Backfill small variants for existing uploads (one at a time, in the background)
+  (async () => { for (const f of fs.readdirSync(UPLOADS_DIR)) await makeVariant(f); })().catch(() => {});
 });
 
 // ── Automated daily DB backup at 03:00 server time ─────────

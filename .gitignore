@@ -7,3 +7,5 @@ logs/
 backups/
 gsc-tools/node_modules/
 gsc-tools/output/
+# generated at startup by server.js (makeVariant)
+public/images/uploads/*-sm.webp

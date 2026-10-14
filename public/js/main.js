@@ -288,7 +288,7 @@ async function loadArtists() {
     grid.innerHTML = artists.map(a => `
       <div class="lineup-card lineup-card--artist">
         ${a.image_path
-          ? `<img src="${esc(a.image_path)}" alt="${esc(a.name + ' — ' + I18N['js.artistAlt'])}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
+          ? `<img src="${esc(a.thumb_path || a.image_path)}" alt="${esc(a.name + ' — ' + I18N['js.artistAlt'])}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />`
           : `<div style="width:100%;height:100%;background:var(--bg-card);"></div>`}
         <div class="lineup-card-name">
           <span class="lineup-card-title">${esc(a.name)}</span>
@@ -391,7 +391,7 @@ async function loadGallery() {
 
     const itemHTML = items.map((item, i) => `
       <div class="gallery-item" data-index="${i}">
-        <img src="${esc(item.image_path)}"
+        <img src="${esc(item.thumb_path || item.image_path)}"
              alt="${esc(photoAlt(item))}"
              loading="${i < 4 ? 'eager' : 'lazy'}"
              decoding="async" />
